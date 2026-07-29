@@ -1,0 +1,217 @@
+{
+  "version": 2,
+  "dgSpecHash": "AtNp8f55sKU=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.codeanalysis.netanalyzers\\6.0.0\\microsoft.codeanalysis.netanalyzers.6.0.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.1\\microsoft.data.sqlclient.2.1.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.identity.client\\4.21.1\\microsoft.identity.client.4.21.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.10.0\\microsoft.identitymodel.jsonwebtokens.6.10.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.identitymodel.logging\\6.10.0\\microsoft.identitymodel.logging.6.10.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.identitymodel.protocols\\6.8.0\\microsoft.identitymodel.protocols.6.8.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\6.8.0\\microsoft.identitymodel.protocols.openidconnect.6.8.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.10.0\\microsoft.identitymodel.tokens.6.10.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\newtonsoft.json\\12.0.1\\newtonsoft.json.12.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\securitycodescan.vs2019\\5.6.7\\securitycodescan.vs2019.5.6.7.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\serilog\\2.5.0\\serilog.2.5.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\serilog.sinks.file\\4.1.0\\serilog.sinks.file.4.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\sixlabors.imagesharp\\1.0.4\\sixlabors.imagesharp.1.0.4.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.collections\\4.0.11\\system.collections.4.0.11.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.collections.nongeneric\\4.0.1\\system.collections.nongeneric.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.diagnostics.debug\\4.0.11\\system.diagnostics.debug.4.0.11.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.0\\system.diagnostics.diagnosticsource.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.dynamic.runtime\\4.0.11\\system.dynamic.runtime.4.0.11.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.globalization\\4.0.11\\system.globalization.4.0.11.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.10.0\\system.identitymodel.tokens.jwt.6.10.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.io\\4.1.0\\system.io.4.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.io.filesystem\\4.0.1\\system.io.filesystem.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.io.filesystem.primitives\\4.0.1\\system.io.filesystem.primitives.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.linq\\4.1.0\\system.linq.4.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.linq.expressions\\4.1.0\\system.linq.expressions.4.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.objectmodel\\4.0.12\\system.objectmodel.4.0.12.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.reflection\\4.1.0\\system.reflection.4.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.reflection.emit\\4.0.1\\system.reflection.emit.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.reflection.emit.ilgeneration\\4.0.1\\system.reflection.emit.ilgeneration.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.reflection.emit.lightweight\\4.0.1\\system.reflection.emit.lightweight.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.reflection.extensions\\4.0.1\\system.reflection.extensions.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.reflection.primitives\\4.0.1\\system.reflection.primitives.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.reflection.typeextensions\\4.1.0\\system.reflection.typeextensions.4.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.resources.resourcemanager\\4.0.1\\system.resources.resourcemanager.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.runtime.caching\\4.7.0\\system.runtime.caching.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.runtime.extensions\\4.1.0\\system.runtime.extensions.4.1.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.runtime.handles\\4.0.1\\system.runtime.handles.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.7.0\\system.security.cryptography.protecteddata.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.security.permissions\\4.7.0\\system.security.permissions.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.text.encoding\\4.0.11\\system.text.encoding.4.0.11.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.text.encoding.extensions\\4.0.11\\system.text.encoding.extensions.4.0.11.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.text.regularexpressions\\4.3.0\\system.text.regularexpressions.4.3.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.threading\\4.0.11\\system.threading.4.0.11.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.threading.tasks\\4.0.11\\system.threading.tasks.4.0.11.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.threading.timer\\4.0.1\\system.threading.timer.4.0.1.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.25\\microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.25\\microsoft.netcore.app.host.win-x64.8.0.25.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.25\\microsoft.netcore.app.ref.8.0.25.nupkg.sha512",
+    "C:\\Users\\PC_STORE\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.25\\microsoft.windowsdesktop.app.ref.8.0.25.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'Microsoft.Data.SqlClient' 2.1.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8g2p-5pqh-5jmc",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "Microsoft.Data.SqlClient",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Microsoft.Data.SqlClient' 2.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "Microsoft.Data.SqlClient",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Newtonsoft.Json' 12.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "Newtonsoft.Json",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 1.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-2cmq-823j-5qj8",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 1.0.4 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-5x7m-6737-26cr",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 1.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-63p8-c4ww-9cg7",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 1.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-65x7-c272-7g7r",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 1.0.4 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g85r-6x2q-45w7",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 1.0.4 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-qxrv-gp6x-rc23",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 1.0.4 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-rxmq-m78w-7wmc",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 6.10.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'System.Text.RegularExpressions' 4.3.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-cmhx-cq75-c4mj",
+      "projectPath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\PC_STORE\\Downloads\\sentinelai-fixture_2\\sentinelai-fixture\\src\\OrderApp\\OrderApp.csproj",
+      "libraryId": "System.Text.RegularExpressions",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}
