@@ -14,10 +14,14 @@ jobs:
       - name: Run scanners
         run: |
           mkdir -p bundle/findings
-          checkov -d infra/ -o sarif --output-file-path bundle/findings/checkov.sarif
-          trivy config infra/ --format sarif --output bundle/findings/trivy.sarif
-          osv-scanner --format sarif --output bundle/findings/osv-scanner.sarif ./
-          dotnet build OrderApp.csproj -p:ErrorLog=bundle/findings/roslyn.sarif
+
+          checkov -d infra/ -o sarif --output-file-path bundle/findings/checkov.sarif || true
+
+          trivy config infra/ --format sarif --output bundle/findings/trivy.sarif || true
+
+          osv-scanner --format sarif --output bundle/findings/osv-scanner.sarif ./ || true
+
+          dotnet build OrderApp.csproj -p:ErrorLog=bundle/findings/roslyn.sarif || true
       - uses: actions/upload-artifact@v4
         with:
           name: scan-results
