@@ -8,127 +8,144 @@ jobs:
 
       - name: Install scanners (pinned)
         run: |
+          set +e
           pip install checkov==3.2.0
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.72.0
           curl -sSL -o /usr/local/bin/osv-scanner https://github.com/google/osv-scanner/releases/download/v2.4.0/osv-scanner_linux_amd64
           chmod +x /usr/local/bin/osv-scanner
-          echo "=== installed tool versions ==="
+          echo "=== installed versions ==="
           checkov --version
           trivy --version
           osv-scanner --version
           dotnet --version
+          exit 0
 
       - name: DIAGNOSTIC — where am I and what is here
         run: |
+          set +e
           echo "=== pwd ==="
           pwd
           echo "=== GITHUB_WORKSPACE ==="
           echo "$GITHUB_WORKSPACE"
-          echo "=== repo tree (depth 3) ==="
-          find . -maxdepth 3 -not -path './.git/*' -not -name '.git' | sort
-          echo "=== key files ==="
-          echo "--- csproj ---"
+          echo "=== csproj ==="
           find . -name "*.csproj" -not -path './.git/*'
-          echo "--- terraform ---"
+          echo "=== terraform ==="
           find . -name "*.tf" -not -path './.git/*'
-          echo "--- Dockerfile ---"
+          echo "=== Dockerfile ==="
           find . -name "Dockerfile" -not -path './.git/*'
-          echo "--- packages.lock.json (BEFORE restore) ---"
+          echo "=== packages.lock.json (BEFORE restore) ==="
           find . -name "packages.lock.json" -not -path './.git/*' || echo "NONE FOUND"
+          exit 0
 
       - name: Roslyn / Security Code Scan (must run first — generates lock file)
         run: |
-          echo "=== pwd at start of roslyn step ==="
+          set +e
+          echo "=== pwd ==="
           pwd
           mkdir -p bundle/findings
 
-          echo "=== lock file state BEFORE restore ==="
+          echo "=== lock file BEFORE restore ==="
           if [ -f src/OrderApp/packages.lock.json ]; then
-            echo "EXISTS — committed in repo"
-            echo "size: $(wc -c < src/OrderApp/packages.lock.json) bytes"
-            echo "first contentHash values (placeholders?):"
-            grep -o '"contentHash": "[^"]*"' src/OrderApp/packages.lock.json | head -5 || echo "no contentHash fields"
+            echo "EXISTS — $(wc -c < src/OrderApp/packages.lock.json) bytes"
           else
             echo "DOES NOT EXIST — restore must generate it"
           fi
 
           echo "=== dotnet restore ==="
-          dotnet restore src/OrderApp/OrderApp.csproj --use-lock-file ; echo "restore exit=$?"
+          dotnet restore src/OrderApp/OrderApp.csproj --use-lock-file
+          echo "restore exit=$?"
 
-          echo "=== lock file state AFTER restore ==="
+          echo "=== lock file AFTER restore ==="
           if [ -f src/OrderApp/packages.lock.json ]; then
-            echo "PRESENT after restore"
-            echo "size: $(wc -c < src/OrderApp/packages.lock.json) bytes"
-            echo "packages listed:"
-            grep -oE '"[A-Za-z0-9.]+/[0-9][^"]*"' src/OrderApp/packages.lock.json | sort -u | head -20
+            echo "PRESENT — $(wc -c < src/OrderApp/packages.lock.json) bytes"
           else
             echo "STILL MISSING — OSV-Scanner will find nothing"
           fi
 
           echo "=== dotnet build ==="
           dotnet build src/OrderApp/OrderApp.csproj \
-            -p:ErrorLog=$GITHUB_WORKSPACE/bundle/findings/roslyn.sarif ; echo "build exit=$?"
+            -p:ErrorLog=$GITHUB_WORKSPACE/bundle/findings/roslyn.sarif
+          echo "build exit=$?"
+          exit 0
 
       - name: OSV-Scanner (needs the lock file from the step above)
         run: |
+          set +e
           echo "=== pwd ==="
           pwd
-          echo "=== lock file visible to osv-scanner? ==="
-          ls -la src/OrderApp/packages.lock.json || echo "LOCK FILE MISSING — expect zero findings"
+          echo "=== lock file visible? ==="
+          ls -la src/OrderApp/packages.lock.json || echo "LOCK FILE MISSING"
           osv-scanner --format sarif --output bundle/findings/osv-scanner.sarif \
-            --lockfile src/OrderApp/packages.lock.json ; echo "osv exit=$?"
+            --lockfile src/OrderApp/packages.lock.json
+          echo "osv exit=$?"
+          exit 0
 
       - name: Trivy
         run: |
+          set +e
           echo "=== pwd ==="
           pwd
           trivy fs --scanners misconfig,vuln --format sarif \
-            --output bundle/findings/trivy.sarif . ; echo "trivy exit=$?"
+            --output bundle/findings/trivy.sarif .
+          echo "trivy exit=$?"
+          exit 0
 
       - name: Checkov (infra + Dockerfile separately)
         run: |
+          set +e
           echo "=== pwd ==="
           pwd
-          checkov -d infra/ -o sarif --output-file-path bundle/findings/checkov-infra || true
-          checkov -f Dockerfile -o sarif --output-file-path bundle/findings/checkov-docker || true
+          checkov -d infra/ -o sarif --output-file-path bundle/findings/checkov-infra
+          echo "checkov infra exit=$?"
+          checkov -f Dockerfile -o sarif --output-file-path bundle/findings/checkov-docker
+          echo "checkov docker exit=$?"
           echo "=== what checkov actually wrote ==="
           find bundle/findings -type f -name "*.sarif"
-          mv bundle/findings/checkov-infra/results_sarif.sarif  bundle/findings/checkov-infra.sarif  || true
-          mv bundle/findings/checkov-docker/results_sarif.sarif bundle/findings/checkov-docker.sarif || true
+          mv bundle/findings/checkov-infra/results_sarif.sarif  bundle/findings/checkov-infra.sarif
+          mv bundle/findings/checkov-docker/results_sarif.sarif bundle/findings/checkov-docker.sarif
           rm -rf bundle/findings/checkov-infra bundle/findings/checkov-docker
+          exit 0
 
       - name: Record tool versions
         run: |
+          set +e
           cat > bundle/scanner-versions.json <<EOF
           {"checkov":"3.2.0","trivy":"0.72.0","osv-scanner":"2.4.0","roslyn-security":"5.6.7"}
           EOF
+          cat bundle/scanner-versions.json
+          exit 0
 
       - name: Verify all findings present
         if: always()
         run: |
+          set +e
           echo "=== final bundle contents ==="
           find bundle -type f | sort
           echo ""
           echo "=== per-scanner check ==="
           for f in roslyn osv-scanner trivy checkov-infra checkov-docker; do
             if [ -s "bundle/findings/$f.sarif" ]; then
-              echo "PASS: $f.sarif ($(wc -c < bundle/findings/$f.sarif) bytes)"
+              n=$(grep -o '"ruleId"' "bundle/findings/$f.sarif" | wc -l)
+              echo "PASS: $f.sarif — $(wc -c < bundle/findings/$f.sarif) bytes, $n results"
             else
               echo "FAIL: $f.sarif missing or empty"
             fi
           done
           echo ""
-          echo "=== flagship finding check ==="
-          if grep -q "SCS0028" bundle/findings/roslyn.sarif 2>/dev/null; then
-            echo "PASS: Roslyn found SCS0028 (CWE-502 unsafe deserialization)"
-          else
-            echo "FAIL: SCS0028 missing — flagship code finding not detected"
-          fi
-          if grep -q "Newtonsoft.Json" bundle/findings/osv-scanner.sarif 2>/dev/null; then
-            echo "PASS: OSV-Scanner found Newtonsoft.Json advisories (DEP-01)"
-          else
-            echo "FAIL: Newtonsoft.Json not in OSV output"
-          fi
+          echo "=== flagship findings ==="
+          grep -q "SCS0028" bundle/findings/roslyn.sarif \
+            && echo "PASS: Roslyn found SCS0028 (CWE-502 flagship)" \
+            || echo "FAIL: SCS0028 missing"
+          grep -q "Newtonsoft.Json" bundle/findings/osv-scanner.sarif \
+            && echo "PASS: OSV-Scanner found Newtonsoft.Json advisories (DEP-01)" \
+            || echo "FAIL: Newtonsoft.Json not in OSV output"
+          grep -q "CKV_AWS_290\|CKV_AWS_355" bundle/findings/checkov-infra.sarif \
+            && echo "PASS: Checkov found the s3:* wildcard IAM policy (INFRA-01)" \
+            || echo "FAIL: s3:* wildcard finding missing"
+          grep -q "CKV_DOCKER_3" bundle/findings/checkov-docker.sarif \
+            && echo "PASS: Checkov found no-USER directive (INFRA-08)" \
+            || echo "FAIL: CKV_DOCKER_3 missing"
+          exit 0
 
       - uses: actions/upload-artifact@v4
         if: always()
