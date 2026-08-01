@@ -12,43 +12,123 @@ jobs:
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.72.0
           curl -sSL -o /usr/local/bin/osv-scanner https://github.com/google/osv-scanner/releases/download/v2.4.0/osv-scanner_linux_amd64
           chmod +x /usr/local/bin/osv-scanner
+          echo "=== installed tool versions ==="
+          checkov --version
+          trivy --version
+          osv-scanner --version
+          dotnet --version
 
-      - name: Diagnostics
+      - name: DIAGNOSTIC — where am I and what is here
         run: |
-          echo "=== cwd ==="; pwd
+          echo "=== pwd ==="
+          pwd
+          echo "=== GITHUB_WORKSPACE ==="
+          echo "$GITHUB_WORKSPACE"
+          echo "=== repo tree (depth 3) ==="
+          find . -maxdepth 3 -not -path './.git/*' -not -name '.git' | sort
           echo "=== key files ==="
-          find . -maxdepth 4 -name "*.csproj" -o -maxdepth 4 -name "*.tf" -o -maxdepth 4 -name "Dockerfile"
+          echo "--- csproj ---"
+          find . -name "*.csproj" -not -path './.git/*'
+          echo "--- terraform ---"
+          find . -name "*.tf" -not -path './.git/*'
+          echo "--- Dockerfile ---"
+          find . -name "Dockerfile" -not -path './.git/*'
+          echo "--- packages.lock.json (BEFORE restore) ---"
+          find . -name "packages.lock.json" -not -path './.git/*' || echo "NONE FOUND"
 
       - name: Roslyn / Security Code Scan (must run first — generates lock file)
         run: |
+          echo "=== pwd at start of roslyn step ==="
+          pwd
           mkdir -p bundle/findings
-          dotnet restore src/OrderApp/OrderApp.csproj --use-lock-file || true
+
+          echo "=== lock file state BEFORE restore ==="
+          if [ -f src/OrderApp/packages.lock.json ]; then
+            echo "EXISTS — committed in repo"
+            echo "size: $(wc -c < src/OrderApp/packages.lock.json) bytes"
+            echo "first contentHash values (placeholders?):"
+            grep -o '"contentHash": "[^"]*"' src/OrderApp/packages.lock.json | head -5 || echo "no contentHash fields"
+          else
+            echo "DOES NOT EXIST — restore must generate it"
+          fi
+
+          echo "=== dotnet restore ==="
+          dotnet restore src/OrderApp/OrderApp.csproj --use-lock-file ; echo "restore exit=$?"
+
+          echo "=== lock file state AFTER restore ==="
+          if [ -f src/OrderApp/packages.lock.json ]; then
+            echo "PRESENT after restore"
+            echo "size: $(wc -c < src/OrderApp/packages.lock.json) bytes"
+            echo "packages listed:"
+            grep -oE '"[A-Za-z0-9.]+/[0-9][^"]*"' src/OrderApp/packages.lock.json | sort -u | head -20
+          else
+            echo "STILL MISSING — OSV-Scanner will find nothing"
+          fi
+
+          echo "=== dotnet build ==="
           dotnet build src/OrderApp/OrderApp.csproj \
-            -p:ErrorLog=$GITHUB_WORKSPACE/bundle/findings/roslyn.sarif || true
+            -p:ErrorLog=$GITHUB_WORKSPACE/bundle/findings/roslyn.sarif ; echo "build exit=$?"
 
       - name: OSV-Scanner (needs the lock file from the step above)
         run: |
-          ls -la src/OrderApp/packages.lock.json || echo "LOCK FILE MISSING"
+          echo "=== pwd ==="
+          pwd
+          echo "=== lock file visible to osv-scanner? ==="
+          ls -la src/OrderApp/packages.lock.json || echo "LOCK FILE MISSING — expect zero findings"
           osv-scanner --format sarif --output bundle/findings/osv-scanner.sarif \
-            --lockfile src/OrderApp/packages.lock.json || true
+            --lockfile src/OrderApp/packages.lock.json ; echo "osv exit=$?"
 
       - name: Trivy
         run: |
+          echo "=== pwd ==="
+          pwd
           trivy fs --scanners misconfig,vuln --format sarif \
-            --output-file bundle/findings/trivy.sarif . || true
+            --output bundle/findings/trivy.sarif . ; echo "trivy exit=$?"
 
       - name: Checkov (infra + Dockerfile separately)
         run: |
+          echo "=== pwd ==="
+          pwd
           checkov -d infra/ -o sarif --output-file-path bundle/findings/checkov-infra || true
           checkov -f Dockerfile -o sarif --output-file-path bundle/findings/checkov-docker || true
           echo "=== what checkov actually wrote ==="
           find bundle/findings -type f -name "*.sarif"
+          mv bundle/findings/checkov-infra/results_sarif.sarif  bundle/findings/checkov-infra.sarif  || true
+          mv bundle/findings/checkov-docker/results_sarif.sarif bundle/findings/checkov-docker.sarif || true
+          rm -rf bundle/findings/checkov-infra bundle/findings/checkov-docker
 
       - name: Record tool versions
         run: |
           cat > bundle/scanner-versions.json <<EOF
           {"checkov":"3.2.0","trivy":"0.72.0","osv-scanner":"2.4.0","roslyn-security":"5.6.7"}
           EOF
+
+      - name: Verify all findings present
+        if: always()
+        run: |
+          echo "=== final bundle contents ==="
+          find bundle -type f | sort
+          echo ""
+          echo "=== per-scanner check ==="
+          for f in roslyn osv-scanner trivy checkov-infra checkov-docker; do
+            if [ -s "bundle/findings/$f.sarif" ]; then
+              echo "PASS: $f.sarif ($(wc -c < bundle/findings/$f.sarif) bytes)"
+            else
+              echo "FAIL: $f.sarif missing or empty"
+            fi
+          done
+          echo ""
+          echo "=== flagship finding check ==="
+          if grep -q "SCS0028" bundle/findings/roslyn.sarif 2>/dev/null; then
+            echo "PASS: Roslyn found SCS0028 (CWE-502 unsafe deserialization)"
+          else
+            echo "FAIL: SCS0028 missing — flagship code finding not detected"
+          fi
+          if grep -q "Newtonsoft.Json" bundle/findings/osv-scanner.sarif 2>/dev/null; then
+            echo "PASS: OSV-Scanner found Newtonsoft.Json advisories (DEP-01)"
+          else
+            echo "FAIL: Newtonsoft.Json not in OSV output"
+          fi
 
       - uses: actions/upload-artifact@v4
         if: always()
