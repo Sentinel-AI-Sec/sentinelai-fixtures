@@ -5,24 +5,53 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install scanners (pinned)
         run: |
           pip install checkov==3.2.0
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.72.0
           curl -sSL -o /usr/local/bin/osv-scanner https://github.com/google/osv-scanner/releases/download/v2.4.0/osv-scanner_linux_amd64
           chmod +x /usr/local/bin/osv-scanner
-      - name: Run scanners
+
+      - name: Diagnostics
+        run: |
+          echo "=== cwd ==="; pwd
+          echo "=== key files ==="
+          find . -maxdepth 4 -name "*.csproj" -o -maxdepth 4 -name "*.tf" -o -maxdepth 4 -name "Dockerfile"
+
+      - name: Roslyn / Security Code Scan (must run first — generates lock file)
         run: |
           mkdir -p bundle/findings
+          dotnet restore src/OrderApp/OrderApp.csproj --use-lock-file || true
+          dotnet build src/OrderApp/OrderApp.csproj \
+            -p:ErrorLog=$GITHUB_WORKSPACE/bundle/findings/roslyn.sarif || true
 
-          checkov -d infra/ -o sarif --output-file-path bundle/findings/checkov.sarif || true
+      - name: OSV-Scanner (needs the lock file from the step above)
+        run: |
+          ls -la src/OrderApp/packages.lock.json || echo "LOCK FILE MISSING"
+          osv-scanner --format sarif --output bundle/findings/osv-scanner.sarif \
+            --lockfile src/OrderApp/packages.lock.json || true
 
-          trivy config infra/ --format sarif --output bundle/findings/trivy.sarif || true
+      - name: Trivy
+        run: |
+          trivy fs --scanners misconfig,vuln --format sarif \
+            --output-file bundle/findings/trivy.sarif . || true
 
-          osv-scanner --format sarif --output bundle/findings/osv-scanner.sarif ./ || true
+      - name: Checkov (infra + Dockerfile separately)
+        run: |
+          checkov -d infra/ -o sarif --output-file-path bundle/findings/checkov-infra || true
+          checkov -f Dockerfile -o sarif --output-file-path bundle/findings/checkov-docker || true
+          echo "=== what checkov actually wrote ==="
+          find bundle/findings -type f -name "*.sarif"
 
-          dotnet build OrderApp.csproj -p:ErrorLog=bundle/findings/roslyn.sarif || true
+      - name: Record tool versions
+        run: |
+          cat > bundle/scanner-versions.json <<EOF
+          {"checkov":"3.2.0","trivy":"0.72.0","osv-scanner":"2.4.0","roslyn-security":"5.6.7"}
+          EOF
+
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: scan-results
           path: bundle/
