@@ -1,0 +1,24 @@
+name: local-test
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install scanners (pinned)
+        run: |
+          pip install checkov==3.2.0
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.72.0
+          curl -sSL -o /usr/local/bin/osv-scanner https://github.com/google/osv-scanner/releases/download/v2.4.0/osv-scanner_linux_amd64
+          chmod +x /usr/local/bin/osv-scanner
+      - name: Run scanners
+        run: |
+          mkdir -p bundle/findings
+          checkov -d infra/ -o sarif --output-file-path bundle/findings/checkov.sarif
+          trivy config infra/ --format sarif --output bundle/findings/trivy.sarif
+          osv-scanner --format sarif --output bundle/findings/osv-scanner.sarif ./
+          dotnet build OrderApp.csproj -p:ErrorLog=bundle/findings/roslyn.sarif
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: bundle/
