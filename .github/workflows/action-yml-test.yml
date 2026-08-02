@@ -20,10 +20,16 @@ jobs:
           repository: Sentinel-AI-Sec/sentinelai-action
           ref: dev
           path: .sentinelai-action
-          # Only needed if sentinelai-action is private and org default token
-          # doesn't have cross-repo read. Remove this line if the repo is public
-          # or your org allows implicit cross-repo access.
-          # token: ${{ secrets.GH_PAT }}
+
+      - name: Debug — confirm action.yml is actually there
+        shell: bash
+        run: |
+          echo "--- workspace root ---"
+          pwd
+          echo "--- .sentinelai-action contents ---"
+          ls -la .sentinelai-action || echo "MISSING: .sentinelai-action directory does not exist"
+          echo "--- searching for action.yml ---"
+          find .sentinelai-action -maxdepth 2 -iname 'action.y*ml' -print || echo "NOT FOUND"
 
       - name: Run SentinelAI Action (dry run — build bundle only)
         id: sentinelai
@@ -113,6 +119,12 @@ jobs:
           repository: Sentinel-AI-Sec/sentinelai-action
           ref: dev
           path: .sentinelai-action
+
+      - name: Debug — confirm action.yml is actually there
+        shell: bash
+        run: |
+          ls -la .sentinelai-action || echo "MISSING: .sentinelai-action directory does not exist"
+          find .sentinelai-action -maxdepth 2 -iname 'action.y*ml' -print || echo "NOT FOUND"
 
       - name: Sabotage Trivy before it's installed
         shell: bash
