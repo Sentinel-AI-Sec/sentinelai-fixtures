@@ -21,20 +21,11 @@ jobs:
           ref: dev
           path: .sentinelai-action
 
-      - name: Debug — confirm action.yml is actually there
-        shell: bash
-        run: |
-          echo "--- workspace root ---"
-          pwd
-          echo "--- .sentinelai-action contents ---"
-          ls -la .sentinelai-action || echo "MISSING: .sentinelai-action directory does not exist"
-          echo "--- searching for action.yml ---"
-          find .sentinelai-action -maxdepth 2 -iname 'action.y*ml' -print || echo "NOT FOUND"
-
       - name: Run SentinelAI Action (dry run — build bundle only)
         id: sentinelai
         uses: ./.sentinelai-action
         with:
+          checkout: "false"          # we already checked out the fixture ourselves
           backend-url: "https://unused.invalid"      # dry run, never called
           machine-token: "dry-run-token"
           project-id: "fixture-ci-test"
@@ -120,12 +111,6 @@ jobs:
           ref: dev
           path: .sentinelai-action
 
-      - name: Debug — confirm action.yml is actually there
-        shell: bash
-        run: |
-          ls -la .sentinelai-action || echo "MISSING: .sentinelai-action directory does not exist"
-          find .sentinelai-action -maxdepth 2 -iname 'action.y*ml' -print || echo "NOT FOUND"
-
       - name: Sabotage Trivy before it's installed
         shell: bash
         run: |
@@ -142,6 +127,7 @@ jobs:
         id: sentinelai
         uses: ./.sentinelai-action
         with:
+          checkout: "false"          # we already checked out the fixture ourselves
           backend-url: "https://unused.invalid"
           machine-token: "dry-run-token"
           dotnet-project: "src/OrderApp/OrderApp.csproj"
