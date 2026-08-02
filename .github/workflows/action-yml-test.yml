@@ -1,0 +1,136 @@
+name: Test SentinelAI Action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  scan-fixture:
+    name: Run scanners against the fixture
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run SentinelAI Action (dry run — build bundle only)
+        id: sentinelai
+        uses: Sentinel-AI-Sec/sentinelai-action@main
+        with:
+          backend-url: "https://unused.invalid"      # dry run, never called
+          machine-token: "dry-run-token"
+          project-id: "fixture-ci-test"
+          dotnet-project: "src/OrderApp/OrderApp.csproj"   # adjust to your actual fixture path
+          infra-dir: "infra"
+          bundle-dir: "sentinelai-bundle"
+          upload: "false"          # <-- key: skip the real POST
+          upload-artifact: "true"  # <-- attach bundle so we can inspect it
+
+      - name: Assert code layer (Roslyn / CWE-502) produced findings
+        shell: bash
+        run: |
+          f="sentinelai-bundle/findings/roslyn.sarif"
+          if [[ ! -s "$f" ]]; then
+            echo "::error::roslyn.sarif is missing or empty — code layer produced no findings"
+            exit 1
+          fi
+          if ! grep -q "SCS0028" "$f"; then
+            echo "::error::roslyn.sarif does not contain the flagship SCS0028 (CWE-502) finding"
+            exit 1
+          fi
+          echo "OK: roslyn.sarif contains SCS0028"
+
+      - name: Assert dependency layer (OSV-Scanner) produced findings
+        shell: bash
+        run: |
+          f="sentinelai-bundle/findings/osv.sarif"
+          if [[ ! -s "$f" ]]; then
+            echo "::error::osv.sarif is missing or empty — dependency layer produced no findings"
+            exit 1
+          fi
+          echo "OK: osv.sarif is non-empty"
+
+      - name: Assert infra layer (Trivy) produced findings
+        shell: bash
+        run: |
+          f="sentinelai-bundle/findings/trivy.sarif"
+          if [[ ! -s "$f" ]]; then
+            echo "::error::trivy.sarif is missing or empty — infra layer produced no findings"
+            exit 1
+          fi
+          if ! grep -q "AWS-0345" "$f"; then
+            echo "::warning::trivy.sarif does not contain AWS-0345 (s3:* wildcard) — check the fixture's IAM policy"
+          fi
+          echo "OK: trivy.sarif is non-empty"
+
+      - name: Assert infra layer (Checkov) produced findings
+        shell: bash
+        run: |
+          for f in sentinelai-bundle/findings/checkov_infra.sarif sentinelai-bundle/findings/checkov_docker.sarif; do
+            if [[ ! -s "$f" ]]; then
+              echo "::error::$f is missing or empty"
+              exit 1
+            fi
+          done
+          echo "OK: both checkov SARIF files are non-empty"
+
+      - name: Assert no application source leaked into the bundle
+        shell: bash
+        run: |
+          if find sentinelai-bundle -name '*.cs' | grep -q .; then
+            echo "::error::.cs source files found inside the bundle — source must never leave the runner"
+            find sentinelai-bundle -name '*.cs'
+            exit 1
+          fi
+          echo "OK: no .cs files in the bundle"
+
+      - name: Show scanner-versions.json (debug)
+        shell: bash
+        run: cat sentinelai-bundle/scanner-versions.json
+
+  degrade-gracefully:
+    name: Verify one broken scanner doesn't fail the job
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sabotage Trivy before it's installed
+        shell: bash
+        run: |
+          # Pre-create a fake, broken 'trivy' earlier on PATH so install/run fails cleanly.
+          mkdir -p "$HOME/.local/bin"
+          cat > "$HOME/.local/bin/trivy" <<'EOF'
+          #!/usr/bin/env bash
+          echo "trivy: simulated failure" >&2
+          exit 1
+          EOF
+          chmod +x "$HOME/.local/bin/trivy"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Run SentinelAI Action with Trivy broken
+        id: sentinelai
+        uses: Sentinel-AI-Sec/sentinelai-action@main
+        with:
+          backend-url: "https://unused.invalid"
+          machine-token: "dry-run-token"
+          dotnet-project: "src/OrderApp/OrderApp.csproj"
+          infra-dir: "infra"
+          bundle-dir: "sentinelai-bundle"
+          upload: "false"
+          install-scanners: "false"   # keep our sabotaged trivy on PATH
+        continue-on-error: false       # the JOB must still succeed overall
+
+      - name: Assert the job survived and other scanners still produced output
+        shell: bash
+        run: |
+          if [[ -s sentinelai-bundle/findings/trivy.sarif ]]; then
+            echo "::error::trivy.sarif has content — sabotage didn't take effect, test is invalid"
+            exit 1
+          fi
+          for f in roslyn.sarif osv.sarif checkov_infra.sarif; do
+            if [[ ! -s "sentinelai-bundle/findings/$f" ]]; then
+              echo "::error::$f missing — one scanner failing took down others too"
+              exit 1
+            fi
+          done
+          echo "OK: Trivy failed silently, everything else still produced findings"
