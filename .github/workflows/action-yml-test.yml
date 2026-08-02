@@ -11,11 +11,23 @@ jobs:
     name: Run scanners against the fixture
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout fixture
+        uses: actions/checkout@v4
+
+      - name: Checkout sentinelai-action (dev branch)
+        uses: actions/checkout@v4
+        with:
+          repository: Sentinel-AI-Sec/sentinelai-action
+          ref: dev
+          path: .sentinelai-action
+          # Only needed if sentinelai-action is private and org default token
+          # doesn't have cross-repo read. Remove this line if the repo is public
+          # or your org allows implicit cross-repo access.
+          # token: ${{ secrets.GH_PAT }}
 
       - name: Run SentinelAI Action (dry run — build bundle only)
         id: sentinelai
-        uses: Sentinel-AI-Sec/sentinelai-action@main
+        uses: ./.sentinelai-action
         with:
           backend-url: "https://unused.invalid"      # dry run, never called
           machine-token: "dry-run-token"
@@ -92,12 +104,19 @@ jobs:
     name: Verify one broken scanner doesn't fail the job
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout fixture
+        uses: actions/checkout@v4
+
+      - name: Checkout sentinelai-action (dev branch)
+        uses: actions/checkout@v4
+        with:
+          repository: Sentinel-AI-Sec/sentinelai-action
+          ref: dev
+          path: .sentinelai-action
 
       - name: Sabotage Trivy before it's installed
         shell: bash
         run: |
-          # Pre-create a fake, broken 'trivy' earlier on PATH so install/run fails cleanly.
           mkdir -p "$HOME/.local/bin"
           cat > "$HOME/.local/bin/trivy" <<'EOF'
           #!/usr/bin/env bash
@@ -109,7 +128,7 @@ jobs:
 
       - name: Run SentinelAI Action with Trivy broken
         id: sentinelai
-        uses: Sentinel-AI-Sec/sentinelai-action@main
+        uses: ./.sentinelai-action
         with:
           backend-url: "https://unused.invalid"
           machine-token: "dry-run-token"
@@ -118,7 +137,6 @@ jobs:
           bundle-dir: "sentinelai-bundle"
           upload: "false"
           install-scanners: "false"   # keep our sabotaged trivy on PATH
-        continue-on-error: false       # the JOB must still succeed overall
 
       - name: Assert the job survived and other scanners still produced output
         shell: bash
