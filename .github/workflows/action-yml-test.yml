@@ -1,4 +1,4 @@
-name: Test SentinelAI Action
+name: Test SentinelAI Action Workflow
 
 on:
   push:
