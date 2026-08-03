@@ -1,4 +1,4 @@
-name: Test SentinelAI Action Workflow V1.1
+name: Test SentinelAI Action
 
 on:
   push:
@@ -29,11 +29,11 @@ jobs:
           backend-url: "https://unused.invalid"      # dry run, never called
           machine-token: "dry-run-token"
           project-id: "fixture-ci-test"
-          dotnet-project: "src/OrderApp/OrderApp.csproj"   # adjust to your actual fixture path
+          dotnet-project: "src/OrderApp/OrderApp.csproj"
           infra-dir: "infra"
           bundle-dir: "sentinelai-bundle"
-          upload: "false"          # <-- key: skip the real POST
-          upload-artifact: "true"  # <-- attach bundle so we can inspect it
+          upload: "false"
+          upload-artifact: "true"
 
       - name: Assert code layer (Roslyn / CWE-502) produced findings
         shell: bash
@@ -111,9 +111,12 @@ jobs:
           ref: dev
           path: .sentinelai-action
 
-      - name: Sabotage Trivy before it's installed
+      - name: Plant a broken trivy that shadows the real one
         shell: bash
         run: |
+          # Put a deliberately-failing trivy earlier on PATH than the action's
+          # tools dir. install_trivy sees `have trivy` succeed and skips
+          # installing the real one, so this fake stays in place for the run.
           mkdir -p "$HOME/.local/bin"
           cat > "$HOME/.local/bin/trivy" <<'EOF'
           #!/usr/bin/env bash
@@ -127,14 +130,14 @@ jobs:
         id: sentinelai
         uses: ./.sentinelai-action
         with:
-          checkout: "false"          # we already checked out the fixture ourselves
+          checkout: "false"
           backend-url: "https://unused.invalid"
           machine-token: "dry-run-token"
           dotnet-project: "src/OrderApp/OrderApp.csproj"
           infra-dir: "infra"
           bundle-dir: "sentinelai-bundle"
           upload: "false"
-          install-scanners: "false"   # keep our sabotaged trivy on PATH
+          install-scanners: "true"   # let checkov/osv/gitleaks install normally
 
       - name: Assert the job survived and other scanners still produced output
         shell: bash
