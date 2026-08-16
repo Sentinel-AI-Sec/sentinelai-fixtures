@@ -1,0 +1,129 @@
+{
+  "project": "kubernetes-goat",
+  "source_commit": "723a0db478f050d173d23b4ce5044b65bce0bdd0",
+  "ground_truth_bias": "scanner-neutral",
+  "provenance": "Ground truth derived from Kubernetes-Goat's intentionally vulnerable manifests, not tied to any single scanner. It contains two sub-classes, distinguished per item by 'source_class': (1) scenario-documented findings (GT-001-008) - misconfigurations narrated by a hand-written exploit scenario under guide/docs/scenarios and infrastructure/goat-home content; and (2) manifest-present findings (GT-009+) - static misconfigurations physically present in a vendored manifest and clearly scanner-flaggable, but not narrated by any exploit scenario. Attack techniques, image-embedded secrets, and defensive-tooling scenarios remain held out. Suitable as a cross-tool-neutral set.",
+  "items": [
+    {
+      "id": "GT-001",
+      "layer": "infra",
+      "file": "scenarios/system-monitor/deployment.yaml",
+      "resource_or_line": "Deployment/system-monitor-deployment (securityContext.privileged=true, L41)",
+      "expected_label": "real_finding",
+      "expected_category": "privileged-container",
+      "cwe_or_rule": "CWE-250",
+      "notes": "Privileged container enabling host access; intentional, documented in kubernetes-goat scenario 4 (Container escape to the host system).",
+      "source_class": "scenario-documented"
+    },
+    {
+      "id": "GT-002",
+      "layer": "infra",
+      "file": "scenarios/system-monitor/deployment.yaml",
+      "resource_or_line": "Deployment/system-monitor-deployment (securityContext.allowPrivilegeEscalation=true, L40)",
+      "expected_label": "real_finding",
+      "expected_category": "allow-privilege-escalation",
+      "cwe_or_rule": "CWE-250",
+      "notes": "Container allows privilege escalation; intentional, part of the privileged escape pod in scenario 4 (Container escape to the host system).",
+      "source_class": "scenario-documented"
+    },
+    {
+      "id": "GT-003",
+      "layer": "infra",
+      "file": "scenarios/system-monitor/deployment.yaml",
+      "resource_or_line": "Deployment/system-monitor-deployment (hostPID=true, L25)",
+      "expected_label": "real_finding",
+      "expected_category": "host-pid-namespace",
+      "cwe_or_rule": "",
+      "notes": "Pod shares the host PID namespace; intentional, part of the escape pod in scenario 4 (Container escape to the host system).",
+      "source_class": "scenario-documented"
+    },
+    {
+      "id": "GT-004",
+      "layer": "infra",
+      "file": "scenarios/system-monitor/deployment.yaml",
+      "resource_or_line": "Deployment/system-monitor-deployment (hostIPC=true, L26)",
+      "expected_label": "real_finding",
+      "expected_category": "host-ipc-namespace",
+      "cwe_or_rule": "",
+      "notes": "Pod shares the host IPC namespace; intentional, part of the escape pod in scenario 4 (Container escape to the host system).",
+      "source_class": "scenario-documented"
+    },
+    {
+      "id": "GT-005",
+      "layer": "infra",
+      "file": "scenarios/system-monitor/deployment.yaml",
+      "resource_or_line": "Deployment/system-monitor-deployment (hostPath volume path: / mounted at /host-system, L28-31 & L44-46)",
+      "expected_label": "real_finding",
+      "expected_category": "hostpath-mount-host-root",
+      "cwe_or_rule": "",
+      "notes": "Host root filesystem mounted into the container via hostPath; intentional escape vector explicitly named in scenario 4 (Container escape to the host system).",
+      "source_class": "scenario-documented"
+    },
+    {
+      "id": "GT-006",
+      "layer": "infra",
+      "file": "scenarios/hunger-check/deployment.yaml",
+      "resource_or_line": "Role/secret-reader in namespace big-monolith (rules: resources ['*'], verbs get/watch/list, L7-15; bound to big-monolith-sa)",
+      "expected_label": "real_finding",
+      "expected_category": "overpermissive-rbac",
+      "cwe_or_rule": "CWE-269",
+      "notes": "Overly permissive RBAC Role granting read of all resources (incl. secrets) to a pod's ServiceAccount; intentional, documented in scenario 16 (RBAC least privileges misconfiguration).",
+      "source_class": "scenario-documented"
+    },
+    {
+      "id": "GT-007",
+      "layer": "infra",
+      "file": "scenarios/hunger-check/deployment.yaml",
+      "resource_or_line": "Deployment/hunger-check-deployment in namespace big-monolith (no resources.limits/requests set, L70-81)",
+      "expected_label": "real_finding",
+      "expected_category": "missing-resource-limits",
+      "cwe_or_rule": "CWE-770",
+      "notes": "Container has no CPU/memory limits or requests, enabling resource-exhaustion DoS; intentional, documented in scenario 13 (DoS the Memory/CPU resources).",
+      "source_class": "scenario-documented"
+    },
+    {
+      "id": "GT-008",
+      "layer": "infra",
+      "file": "scenarios/internal-proxy/deployment.yaml",
+      "resource_or_line": "Service/internal-proxy-info-app-service (type: NodePort, nodePort 30003, L54-65)",
+      "expected_label": "real_finding",
+      "expected_category": "nodeport-exposed-service",
+      "cwe_or_rule": "",
+      "notes": "Service exposed cluster-wide via NodePort (the only NodePort in the repo); intentional, documented in scenario 8 (NodePort exposed services).",
+      "source_class": "scenario-documented"
+    },
+    {
+      "id": "GT-009",
+      "layer": "infra",
+      "file": "scenarios/insecure-rbac/setup.yaml",
+      "resource_or_line": "ClusterRoleBinding/superadmin binds ServiceAccount superadmin (kube-system) to ClusterRole/cluster-admin (L7-18)",
+      "expected_label": "real_finding",
+      "expected_category": "cluster-admin-binding",
+      "cwe_or_rule": "CWE-269",
+      "notes": "ServiceAccount granted full cluster-admin via a ClusterRoleBinding - excessive privilege enabling total cluster control. Manifest-present and clearly scanner-flaggable, but not narrated by any exploit scenario.",
+      "source_class": "manifest-present"
+    },
+    {
+      "id": "GT-010",
+      "layer": "infra",
+      "file": "scenarios/health-check/deployment.yaml",
+      "resource_or_line": "Deployment/health-check-deployment (securityContext.privileged=true on the health-check container L63-64; also on the init container L51-52)",
+      "expected_label": "real_finding",
+      "expected_category": "privileged-container",
+      "cwe_or_rule": "CWE-250",
+      "notes": "Privileged container(s) granting host-level access. Manifest-present and clearly scanner-flaggable, but not narrated by any exploit scenario.",
+      "source_class": "manifest-present"
+    },
+    {
+      "id": "GT-011",
+      "layer": "infra",
+      "file": "scenarios/health-check/deployment.yaml",
+      "resource_or_line": "Deployment/health-check-deployment (hostPath volume docker-sock-volume-fallback path: /var/run/docker.sock, L95-98; mounted into the container L71)",
+      "expected_label": "real_finding",
+      "expected_category": "docker-socket-mount",
+      "cwe_or_rule": "CWE-250",
+      "notes": "Host Docker socket mounted into the container via hostPath - grants container-escape/host-control capability. Manifest-present and clearly scanner-flaggable, but not narrated by any exploit scenario.",
+      "source_class": "manifest-present"
+    }
+  ]
+}

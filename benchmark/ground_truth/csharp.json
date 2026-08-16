@@ -1,0 +1,239 @@
+{
+  "project": "csharp",
+  "source_commit": "",
+  "ground_truth_bias": "hand-labeled",
+  "provenance": "Hand-labeled from the authored flagship fixture's documented intentional vulnerabilities (repo README 'Vulnerability inventory' section plus inline CODE-/CWE annotations in the src/OrderApp source). The flagship is authored in this repo, not vendored, so source_commit is intentionally empty. Small by design - no standard C# security benchmark (e.g. OWASP Benchmark for Java) exists - so C# results are indicative, not statistically rigorous.",
+  "items": [
+    {
+      "id": "GT-001",
+      "layer": "code",
+      "file": "src/OrderApp/Controllers/OrdersController.cs",
+      "resource_or_line": "OrdersController (CODE-01, L10)",
+      "expected_label": "real_finding",
+      "expected_category": "unsafe-deserialization",
+      "cwe_or_rule": "CWE-502",
+      "notes": "Flagship: TypeNameHandling.All enables unsafe JSON deserialization of request input; intentional per README inventory (CODE-01) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-002",
+      "layer": "code",
+      "file": "src/OrderApp/Controllers/UsersController.cs",
+      "resource_or_line": "UsersController (CODE-02, L13)",
+      "expected_label": "real_finding",
+      "expected_category": "sql-injection",
+      "cwe_or_rule": "CWE-89",
+      "notes": "String-concatenated SQL built from user input; intentional per README inventory (CODE-02) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-003",
+      "layer": "code",
+      "file": "src/OrderApp/Controllers/ReportsController.cs",
+      "resource_or_line": "ReportsController (CODE-03, L10)",
+      "expected_label": "real_finding",
+      "expected_category": "reflected-xss",
+      "cwe_or_rule": "CWE-79",
+      "notes": "User input reflected directly into an HTML response; intentional per README inventory (CODE-03) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-004",
+      "layer": "code",
+      "file": "src/OrderApp/Services/AuthService.cs",
+      "resource_or_line": "AuthService (CODE-04, L10)",
+      "expected_label": "real_finding",
+      "expected_category": "hardcoded-api-key",
+      "cwe_or_rule": "CWE-798",
+      "notes": "Hardcoded API key baked into source; intentional per README inventory (CODE-04) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-005",
+      "layer": "code",
+      "file": "src/OrderApp/Services/AuthService.cs",
+      "resource_or_line": "AuthService (CODE-05, L13)",
+      "expected_label": "real_finding",
+      "expected_category": "hardcoded-password",
+      "cwe_or_rule": "CWE-259",
+      "notes": "Hardcoded password for a service account; intentional per README inventory (CODE-05) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-006",
+      "layer": "code",
+      "file": "src/OrderApp/Services/AuthService.cs",
+      "resource_or_line": "AuthService (CODE-06, L16)",
+      "expected_label": "real_finding",
+      "expected_category": "weak-cryptography",
+      "cwe_or_rule": "CWE-327",
+      "notes": "MD5 used as a password hash (broken algorithm); intentional per README inventory (CODE-06) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-007",
+      "layer": "code",
+      "file": "src/OrderApp/Services/AuthService.cs",
+      "resource_or_line": "AuthService (CODE-07, L25)",
+      "expected_label": "real_finding",
+      "expected_category": "jwt-signature-not-verified",
+      "cwe_or_rule": "CWE-347",
+      "notes": "JWT validated with signature validation disabled; intentional per README inventory (CODE-07) and inline annotation. Pairs with DEP-06.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-008",
+      "layer": "code",
+      "file": "src/OrderApp/Controllers/ReportsController.cs",
+      "resource_or_line": "ReportsController (CODE-08, L19)",
+      "expected_label": "real_finding",
+      "expected_category": "xxe",
+      "cwe_or_rule": "CWE-611",
+      "notes": "XML parsed with DTD/external-entity processing enabled; intentional per README inventory (CODE-08) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-009",
+      "layer": "code",
+      "file": "src/OrderApp/Services/ExportService.cs",
+      "resource_or_line": "ExportService (CODE-09, L7)",
+      "expected_label": "real_finding",
+      "expected_category": "path-traversal",
+      "cwe_or_rule": "CWE-22",
+      "notes": "File name taken straight from caller input without sanitization; intentional per README inventory (CODE-09) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-010",
+      "layer": "code",
+      "file": "src/OrderApp/Controllers/ReportsController.cs",
+      "resource_or_line": "ReportsController (CODE-10, L39)",
+      "expected_label": "real_finding",
+      "expected_category": "ssrf",
+      "cwe_or_rule": "CWE-918",
+      "notes": "Server fetches a caller-supplied URL with no validation (SSRF); intentional per README inventory (CODE-10) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-011",
+      "layer": "code",
+      "file": "src/OrderApp/Program.cs",
+      "resource_or_line": "Program (CODE-11, L12)",
+      "expected_label": "real_finding",
+      "expected_category": "insecure-file-permissions",
+      "cwe_or_rule": "CWE-732",
+      "notes": "Export directory created with world-writable permissions; intentional per README inventory (CODE-11) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-012",
+      "layer": "code",
+      "file": "src/OrderApp/Controllers/OrdersController.cs",
+      "resource_or_line": "OrdersController (CODE-12, L29)",
+      "expected_label": "real_finding",
+      "expected_category": "info-leak-via-exception",
+      "cwe_or_rule": "CWE-209",
+      "notes": "Raw exception detail returned to the caller (information exposure); intentional per README inventory (CODE-12) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-013",
+      "layer": "code",
+      "file": "src/OrderApp/Controllers/UsersController.cs",
+      "resource_or_line": "UsersController (CODE-13, L34)",
+      "expected_label": "real_finding",
+      "expected_category": "missing-authorization",
+      "cwe_or_rule": "CWE-284",
+      "notes": "Sensitive account-listing endpoint with no [Authorize]; intentional per README inventory (CODE-13) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-014",
+      "layer": "code",
+      "file": "src/OrderApp/Controllers/AdminController.cs",
+      "resource_or_line": "AdminController (CODE-13b, L9)",
+      "expected_label": "real_finding",
+      "expected_category": "missing-authorization",
+      "cwe_or_rule": "CWE-284",
+      "notes": "Admin-only operation with no [Authorize]; intentional per README inventory (CODE-13b) and inline annotation.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-015",
+      "layer": "dep",
+      "file": "src/OrderApp/packages.lock.json",
+      "resource_or_line": "Newtonsoft.Json@12.0.1 (L29)",
+      "expected_label": "real_finding",
+      "expected_category": "vulnerable-dependency",
+      "cwe_or_rule": "",
+      "notes": "Flagship dependency (DEP-01), deserialization class. No CVE hardcoded in the fixture by design (resolved live at scan time), so no rule id documented.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-016",
+      "layer": "dep",
+      "file": "src/OrderApp/packages.lock.json",
+      "resource_or_line": "System.Text.RegularExpressions@4.3.0 (L69)",
+      "expected_label": "real_finding",
+      "expected_category": "vulnerable-dependency",
+      "cwe_or_rule": "",
+      "notes": "DEP-02, ReDoS-class. No CVE hardcoded in the fixture by design; no rule id documented.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-017",
+      "layer": "dep",
+      "file": "src/OrderApp/packages.lock.json",
+      "resource_or_line": "Microsoft.Data.SqlClient@2.1.1 (L11)",
+      "expected_label": "real_finding",
+      "expected_category": "vulnerable-dependency",
+      "cwe_or_rule": "",
+      "notes": "DEP-03, known advisories. No CVE hardcoded in the fixture by design; no rule id documented.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-018",
+      "layer": "dep",
+      "file": "src/OrderApp/packages.lock.json",
+      "resource_or_line": "Serilog.Sinks.File@4.1.0 (L41)",
+      "expected_label": "real_finding",
+      "expected_category": "vulnerable-dependency",
+      "cwe_or_rule": "",
+      "notes": "DEP-04, info-disclosure class. No CVE hardcoded in the fixture by design; no rule id documented.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-019",
+      "layer": "dep",
+      "file": "src/OrderApp/packages.lock.json",
+      "resource_or_line": "SixLabors.ImageSharp@1.0.4 (L53)",
+      "expected_label": "real_finding",
+      "expected_category": "vulnerable-dependency",
+      "cwe_or_rule": "",
+      "notes": "DEP-05, DoS/memory class. No CVE hardcoded in the fixture by design; no rule id documented.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-020",
+      "layer": "dep",
+      "file": "src/OrderApp/packages.lock.json",
+      "resource_or_line": "System.IdentityModel.Tokens.Jwt@6.10.0 (L59)",
+      "expected_label": "real_finding",
+      "expected_category": "vulnerable-dependency",
+      "cwe_or_rule": "",
+      "notes": "DEP-06, pairs with CODE-07 (JWT). No CVE hardcoded in the fixture by design; no rule id documented.",
+      "source_class": "hand-labeled"
+    },
+    {
+      "id": "GT-021",
+      "layer": "dep",
+      "file": "src/OrderApp/packages.lock.json",
+      "resource_or_line": "Microsoft.CodeAnalysis.NetAnalyzers@6.0.0 (L5)",
+      "expected_label": "real_finding",
+      "expected_category": "vulnerable-dependency",
+      "cwe_or_rule": "",
+      "notes": "DEP-07, documented as noise: build-time-only analyzer, unreachable at runtime (a distractor the graph should demote). Included to match the documented 7-package inventory. No CVE hardcoded by design.",
+      "source_class": "hand-labeled"
+    }
+  ]
+}

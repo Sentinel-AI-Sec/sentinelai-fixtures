@@ -1,0 +1,3278 @@
+{
+  "project": "terragoat",
+  "source_commit": "729f8da62c6a85ce4af5ad3d123de97776d954c4",
+  "provenance": "Ground truth derived from TerraGoat's auto-generated Checkov output (README 'Existing vulnerabilities' terraform, dockerfile, and secrets scan tables). Findings are Checkov-rule-grained. Cross-tool recall on this set is biased toward Checkov-based scanners (including SentinelAI); use for within-SentinelAI validation, not as the headline cross-tool fairness claim.",
+  "ground_truth_bias": "tool-derived:checkov",
+  "items": [
+    {
+      "id": "GT-001",
+      "layer": "infra",
+      "file": "terraform/alicloud/bucket.tf",
+      "resource_or_line": "alicloud_oss_bucket.bad_bucket",
+      "expected_label": "real_finding",
+      "expected_category": "oss-bucket-has-versioning-enabled",
+      "cwe_or_rule": "CKV_ALI_10",
+      "notes": "Ensure OSS bucket has versioning enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-002",
+      "layer": "infra",
+      "file": "terraform/alicloud/bucket.tf",
+      "resource_or_line": "alicloud_oss_bucket.bad_bucket",
+      "expected_label": "real_finding",
+      "expected_category": "oss-bucket-has-access-logging-enabled",
+      "cwe_or_rule": "CKV_ALI_12",
+      "notes": "Ensure the OSS bucket has access logging enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-003",
+      "layer": "infra",
+      "file": "terraform/alicloud/bucket.tf",
+      "resource_or_line": "alicloud_oss_bucket.bad_bucket",
+      "expected_label": "real_finding",
+      "expected_category": "oss-bucket-has-transfer-acceleration-enabled",
+      "cwe_or_rule": "CKV_ALI_11",
+      "notes": "Ensure OSS bucket has transfer Acceleration enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-004",
+      "layer": "infra",
+      "file": "terraform/alicloud/bucket.tf",
+      "resource_or_line": "alicloud_oss_bucket.bad_bucket",
+      "expected_label": "real_finding",
+      "expected_category": "alibaba-cloud-oss-bucket-accessible-to-public",
+      "cwe_or_rule": "CKV_ALI_1",
+      "notes": "Alibaba Cloud OSS bucket accessible to public; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-005",
+      "layer": "infra",
+      "file": "terraform/alicloud/bucket.tf",
+      "resource_or_line": "alicloud_oss_bucket.bad_bucket",
+      "expected_label": "real_finding",
+      "expected_category": "oss-bucket-is-encrypted-with-customer-master-key",
+      "cwe_or_rule": "CKV_ALI_6",
+      "notes": "Ensure OSS bucket is encrypted with Customer Master Key; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-006",
+      "layer": "infra",
+      "file": "terraform/alicloud/rds.tf",
+      "resource_or_line": "alicloud_db_instance.seeme",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instance-has-log-disconnections-enabled",
+      "cwe_or_rule": "CKV_ALI_36",
+      "notes": "Ensure RDS instance has log_disconnections enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-007",
+      "layer": "infra",
+      "file": "terraform/alicloud/rds.tf",
+      "resource_or_line": "alicloud_db_instance.seeme",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instance-has-log-connections-enabled",
+      "cwe_or_rule": "CKV_ALI_37",
+      "notes": "Ensure RDS instance has log_connections enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-008",
+      "layer": "infra",
+      "file": "terraform/alicloud/rds.tf",
+      "resource_or_line": "alicloud_db_instance.seeme",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instance-is-set-to-auto-upgrade-minor",
+      "cwe_or_rule": "CKV_ALI_34",
+      "notes": "Ensure RDS instance is set to auto upgrade minor versions; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-009",
+      "layer": "infra",
+      "file": "terraform/alicloud/rds.tf",
+      "resource_or_line": "alicloud_db_instance.seeme",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instance-uses-ssl",
+      "cwe_or_rule": "CKV_ALI_20",
+      "notes": "Ensure RDS instance uses SSL; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-010",
+      "layer": "infra",
+      "file": "terraform/alicloud/rds.tf",
+      "resource_or_line": "alicloud_db_instance.seeme",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instance-auto-upgrades-for-minor-versions",
+      "cwe_or_rule": "CKV_ALI_30",
+      "notes": "Ensure RDS instance auto upgrades for minor versions; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-011",
+      "layer": "infra",
+      "file": "terraform/alicloud/rds.tf",
+      "resource_or_line": "alicloud_db_instance.seeme",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instance-has-log-duration-enabled",
+      "cwe_or_rule": "CKV_ALI_35",
+      "notes": "Ensure RDS instance has log_duration enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-012",
+      "layer": "infra",
+      "file": "terraform/alicloud/rds.tf",
+      "resource_or_line": "alicloud_db_instance.seeme",
+      "expected_label": "real_finding",
+      "expected_category": "database-instance-is-not-public",
+      "cwe_or_rule": "CKV_ALI_9",
+      "notes": "Ensure database instance is not public; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-013",
+      "layer": "infra",
+      "file": "terraform/alicloud/rds.tf",
+      "resource_or_line": "alicloud_db_instance.seeme",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instance-sql-collector-retention-period",
+      "cwe_or_rule": "CKV_ALI_25",
+      "notes": "Ensure RDS Instance SQL Collector Retention Period should be greater than 180; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-014",
+      "layer": "infra",
+      "file": "terraform/alicloud/trail.tf",
+      "resource_or_line": "alicloud_actiontrail_trail.fail",
+      "expected_label": "real_finding",
+      "expected_category": "action-trail-logging-for-all-regions",
+      "cwe_or_rule": "CKV_ALI_4",
+      "notes": "Ensure Action Trail Logging for all regions; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-015",
+      "layer": "infra",
+      "file": "terraform/alicloud/trail.tf",
+      "resource_or_line": "alicloud_actiontrail_trail.fail",
+      "expected_label": "real_finding",
+      "expected_category": "action-trail-logging-for-all-events",
+      "cwe_or_rule": "CKV_ALI_5",
+      "notes": "Ensure Action Trail Logging for all events; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-016",
+      "layer": "infra",
+      "file": "terraform/alicloud/trail.tf",
+      "resource_or_line": "alicloud_oss_bucket.trail",
+      "expected_label": "real_finding",
+      "expected_category": "oss-bucket-has-versioning-enabled",
+      "cwe_or_rule": "CKV_ALI_10",
+      "notes": "Ensure OSS bucket has versioning enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-017",
+      "layer": "infra",
+      "file": "terraform/alicloud/trail.tf",
+      "resource_or_line": "alicloud_oss_bucket.trail",
+      "expected_label": "real_finding",
+      "expected_category": "oss-bucket-has-access-logging-enabled",
+      "cwe_or_rule": "CKV_ALI_12",
+      "notes": "Ensure the OSS bucket has access logging enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-018",
+      "layer": "infra",
+      "file": "terraform/alicloud/trail.tf",
+      "resource_or_line": "alicloud_oss_bucket.trail",
+      "expected_label": "real_finding",
+      "expected_category": "oss-bucket-has-transfer-acceleration-enabled",
+      "cwe_or_rule": "CKV_ALI_11",
+      "notes": "Ensure OSS bucket has transfer Acceleration enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-019",
+      "layer": "infra",
+      "file": "terraform/alicloud/trail.tf",
+      "resource_or_line": "alicloud_oss_bucket.trail",
+      "expected_label": "real_finding",
+      "expected_category": "oss-bucket-is-encrypted-with-customer-master-key",
+      "cwe_or_rule": "CKV_ALI_6",
+      "notes": "Ensure OSS bucket is encrypted with Customer Master Key; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-020",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_instance.default",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instances-have-multi-az-enabled",
+      "cwe_or_rule": "CKV_AWS_157",
+      "notes": "Ensure that RDS instances have Multi-AZ enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-021",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_instance.default",
+      "expected_label": "real_finding",
+      "expected_category": "rds-database-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_161",
+      "notes": "Ensure RDS database has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-022",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_instance.default",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-rds-is-securely",
+      "cwe_or_rule": "CKV_AWS_16",
+      "notes": "Ensure all data stored in the RDS is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-023",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_instance.default",
+      "expected_label": "real_finding",
+      "expected_category": "db-instance-gets-all-minor-upgrades",
+      "cwe_or_rule": "CKV_AWS_226",
+      "notes": "Ensure DB instance gets all minor upgrades automatically; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-024",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_instance.default",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-rds-is-not-publicly",
+      "cwe_or_rule": "CKV_AWS_17",
+      "notes": "Ensure all data stored in RDS is not publicly accessible; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-025",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_instance.default",
+      "expected_label": "real_finding",
+      "expected_category": "enhanced-monitoring-is-enabled-for-amazon-rds",
+      "cwe_or_rule": "CKV_AWS_118",
+      "notes": "Ensure that enhanced monitoring is enabled for Amazon RDS instances; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-026",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_instance.default",
+      "expected_label": "real_finding",
+      "expected_category": "respective-logs-of-amazon-relational-database",
+      "cwe_or_rule": "CKV_AWS_129",
+      "notes": "Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-027",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_instance.default",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instances-has-backup-policy",
+      "cwe_or_rule": "CKV_AWS_133",
+      "notes": "Ensure that RDS instances has backup policy; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-028",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_security_group.default",
+      "expected_label": "real_finding",
+      "expected_category": "every-security-groups-rule-has-a-description",
+      "cwe_or_rule": "CKV_AWS_23",
+      "notes": "Ensure every security groups rule has a description; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-029",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_security_group_rule.ingress",
+      "expected_label": "real_finding",
+      "expected_category": "every-security-groups-rule-has-a-description",
+      "cwe_or_rule": "CKV_AWS_23",
+      "notes": "Ensure every security groups rule has a description; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-030",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_security_group_rule.egress",
+      "expected_label": "real_finding",
+      "expected_category": "every-security-groups-rule-has-a-description",
+      "cwe_or_rule": "CKV_AWS_23",
+      "notes": "Ensure every security groups rule has a description; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-031",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_instance.db_app",
+      "expected_label": "real_finding",
+      "expected_category": "instance-metadata-service-version-1-is-not",
+      "cwe_or_rule": "CKV_AWS_79",
+      "notes": "Ensure Instance Metadata Service Version 1 is not enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-032",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_instance.db_app",
+      "expected_label": "real_finding",
+      "expected_category": "ec2-is-ebs-optimized",
+      "cwe_or_rule": "CKV_AWS_135",
+      "notes": "Ensure that EC2 is EBS optimized; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-033",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_instance.db_app",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-launch-configuration-or",
+      "cwe_or_rule": "CKV_AWS_8",
+      "notes": "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-034",
+      "layer": "infra",
+      "file": "terraform/aws/db-app.tf",
+      "resource_or_line": "aws_instance.db_app",
+      "expected_label": "real_finding",
+      "expected_category": "detailed-monitoring-is-enabled-for-ec2-instances",
+      "cwe_or_rule": "CKV_AWS_126",
+      "notes": "Ensure that detailed monitoring is enabled for EC2 instances; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-035",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_instance.web_host",
+      "expected_label": "real_finding",
+      "expected_category": "instance-metadata-service-version-1-is-not",
+      "cwe_or_rule": "CKV_AWS_79",
+      "notes": "Ensure Instance Metadata Service Version 1 is not enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-036",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_instance.web_host",
+      "expected_label": "real_finding",
+      "expected_category": "ec2-is-ebs-optimized",
+      "cwe_or_rule": "CKV_AWS_135",
+      "notes": "Ensure that EC2 is EBS optimized; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-037",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_instance.web_host",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-launch-configuration-or",
+      "cwe_or_rule": "CKV_AWS_8",
+      "notes": "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-038",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_instance.web_host",
+      "expected_label": "real_finding",
+      "expected_category": "no-hard-coded-secrets-exist-in-ec2-user-data",
+      "cwe_or_rule": "CKV_AWS_46",
+      "notes": "Ensure no hard-coded secrets exist in EC2 user data; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-039",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_instance.web_host",
+      "expected_label": "real_finding",
+      "expected_category": "detailed-monitoring-is-enabled-for-ec2-instances",
+      "cwe_or_rule": "CKV_AWS_126",
+      "notes": "Ensure that detailed monitoring is enabled for EC2 instances; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-040",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_ebs_volume.web_host_storage",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-ebs-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_3",
+      "notes": "Ensure all data stored in the EBS is securely encrypted; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-041",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_ebs_volume.web_host_storage",
+      "expected_label": "real_finding",
+      "expected_category": "ebs-volume-is-encrypted-by-kms-using-a-customer",
+      "cwe_or_rule": "CKV_AWS_189",
+      "notes": "Ensure EBS Volume is encrypted by KMS using a customer managed Key (CMK); intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-042",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_security_group.web-node",
+      "expected_label": "real_finding",
+      "expected_category": "every-security-groups-rule-has-a-description",
+      "cwe_or_rule": "CKV_AWS_23",
+      "notes": "Ensure every security groups rule has a description; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-043",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_security_group.web-node",
+      "expected_label": "real_finding",
+      "expected_category": "no-security-groups-allow-ingress-from-0-0-0-0-0",
+      "cwe_or_rule": "CKV_AWS_260",
+      "notes": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-044",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_security_group.web-node",
+      "expected_label": "real_finding",
+      "expected_category": "no-security-groups-allow-ingress-from-0-0-0-0-0",
+      "cwe_or_rule": "CKV_AWS_24",
+      "notes": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-045",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_subnet.web_subnet",
+      "expected_label": "real_finding",
+      "expected_category": "vpc-subnets-do-not-assign-public-ip-by-default",
+      "cwe_or_rule": "CKV_AWS_130",
+      "notes": "Ensure VPC subnets do not assign public IP by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-046",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_subnet.web_subnet2",
+      "expected_label": "real_finding",
+      "expected_category": "vpc-subnets-do-not-assign-public-ip-by-default",
+      "cwe_or_rule": "CKV_AWS_130",
+      "notes": "Ensure VPC subnets do not assign public IP by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-047",
+      "layer": "infra",
+      "file": "terraform/aws/ecr.tf",
+      "resource_or_line": "aws_ecr_repository.repository",
+      "expected_label": "real_finding",
+      "expected_category": "ecr-repositories-are-encrypted-using-kms",
+      "cwe_or_rule": "CKV_AWS_136",
+      "notes": "Ensure that ECR repositories are encrypted using KMS; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-048",
+      "layer": "infra",
+      "file": "terraform/aws/ecr.tf",
+      "resource_or_line": "aws_ecr_repository.repository",
+      "expected_label": "real_finding",
+      "expected_category": "ecr-image-tags-are-immutable",
+      "cwe_or_rule": "CKV_AWS_51",
+      "notes": "Ensure ECR Image Tags are immutable; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-049",
+      "layer": "infra",
+      "file": "terraform/aws/ecr.tf",
+      "resource_or_line": "aws_ecr_repository.repository",
+      "expected_label": "real_finding",
+      "expected_category": "ecr-image-scanning-on-push-is-enabled",
+      "cwe_or_rule": "CKV_AWS_163",
+      "notes": "Ensure ECR image scanning on push is enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-050",
+      "layer": "infra",
+      "file": "terraform/aws/eks.tf",
+      "resource_or_line": "aws_subnet.eks_subnet1",
+      "expected_label": "real_finding",
+      "expected_category": "vpc-subnets-do-not-assign-public-ip-by-default",
+      "cwe_or_rule": "CKV_AWS_130",
+      "notes": "Ensure VPC subnets do not assign public IP by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-051",
+      "layer": "infra",
+      "file": "terraform/aws/eks.tf",
+      "resource_or_line": "aws_subnet.eks_subnet2",
+      "expected_label": "real_finding",
+      "expected_category": "vpc-subnets-do-not-assign-public-ip-by-default",
+      "cwe_or_rule": "CKV_AWS_130",
+      "notes": "Ensure VPC subnets do not assign public IP by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-052",
+      "layer": "infra",
+      "file": "terraform/aws/eks.tf",
+      "resource_or_line": "aws_eks_cluster.eks_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "amazon-eks-public-endpoint-disabled",
+      "cwe_or_rule": "CKV_AWS_39",
+      "notes": "Ensure Amazon EKS public endpoint disabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-053",
+      "layer": "infra",
+      "file": "terraform/aws/eks.tf",
+      "resource_or_line": "aws_eks_cluster.eks_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "amazon-eks-public-endpoint-not-accessible-to-0",
+      "cwe_or_rule": "CKV_AWS_38",
+      "notes": "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-054",
+      "layer": "infra",
+      "file": "terraform/aws/eks.tf",
+      "resource_or_line": "aws_eks_cluster.eks_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "amazon-eks-control-plane-logging-enabled-for",
+      "cwe_or_rule": "CKV_AWS_37",
+      "notes": "Ensure Amazon EKS control plane logging enabled for all log types; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-055",
+      "layer": "infra",
+      "file": "terraform/aws/eks.tf",
+      "resource_or_line": "aws_eks_cluster.eks_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "eks-cluster-has-secrets-encryption-enabled",
+      "cwe_or_rule": "CKV_AWS_58",
+      "notes": "Ensure EKS Cluster has Secrets Encryption Enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-056",
+      "layer": "infra",
+      "file": "terraform/aws/elb.tf",
+      "resource_or_line": "aws_elb.weblb",
+      "expected_label": "real_finding",
+      "expected_category": "elastic-load-balancer-s-uses-ssl-certificates",
+      "cwe_or_rule": "CKV_AWS_127",
+      "notes": "Ensure that Elastic Load Balancer(s) uses SSL certificates provided by AWS Certificate Manager; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-057",
+      "layer": "infra",
+      "file": "terraform/aws/elb.tf",
+      "resource_or_line": "aws_elb.weblb",
+      "expected_label": "real_finding",
+      "expected_category": "elb-has-access-logging-enabled",
+      "cwe_or_rule": "CKV_AWS_92",
+      "notes": "Ensure the ELB has access logging enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-058",
+      "layer": "infra",
+      "file": "terraform/aws/es.tf",
+      "resource_or_line": "aws_iam_policy_document.policy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-policies-does-not-allow-write-access",
+      "cwe_or_rule": "CKV_AWS_111",
+      "notes": "Ensure IAM policies does not allow write access without constraints; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-059",
+      "layer": "infra",
+      "file": "terraform/aws/es.tf",
+      "resource_or_line": "aws_iam_policy_document.policy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-policies-does-not-allow-permissions",
+      "cwe_or_rule": "CKV_AWS_109",
+      "notes": "Ensure IAM policies does not allow permissions management / resource exposure without constraints; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-060",
+      "layer": "infra",
+      "file": "terraform/aws/es.tf",
+      "resource_or_line": "aws_elasticsearch_domain.monitoring-framework",
+      "expected_label": "real_finding",
+      "expected_category": "elasticsearch-is-configured-inside-a-vpc",
+      "cwe_or_rule": "CKV_AWS_137",
+      "notes": "Ensure that Elasticsearch is configured inside a VPC; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-061",
+      "layer": "infra",
+      "file": "terraform/aws/es.tf",
+      "resource_or_line": "aws_elasticsearch_domain.monitoring-framework",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-elasticsearch-is",
+      "cwe_or_rule": "CKV_AWS_247",
+      "notes": "Ensure all data stored in the Elasticsearch is encrypted with a CMK; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-062",
+      "layer": "infra",
+      "file": "terraform/aws/es.tf",
+      "resource_or_line": "aws_elasticsearch_domain.monitoring-framework",
+      "expected_label": "real_finding",
+      "expected_category": "elasticsearch-is-not-using-the-default-security",
+      "cwe_or_rule": "CKV_AWS_248",
+      "notes": "Ensure that Elasticsearch is not using the default Security Group; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-063",
+      "layer": "infra",
+      "file": "terraform/aws/es.tf",
+      "resource_or_line": "aws_elasticsearch_domain.monitoring-framework",
+      "expected_label": "real_finding",
+      "expected_category": "verify-elasticsearch-domain-is-using-an-up-to",
+      "cwe_or_rule": "CKV_AWS_228",
+      "notes": "Verify Elasticsearch domain is using an up to date TLS policy; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-064",
+      "layer": "infra",
+      "file": "terraform/aws/es.tf",
+      "resource_or_line": "aws_elasticsearch_domain.monitoring-framework",
+      "expected_label": "real_finding",
+      "expected_category": "elasticsearch-domain-logging-is-enabled",
+      "cwe_or_rule": "CKV_AWS_84",
+      "notes": "Ensure Elasticsearch Domain Logging is enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-065",
+      "layer": "infra",
+      "file": "terraform/aws/es.tf",
+      "resource_or_line": "aws_elasticsearch_domain.monitoring-framework",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-elasticsearch-is",
+      "cwe_or_rule": "CKV_AWS_5",
+      "notes": "Ensure all data stored in the Elasticsearch is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-066",
+      "layer": "infra",
+      "file": "terraform/aws/kms.tf",
+      "resource_or_line": "aws_kms_key.logs_key",
+      "expected_label": "real_finding",
+      "expected_category": "rotation-for-customer-created-cmks-is-enabled",
+      "cwe_or_rule": "CKV_AWS_7",
+      "notes": "Ensure rotation for customer created CMKs is enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-067",
+      "layer": "infra",
+      "file": "terraform/aws/lambda.tf",
+      "resource_or_line": "aws_lambda_function.analysis_lambda",
+      "expected_label": "real_finding",
+      "expected_category": "aws-lambda-function-is-configured-for-function",
+      "cwe_or_rule": "CKV_AWS_115",
+      "notes": "Ensure that AWS Lambda function is configured for function-level concurrent execution limit; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-068",
+      "layer": "infra",
+      "file": "terraform/aws/lambda.tf",
+      "resource_or_line": "aws_lambda_function.analysis_lambda",
+      "expected_label": "real_finding",
+      "expected_category": "no-hard-coded-secrets-exist-in-lambda",
+      "cwe_or_rule": "CKV_AWS_45",
+      "notes": "Ensure no hard-coded secrets exist in lambda environment; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-069",
+      "layer": "infra",
+      "file": "terraform/aws/lambda.tf",
+      "resource_or_line": "aws_lambda_function.analysis_lambda",
+      "expected_label": "real_finding",
+      "expected_category": "x-ray-tracing-is-enabled-for-lambda",
+      "cwe_or_rule": "CKV_AWS_50",
+      "notes": "X-ray tracing is enabled for Lambda; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-070",
+      "layer": "infra",
+      "file": "terraform/aws/lambda.tf",
+      "resource_or_line": "aws_lambda_function.analysis_lambda",
+      "expected_label": "real_finding",
+      "expected_category": "aws-lambda-function-is-configured-inside-a-vpc",
+      "cwe_or_rule": "CKV_AWS_117",
+      "notes": "Ensure that AWS Lambda function is configured inside a VPC; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-071",
+      "layer": "infra",
+      "file": "terraform/aws/lambda.tf",
+      "resource_or_line": "aws_lambda_function.analysis_lambda",
+      "expected_label": "real_finding",
+      "expected_category": "check-encryption-settings-for-lambda",
+      "cwe_or_rule": "CKV_AWS_173",
+      "notes": "Check encryption settings for Lambda environmental variable; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-072",
+      "layer": "infra",
+      "file": "terraform/aws/lambda.tf",
+      "resource_or_line": "aws_lambda_function.analysis_lambda",
+      "expected_label": "real_finding",
+      "expected_category": "aws-lambda-function-is-configured-for-a-dead",
+      "cwe_or_rule": "CKV_AWS_116",
+      "notes": "Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ); intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-073",
+      "layer": "infra",
+      "file": "terraform/aws/neptune.tf",
+      "resource_or_line": "aws_neptune_cluster.default",
+      "expected_label": "real_finding",
+      "expected_category": "neptune-storage-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_44",
+      "notes": "Ensure Neptune storage is securely encrypted; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-074",
+      "layer": "infra",
+      "file": "terraform/aws/neptune.tf",
+      "resource_or_line": "aws_neptune_cluster.default",
+      "expected_label": "real_finding",
+      "expected_category": "neptune-logging-is-enabled",
+      "cwe_or_rule": "CKV_AWS_101",
+      "notes": "Ensure Neptune logging is enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-075",
+      "layer": "infra",
+      "file": "terraform/aws/providers.tf",
+      "resource_or_line": "aws.plain_text_access_keys_provider",
+      "expected_label": "real_finding",
+      "expected_category": "no-hard-coded-aws-access-key-and-secret-key",
+      "cwe_or_rule": "CKV_AWS_41",
+      "notes": "Ensure no hard coded AWS access key and secret key exists in provider; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-076",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app1-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-077",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app1-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-078",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app1-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-079",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app1-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-080",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app1-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-instances-has-backup-policy",
+      "cwe_or_rule": "CKV_AWS_133",
+      "notes": "Ensure that RDS instances has backup policy; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-081",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app2-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-082",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app2-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-083",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app2-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-084",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app2-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-085",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app3-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-086",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app3-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-087",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app3-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-088",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app3-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-089",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app4-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-090",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app4-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-091",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app4-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-092",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app4-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-093",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app5-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-094",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app5-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-095",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app5-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-096",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app5-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-097",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app6-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-098",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app6-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-099",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app6-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-100",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app6-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-101",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app7-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-102",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app7-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-103",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app7-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-104",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app7-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-105",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app8-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-106",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app8-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-107",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app8-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-108",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app8-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-109",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app9-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "an-amazon-rds-clusters-have-aws-identity-and",
+      "cwe_or_rule": "CKV_AWS_128",
+      "notes": "Ensure that an Amazon RDS Clusters have AWS Identity and Access Management (IAM) authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-110",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app9-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-clusters-have-deletion-protection-enabled",
+      "cwe_or_rule": "CKV_AWS_139",
+      "notes": "Ensure that RDS clusters have deletion protection enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-111",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app9-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-aurora-is-securely-encrypted",
+      "cwe_or_rule": "CKV_AWS_96",
+      "notes": "Ensure all data stored in Aurora is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-112",
+      "layer": "infra",
+      "file": "terraform/aws/rds.tf",
+      "resource_or_line": "aws_rds_cluster.app9-rds-cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rds-cluster-has-iam-authentication-enabled",
+      "cwe_or_rule": "CKV_AWS_162",
+      "notes": "Ensure RDS cluster has IAM authentication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-113",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket_object.data_object",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-object-is-encrypted-by-kms-using-a",
+      "cwe_or_rule": "CKV_AWS_186",
+      "notes": "Ensure S3 bucket Object is encrypted by KMS using a customer managed Key (CMK); intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-114",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "aks-uses-azure-policies-add-on",
+      "cwe_or_rule": "CKV_AZURE_116",
+      "notes": "Ensure that AKS uses Azure Policies Add-on; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-115",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "kubernetes-dashboard-is-disabled",
+      "cwe_or_rule": "CKV_AZURE_8",
+      "notes": "Ensure Kubernetes Dashboard is disabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-116",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "aks-logging-to-azure-monitoring-is-configured",
+      "cwe_or_rule": "CKV_AZURE_4",
+      "notes": "Ensure AKS logging to Azure Monitoring is Configured; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-117",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "aks-uses-disk-encryption-set",
+      "cwe_or_rule": "CKV_AZURE_117",
+      "notes": "Ensure that AKS uses disk encryption set; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-118",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "aks-enables-private-clusters",
+      "cwe_or_rule": "CKV_AZURE_115",
+      "notes": "Ensure that AKS enables private clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-119",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "aks-local-admin-account-is-disabled",
+      "cwe_or_rule": "CKV_AZURE_141",
+      "notes": "Ensure AKS local admin account is disabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-120",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "aks-cluster-has-network-policy-configured",
+      "cwe_or_rule": "CKV_AZURE_7",
+      "notes": "Ensure AKS cluster has Network Policy configured; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-121",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "aks-has-an-api-server-authorized-ip-ranges",
+      "cwe_or_rule": "CKV_AZURE_6",
+      "notes": "Ensure AKS has an API Server Authorized IP Ranges enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-122",
+      "layer": "infra",
+      "file": "terraform/azure/aks.tf",
+      "resource_or_line": "azurerm_kubernetes_cluster.k8s_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "rbac-is-enabled-on-aks-clusters",
+      "cwe_or_rule": "CKV_AZURE_5",
+      "notes": "Ensure RBAC is enabled on AKS clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-123",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "web-app-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_15",
+      "notes": "Ensure web app is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-124",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "ftp-deployments-are-disabled",
+      "cwe_or_rule": "CKV_AZURE_78",
+      "notes": "Ensure FTP deployments are disabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-125",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "http-version-is-the-latest-if-used-to-run-the",
+      "cwe_or_rule": "CKV_AZURE_18",
+      "notes": "Ensure that 'HTTP Version' is the latest if used to run the web app; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-126",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "app-services-use-azure-files",
+      "cwe_or_rule": "CKV_AZURE_88",
+      "notes": "Ensure that app services use Azure Files; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-127",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "app-service-authentication-is-set-on-azure-app",
+      "cwe_or_rule": "CKV_AZURE_13",
+      "notes": "Ensure App Service Authentication is set on Azure App Service; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-128",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "managed-identity-provider-is-enabled-for-app",
+      "cwe_or_rule": "CKV_AZURE_71",
+      "notes": "Ensure that Managed identity provider is enabled for app services; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-129",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "net-framework-version-is-the-latest-if-used-as",
+      "cwe_or_rule": "CKV_AZURE_80",
+      "notes": "Ensure that 'Net Framework' version is the latest, if used as a part of the web app; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-130",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "app-service-enables-detailed-error-messages",
+      "cwe_or_rule": "CKV_AZURE_65",
+      "notes": "Ensure that App service enables detailed error messages; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-131",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "app-service-enables-http-logging",
+      "cwe_or_rule": "CKV_AZURE_63",
+      "notes": "Ensure that App service enables HTTP logging; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-132",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "web-app-has-client-certificates-incoming-client",
+      "cwe_or_rule": "CKV_AZURE_17",
+      "notes": "Ensure the web app has 'Client Certificates (Incoming client certificates)' set; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-133",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "register-with-azure-active-directory-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_16",
+      "notes": "Ensure that Register with Azure Active Directory is enabled on App Service; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-134",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "app-service-enables-failed-request-tracing",
+      "cwe_or_rule": "CKV_AZURE_66",
+      "notes": "Ensure that App service enables failed request tracing; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-135",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service1",
+      "expected_label": "real_finding",
+      "expected_category": "web-app-redirects-all-http-traffic-to-https-in",
+      "cwe_or_rule": "CKV_AZURE_14",
+      "notes": "Ensure web app redirects all HTTP traffic to HTTPS in Azure App Service; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-136",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "ftp-deployments-are-disabled",
+      "cwe_or_rule": "CKV_AZURE_78",
+      "notes": "Ensure FTP deployments are disabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-137",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "http-version-is-the-latest-if-used-to-run-the",
+      "cwe_or_rule": "CKV_AZURE_18",
+      "notes": "Ensure that 'HTTP Version' is the latest if used to run the web app; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-138",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "app-services-use-azure-files",
+      "cwe_or_rule": "CKV_AZURE_88",
+      "notes": "Ensure that app services use Azure Files; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-139",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "app-service-authentication-is-set-on-azure-app",
+      "cwe_or_rule": "CKV_AZURE_13",
+      "notes": "Ensure App Service Authentication is set on Azure App Service; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-140",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "managed-identity-provider-is-enabled-for-app",
+      "cwe_or_rule": "CKV_AZURE_71",
+      "notes": "Ensure that Managed identity provider is enabled for app services; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-141",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "net-framework-version-is-the-latest-if-used-as",
+      "cwe_or_rule": "CKV_AZURE_80",
+      "notes": "Ensure that 'Net Framework' version is the latest, if used as a part of the web app; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-142",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "app-service-enables-detailed-error-messages",
+      "cwe_or_rule": "CKV_AZURE_65",
+      "notes": "Ensure that App service enables detailed error messages; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-143",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "app-service-enables-http-logging",
+      "cwe_or_rule": "CKV_AZURE_63",
+      "notes": "Ensure that App service enables HTTP logging; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-144",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "web-app-has-client-certificates-incoming-client",
+      "cwe_or_rule": "CKV_AZURE_17",
+      "notes": "Ensure the web app has 'Client Certificates (Incoming client certificates)' set; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-145",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "register-with-azure-active-directory-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_16",
+      "notes": "Ensure that Register with Azure Active Directory is enabled on App Service; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-146",
+      "layer": "infra",
+      "file": "terraform/azure/app_service.tf",
+      "resource_or_line": "azurerm_app_service.app-service2",
+      "expected_label": "real_finding",
+      "expected_category": "app-service-enables-failed-request-tracing",
+      "cwe_or_rule": "CKV_AZURE_66",
+      "notes": "Ensure that App service enables failed request tracing; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-147",
+      "layer": "infra",
+      "file": "terraform/azure/instance.tf",
+      "resource_or_line": "azurerm_linux_virtual_machine.linux_machine",
+      "expected_label": "real_finding",
+      "expected_category": "azure-instance-does-not-use-basic",
+      "cwe_or_rule": "CKV_AZURE_1",
+      "notes": "Ensure Azure Instance does not use basic authentication(Use SSH Key Instead); intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-148",
+      "layer": "infra",
+      "file": "terraform/azure/instance.tf",
+      "resource_or_line": "azurerm_linux_virtual_machine.linux_machine",
+      "expected_label": "real_finding",
+      "expected_category": "virtual-machine-extensions-are-not-installed",
+      "cwe_or_rule": "CKV_AZURE_50",
+      "notes": "Ensure Virtual Machine Extensions are not Installed; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-149",
+      "layer": "infra",
+      "file": "terraform/azure/instance.tf",
+      "resource_or_line": "azurerm_linux_virtual_machine.linux_machine",
+      "expected_label": "real_finding",
+      "expected_category": "virtual-machine-does-not-enable-password",
+      "cwe_or_rule": "CKV_AZURE_149",
+      "notes": "Ensure that Virtual machine does not enable password authentication; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-150",
+      "layer": "infra",
+      "file": "terraform/azure/instance.tf",
+      "resource_or_line": "azurerm_windows_virtual_machine.windows_machine",
+      "expected_label": "real_finding",
+      "expected_category": "windows-vm-enables-encryption",
+      "cwe_or_rule": "CKV_AZURE_151",
+      "notes": "Ensure Windows VM enables encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-151",
+      "layer": "infra",
+      "file": "terraform/azure/instance.tf",
+      "resource_or_line": "azurerm_windows_virtual_machine.windows_machine",
+      "expected_label": "real_finding",
+      "expected_category": "virtual-machine-extensions-are-not-installed",
+      "cwe_or_rule": "CKV_AZURE_50",
+      "notes": "Ensure Virtual Machine Extensions are not Installed; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-152",
+      "layer": "infra",
+      "file": "terraform/azure/key_vault.tf",
+      "resource_or_line": "azurerm_key_vault.example",
+      "expected_label": "real_finding",
+      "expected_category": "key-vault-allows-firewall-rules-settings",
+      "cwe_or_rule": "CKV_AZURE_109",
+      "notes": "Ensure that key vault allows firewall rules settings; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-153",
+      "layer": "infra",
+      "file": "terraform/azure/key_vault.tf",
+      "resource_or_line": "azurerm_key_vault.example",
+      "expected_label": "real_finding",
+      "expected_category": "key-vault-is-recoverable",
+      "cwe_or_rule": "CKV_AZURE_42",
+      "notes": "Ensure the key vault is recoverable; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-154",
+      "layer": "infra",
+      "file": "terraform/azure/key_vault.tf",
+      "resource_or_line": "azurerm_key_vault.example",
+      "expected_label": "real_finding",
+      "expected_category": "key-vault-enables-purge-protection",
+      "cwe_or_rule": "CKV_AZURE_110",
+      "notes": "Ensure that key vault enables purge protection; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-155",
+      "layer": "infra",
+      "file": "terraform/azure/key_vault.tf",
+      "resource_or_line": "azurerm_key_vault_key.generated",
+      "expected_label": "real_finding",
+      "expected_category": "key-vault-key-is-backed-by-hsm",
+      "cwe_or_rule": "CKV_AZURE_112",
+      "notes": "Ensure that key vault key is backed by HSM; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-156",
+      "layer": "infra",
+      "file": "terraform/azure/key_vault.tf",
+      "resource_or_line": "azurerm_key_vault_key.generated",
+      "expected_label": "real_finding",
+      "expected_category": "expiration-date-is-set-on-all-keys",
+      "cwe_or_rule": "CKV_AZURE_40",
+      "notes": "Ensure that the expiration date is set on all keys; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-157",
+      "layer": "infra",
+      "file": "terraform/azure/key_vault.tf",
+      "resource_or_line": "azurerm_key_vault_secret.secret",
+      "expected_label": "real_finding",
+      "expected_category": "key-vault-secrets-have-content-type-set",
+      "cwe_or_rule": "CKV_AZURE_114",
+      "notes": "Ensure that key vault secrets have \"content_type\" set; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-158",
+      "layer": "infra",
+      "file": "terraform/azure/key_vault.tf",
+      "resource_or_line": "azurerm_key_vault_secret.secret",
+      "expected_label": "real_finding",
+      "expected_category": "expiration-date-is-set-on-all-secrets",
+      "cwe_or_rule": "CKV_AZURE_41",
+      "notes": "Ensure that the expiration date is set on all secrets; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-159",
+      "layer": "infra",
+      "file": "terraform/azure/logging.tf",
+      "resource_or_line": "azurerm_monitor_log_profile.logging_profile",
+      "expected_label": "real_finding",
+      "expected_category": "audit-profile-captures-all-the-activities",
+      "cwe_or_rule": "CKV_AZURE_38",
+      "notes": "Ensure audit profile captures all the activities; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-160",
+      "layer": "infra",
+      "file": "terraform/azure/logging.tf",
+      "resource_or_line": "azurerm_monitor_log_profile.logging_profile",
+      "expected_label": "real_finding",
+      "expected_category": "activity-log-retention-is-set-365-days-or",
+      "cwe_or_rule": "CKV_AZURE_37",
+      "notes": "Ensure that Activity Log Retention is set 365 days or greater; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-161",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_storage_account.security_storage_account",
+      "expected_label": "real_finding",
+      "expected_category": "default-network-access-rule-for-storage",
+      "cwe_or_rule": "CKV_AZURE_35",
+      "notes": "Ensure default network access rule for Storage Accounts is set to deny; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-162",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_storage_account.security_storage_account",
+      "expected_label": "real_finding",
+      "expected_category": "storage-logging-is-enabled-for-queue-service",
+      "cwe_or_rule": "CKV_AZURE_33",
+      "notes": "Ensure Storage logging is enabled for Queue service for read, write and delete requests; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-163",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_storage_account.security_storage_account",
+      "expected_label": "real_finding",
+      "expected_category": "storage-account-is-using-the-latest-version-of",
+      "cwe_or_rule": "CKV_AZURE_44",
+      "notes": "Ensure Storage Account is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-164",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql1",
+      "expected_label": "real_finding",
+      "expected_category": "mssql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_52",
+      "notes": "Ensure MSSQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-165",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql1",
+      "expected_label": "real_finding",
+      "expected_category": "sql-server-disables-public-network-access",
+      "cwe_or_rule": "CKV_AZURE_113",
+      "notes": "Ensure that SQL server disables public network access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-166",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql2",
+      "expected_label": "real_finding",
+      "expected_category": "mssql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_52",
+      "notes": "Ensure MSSQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-167",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql2",
+      "expected_label": "real_finding",
+      "expected_category": "sql-server-disables-public-network-access",
+      "cwe_or_rule": "CKV_AZURE_113",
+      "notes": "Ensure that SQL server disables public network access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-168",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql3",
+      "expected_label": "real_finding",
+      "expected_category": "mssql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_52",
+      "notes": "Ensure MSSQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-169",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql3",
+      "expected_label": "real_finding",
+      "expected_category": "sql-server-disables-public-network-access",
+      "cwe_or_rule": "CKV_AZURE_113",
+      "notes": "Ensure that SQL server disables public network access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-170",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql4",
+      "expected_label": "real_finding",
+      "expected_category": "mssql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_52",
+      "notes": "Ensure MSSQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-171",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql4",
+      "expected_label": "real_finding",
+      "expected_category": "sql-server-disables-public-network-access",
+      "cwe_or_rule": "CKV_AZURE_113",
+      "notes": "Ensure that SQL server disables public network access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-172",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql5",
+      "expected_label": "real_finding",
+      "expected_category": "mssql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_52",
+      "notes": "Ensure MSSQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-173",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql5",
+      "expected_label": "real_finding",
+      "expected_category": "sql-server-disables-public-network-access",
+      "cwe_or_rule": "CKV_AZURE_113",
+      "notes": "Ensure that SQL server disables public network access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-174",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql6",
+      "expected_label": "real_finding",
+      "expected_category": "mssql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_52",
+      "notes": "Ensure MSSQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-175",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql6",
+      "expected_label": "real_finding",
+      "expected_category": "sql-server-disables-public-network-access",
+      "cwe_or_rule": "CKV_AZURE_113",
+      "notes": "Ensure that SQL server disables public network access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-176",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql7",
+      "expected_label": "real_finding",
+      "expected_category": "mssql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_52",
+      "notes": "Ensure MSSQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-177",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql7",
+      "expected_label": "real_finding",
+      "expected_category": "sql-server-disables-public-network-access",
+      "cwe_or_rule": "CKV_AZURE_113",
+      "notes": "Ensure that SQL server disables public network access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-178",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy1",
+      "expected_label": "real_finding",
+      "expected_category": "threat-detection-types-is-set-to-all",
+      "cwe_or_rule": "CKV_AZURE_25",
+      "notes": "Ensure that 'Threat Detection types' is set to 'All'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-179",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy1",
+      "expected_label": "real_finding",
+      "expected_category": "email-service-and-co-administrators-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_27",
+      "notes": "Ensure that 'Email service and co-administrators' is 'Enabled' for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-180",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy2",
+      "expected_label": "real_finding",
+      "expected_category": "threat-detection-types-is-set-to-all",
+      "cwe_or_rule": "CKV_AZURE_25",
+      "notes": "Ensure that 'Threat Detection types' is set to 'All'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-181",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy2",
+      "expected_label": "real_finding",
+      "expected_category": "email-service-and-co-administrators-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_27",
+      "notes": "Ensure that 'Email service and co-administrators' is 'Enabled' for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-182",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy3",
+      "expected_label": "real_finding",
+      "expected_category": "threat-detection-types-is-set-to-all",
+      "cwe_or_rule": "CKV_AZURE_25",
+      "notes": "Ensure that 'Threat Detection types' is set to 'All'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-183",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy3",
+      "expected_label": "real_finding",
+      "expected_category": "email-service-and-co-administrators-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_27",
+      "notes": "Ensure that 'Email service and co-administrators' is 'Enabled' for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-184",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy4",
+      "expected_label": "real_finding",
+      "expected_category": "threat-detection-types-is-set-to-all",
+      "cwe_or_rule": "CKV_AZURE_25",
+      "notes": "Ensure that 'Threat Detection types' is set to 'All'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-185",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy4",
+      "expected_label": "real_finding",
+      "expected_category": "email-service-and-co-administrators-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_27",
+      "notes": "Ensure that 'Email service and co-administrators' is 'Enabled' for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-186",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy5",
+      "expected_label": "real_finding",
+      "expected_category": "threat-detection-types-is-set-to-all",
+      "cwe_or_rule": "CKV_AZURE_25",
+      "notes": "Ensure that 'Threat Detection types' is set to 'All'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-187",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy5",
+      "expected_label": "real_finding",
+      "expected_category": "send-alerts-to-is-enabled-for-mssql-servers",
+      "cwe_or_rule": "CKV_AZURE_26",
+      "notes": "Ensure that 'Send Alerts To' is enabled for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-188",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy5",
+      "expected_label": "real_finding",
+      "expected_category": "email-service-and-co-administrators-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_27",
+      "notes": "Ensure that 'Email service and co-administrators' is 'Enabled' for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-189",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy6",
+      "expected_label": "real_finding",
+      "expected_category": "threat-detection-types-is-set-to-all",
+      "cwe_or_rule": "CKV_AZURE_25",
+      "notes": "Ensure that 'Threat Detection types' is set to 'All'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-190",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy6",
+      "expected_label": "real_finding",
+      "expected_category": "email-service-and-co-administrators-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_27",
+      "notes": "Ensure that 'Email service and co-administrators' is 'Enabled' for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-191",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy7",
+      "expected_label": "real_finding",
+      "expected_category": "threat-detection-types-is-set-to-all",
+      "cwe_or_rule": "CKV_AZURE_25",
+      "notes": "Ensure that 'Threat Detection types' is set to 'All'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-192",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.alertpolicy7",
+      "expected_label": "real_finding",
+      "expected_category": "email-service-and-co-administrators-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_27",
+      "notes": "Ensure that 'Email service and co-administrators' is 'Enabled' for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-193",
+      "layer": "infra",
+      "file": "terraform/azure/networking.tf",
+      "resource_or_line": "azurerm_network_security_group.bad_sg",
+      "expected_label": "real_finding",
+      "expected_category": "ssh-access-is-restricted-from-the-internet",
+      "cwe_or_rule": "CKV_AZURE_10",
+      "notes": "Ensure that SSH access is restricted from the internet; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-194",
+      "layer": "infra",
+      "file": "terraform/azure/networking.tf",
+      "resource_or_line": "azurerm_network_security_group.bad_sg",
+      "expected_label": "real_finding",
+      "expected_category": "rdp-access-is-restricted-from-the-internet",
+      "cwe_or_rule": "CKV_AZURE_9",
+      "notes": "Ensure that RDP access is restricted from the internet; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-195",
+      "layer": "infra",
+      "file": "terraform/azure/networking.tf",
+      "resource_or_line": "azurerm_network_watcher_flow_log.flow_log",
+      "expected_label": "real_finding",
+      "expected_category": "network-security-group-flow-log-retention",
+      "cwe_or_rule": "CKV_AZURE_12",
+      "notes": "Ensure that Network Security Group Flow Log retention period is 'greater than 90 days'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-196",
+      "layer": "infra",
+      "file": "terraform/azure/roles.tf",
+      "resource_or_line": "azurerm_role_definition.example",
+      "expected_label": "real_finding",
+      "expected_category": "no-custom-subscription-owner-roles-are-created",
+      "cwe_or_rule": "CKV_AZURE_39",
+      "notes": "Ensure that no custom subscription owner roles are created; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-197",
+      "layer": "infra",
+      "file": "terraform/azure/security_center.tf",
+      "resource_or_line": "azurerm_security_center_subscription_pricing.pricing",
+      "expected_label": "real_finding",
+      "expected_category": "standard-pricing-tier-is-selected",
+      "cwe_or_rule": "CKV_AZURE_19",
+      "notes": "Ensure that standard pricing tier is selected; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-198",
+      "layer": "infra",
+      "file": "terraform/azure/security_center.tf",
+      "resource_or_line": "azurerm_security_center_contact.contact",
+      "expected_label": "real_finding",
+      "expected_category": "security-contact-phone-number-is-set",
+      "cwe_or_rule": "CKV_AZURE_20",
+      "notes": "Ensure that security contact 'Phone number' is set; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-199",
+      "layer": "infra",
+      "file": "terraform/azure/security_center.tf",
+      "resource_or_line": "azurerm_security_center_contact.contact",
+      "expected_label": "real_finding",
+      "expected_category": "send-email-notification-for-high-severity",
+      "cwe_or_rule": "CKV_AZURE_22",
+      "notes": "Ensure that 'Send email notification for high severity alerts' is set to 'On'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-200",
+      "layer": "infra",
+      "file": "terraform/azure/security_center.tf",
+      "resource_or_line": "azurerm_security_center_contact.contact",
+      "expected_label": "real_finding",
+      "expected_category": "send-email-notification-for-high-severity",
+      "cwe_or_rule": "CKV_AZURE_21",
+      "notes": "Ensure that 'Send email notification for high severity alerts' is set to 'On'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-201",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.example",
+      "expected_label": "real_finding",
+      "expected_category": "threat-detection-types-is-set-to-all",
+      "cwe_or_rule": "CKV_AZURE_25",
+      "notes": "Ensure that 'Threat Detection types' is set to 'All'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-202",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.example",
+      "expected_label": "real_finding",
+      "expected_category": "send-alerts-to-is-enabled-for-mssql-servers",
+      "cwe_or_rule": "CKV_AZURE_26",
+      "notes": "Ensure that 'Send Alerts To' is enabled for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-203",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mssql_server_security_alert_policy.example",
+      "expected_label": "real_finding",
+      "expected_category": "email-service-and-co-administrators-is-enabled",
+      "cwe_or_rule": "CKV_AZURE_27",
+      "notes": "Ensure that 'Email service and co-administrators' is 'Enabled' for MSSQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-204",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mysql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "my-sql-server-enables-threat-detection-policy",
+      "cwe_or_rule": "CKV_AZURE_127",
+      "notes": "Ensure that My SQL server enables Threat detection policy; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-205",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mysql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "my-sql-server-enables-geo-redundant-backups",
+      "cwe_or_rule": "CKV_AZURE_94",
+      "notes": "Ensure that My SQL server enables geo-redundant backups; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-206",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mysql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "public-network-access-enabled-is-set-to-false",
+      "cwe_or_rule": "CKV_AZURE_53",
+      "notes": "Ensure 'public network access enabled' is set to 'False' for mySQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-207",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mysql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "mysql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_54",
+      "notes": "Ensure MySQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-208",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mysql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "enforce-ssl-connection-is-set-to-enabled-for",
+      "cwe_or_rule": "CKV_AZURE_28",
+      "notes": "Ensure 'Enforce SSL connection' is set to 'ENABLED' for MySQL Database Server; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-209",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_postgresql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "postgresql-is-using-the-latest-version-of-tls",
+      "cwe_or_rule": "CKV_AZURE_147",
+      "notes": "Ensure PostgreSQL is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-210",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_postgresql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "postgresql-server-enables-infrastructure",
+      "cwe_or_rule": "CKV_AZURE_130",
+      "notes": "Ensure that PostgreSQL server enables infrastructure encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-211",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_postgresql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "enforce-ssl-connection-is-set-to-enabled-for",
+      "cwe_or_rule": "CKV_AZURE_29",
+      "notes": "Ensure 'Enforce SSL connection' is set to 'ENABLED' for PostgreSQL Database Server; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-212",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_postgresql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "postgresql-server-enables-threat-detection",
+      "cwe_or_rule": "CKV_AZURE_128",
+      "notes": "Ensure that PostgreSQL server enables Threat detection policy; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-213",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_postgresql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "postgresql-server-enables-geo-redundant-backups",
+      "cwe_or_rule": "CKV_AZURE_102",
+      "notes": "Ensure that PostgreSQL server enables geo-redundant backups; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-214",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_postgresql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "postgresql-server-disables-public-network-access",
+      "cwe_or_rule": "CKV_AZURE_68",
+      "notes": "Ensure that PostgreSQL server disables public network access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-215",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_postgresql_configuration.thrtottling_config",
+      "expected_label": "real_finding",
+      "expected_category": "server-parameter-connection-throttling-is-set",
+      "cwe_or_rule": "CKV_AZURE_32",
+      "notes": "Ensure server parameter 'connection_throttling' is set to 'ON' for PostgreSQL Database Server; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-216",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_postgresql_configuration.example",
+      "expected_label": "real_finding",
+      "expected_category": "server-parameter-log-checkpoints-is-set-to-on",
+      "cwe_or_rule": "CKV_AZURE_30",
+      "notes": "Ensure server parameter 'log_checkpoints' is set to 'ON' for PostgreSQL Database Server; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-217",
+      "layer": "infra",
+      "file": "terraform/azure/storage.tf",
+      "resource_or_line": "azurerm_managed_disk.example",
+      "expected_label": "real_finding",
+      "expected_category": "azure-managed-disk-has-encryption-enabled",
+      "cwe_or_rule": "CKV_AZURE_2",
+      "notes": "Ensure Azure managed disk has encryption enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-218",
+      "layer": "infra",
+      "file": "terraform/azure/storage.tf",
+      "resource_or_line": "azurerm_managed_disk.example",
+      "expected_label": "real_finding",
+      "expected_category": "managed-disks-use-a-specific-set-of-disk",
+      "cwe_or_rule": "CKV_AZURE_93",
+      "notes": "Ensure that managed disks use a specific set of disk encryption sets for the customer-managed key encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-219",
+      "layer": "infra",
+      "file": "terraform/azure/storage.tf",
+      "resource_or_line": "azurerm_storage_account.example",
+      "expected_label": "real_finding",
+      "expected_category": "default-network-access-rule-for-storage",
+      "cwe_or_rule": "CKV_AZURE_35",
+      "notes": "Ensure default network access rule for Storage Accounts is set to deny; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-220",
+      "layer": "infra",
+      "file": "terraform/azure/storage.tf",
+      "resource_or_line": "azurerm_storage_account.example",
+      "expected_label": "real_finding",
+      "expected_category": "secure-transfer-required-is-set-to-enabled",
+      "cwe_or_rule": "CKV_AZURE_3",
+      "notes": "Ensure that 'Secure transfer required' is set to 'Enabled'; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-221",
+      "layer": "infra",
+      "file": "terraform/azure/storage.tf",
+      "resource_or_line": "azurerm_storage_account.example",
+      "expected_label": "real_finding",
+      "expected_category": "storage-logging-is-enabled-for-queue-service",
+      "cwe_or_rule": "CKV_AZURE_33",
+      "notes": "Ensure Storage logging is enabled for Queue service for read, write and delete requests; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-222",
+      "layer": "infra",
+      "file": "terraform/azure/storage.tf",
+      "resource_or_line": "azurerm_storage_account.example",
+      "expected_label": "real_finding",
+      "expected_category": "storage-account-is-using-the-latest-version-of",
+      "cwe_or_rule": "CKV_AZURE_44",
+      "notes": "Ensure Storage Account is using the latest version of TLS encryption; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-223",
+      "layer": "infra",
+      "file": "terraform/azure/storage.tf",
+      "resource_or_line": "azurerm_storage_account_network_rules.test",
+      "expected_label": "real_finding",
+      "expected_category": "trusted-microsoft-services-is-enabled-for",
+      "cwe_or_rule": "CKV_AZURE_36",
+      "notes": "Ensure 'Trusted Microsoft Services' is enabled for Storage Account access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-224",
+      "layer": "infra",
+      "file": "terraform/gcp/big_data.tf",
+      "resource_or_line": "google_sql_database_instance.master_instance",
+      "expected_label": "real_finding",
+      "expected_category": "all-cloud-sql-database-instance-requires-all",
+      "cwe_or_rule": "CKV_GCP_6",
+      "notes": "Ensure all Cloud SQL database instance requires all incoming connections to use SSL; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-225",
+      "layer": "infra",
+      "file": "terraform/gcp/big_data.tf",
+      "resource_or_line": "google_sql_database_instance.master_instance",
+      "expected_label": "real_finding",
+      "expected_category": "cloud-sql-database-instances-are-not-open-to",
+      "cwe_or_rule": "CKV_GCP_11",
+      "notes": "Ensure that Cloud SQL database Instances are not open to the world; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-226",
+      "layer": "infra",
+      "file": "terraform/gcp/big_data.tf",
+      "resource_or_line": "google_sql_database_instance.master_instance",
+      "expected_label": "real_finding",
+      "expected_category": "sql-database-is-using-latest-major-version",
+      "cwe_or_rule": "CKV_GCP_79",
+      "notes": "Ensure SQL database is using latest Major version; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-227",
+      "layer": "infra",
+      "file": "terraform/gcp/big_data.tf",
+      "resource_or_line": "google_sql_database_instance.master_instance",
+      "expected_label": "real_finding",
+      "expected_category": "cloud-sql-database-does-not-have-public-ip",
+      "cwe_or_rule": "CKV_GCP_60",
+      "notes": "Ensure Cloud SQL database does not have public IP; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-228",
+      "layer": "infra",
+      "file": "terraform/gcp/big_data.tf",
+      "resource_or_line": "google_sql_database_instance.master_instance",
+      "expected_label": "real_finding",
+      "expected_category": "all-cloud-sql-database-instance-have-backup",
+      "cwe_or_rule": "CKV_GCP_14",
+      "notes": "Ensure all Cloud SQL database instance have backup configuration enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-229",
+      "layer": "infra",
+      "file": "terraform/gcp/big_data.tf",
+      "resource_or_line": "google_bigquery_dataset.dataset",
+      "expected_label": "real_finding",
+      "expected_category": "bigquery-datasets-are-not-anonymously-or",
+      "cwe_or_rule": "CKV_GCP_15",
+      "notes": "Ensure that BigQuery datasets are not anonymously or publicly accessible; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-230",
+      "layer": "infra",
+      "file": "terraform/gcp/big_data.tf",
+      "resource_or_line": "google_bigquery_dataset.dataset",
+      "expected_label": "real_finding",
+      "expected_category": "big-query-tables-are-encrypted-with-customer",
+      "cwe_or_rule": "CKV_GCP_81",
+      "notes": "Ensure Big Query Tables are encrypted with Customer Supplied Encryption Keys (CSEK); intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-231",
+      "layer": "infra",
+      "file": "terraform/gcp/gcs.tf",
+      "resource_or_line": "google_storage_bucket.terragoat_website",
+      "expected_label": "real_finding",
+      "expected_category": "bucket-should-log-access",
+      "cwe_or_rule": "CKV_GCP_62",
+      "notes": "Bucket should log access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-232",
+      "layer": "infra",
+      "file": "terraform/gcp/gcs.tf",
+      "resource_or_line": "google_storage_bucket.terragoat_website",
+      "expected_label": "real_finding",
+      "expected_category": "cloud-storage-has-versioning-enabled",
+      "cwe_or_rule": "CKV_GCP_78",
+      "notes": "Ensure Cloud storage has versioning enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-233",
+      "layer": "infra",
+      "file": "terraform/gcp/gcs.tf",
+      "resource_or_line": "google_storage_bucket.terragoat_website",
+      "expected_label": "real_finding",
+      "expected_category": "cloud-storage-buckets-have-uniform-bucket-level",
+      "cwe_or_rule": "CKV_GCP_29",
+      "notes": "Ensure that Cloud Storage buckets have uniform bucket-level access enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-234",
+      "layer": "infra",
+      "file": "terraform/gcp/gcs.tf",
+      "resource_or_line": "google_storage_bucket_iam_binding.allow_public_read",
+      "expected_label": "real_finding",
+      "expected_category": "cloud-storage-bucket-is-not-anonymously-or",
+      "cwe_or_rule": "CKV_GCP_28",
+      "notes": "Ensure that Cloud Storage bucket is not anonymously or publicly accessible; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-235",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "gke-release-channel-is-set",
+      "cwe_or_rule": "CKV_GCP_70",
+      "notes": "Ensure the GKE Release Channel is set; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-236",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "gke-metadata-server-is-enabled",
+      "cwe_or_rule": "CKV_GCP_69",
+      "notes": "Ensure the GKE Metadata Server is Enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-237",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "legacy-compute-engine-instance-metadata-apis",
+      "cwe_or_rule": "CKV_GCP_67",
+      "notes": "Ensure legacy Compute Engine instance metadata APIs are Disabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-238",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "gke-basic-auth-is-disabled",
+      "cwe_or_rule": "CKV_GCP_19",
+      "notes": "Ensure GKE basic auth is disabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-239",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "kubernetes-clusters-are-configured-with-labels",
+      "cwe_or_rule": "CKV_GCP_21",
+      "notes": "Ensure Kubernetes Clusters are configured with Labels; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-240",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "use-of-binary-authorization",
+      "cwe_or_rule": "CKV_GCP_66",
+      "notes": "Ensure use of Binary Authorization; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-241",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "enable-vpc-flow-logs-and-intranode-visibility",
+      "cwe_or_rule": "CKV_GCP_61",
+      "notes": "Enable VPC Flow Logs and Intranode Visibility; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-242",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "kubernetes-cluster-is-created-with-private",
+      "cwe_or_rule": "CKV_GCP_25",
+      "notes": "Ensure Kubernetes Cluster is created with Private cluster enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-243",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "stackdriver-logging-is-set-to-enabled-on",
+      "cwe_or_rule": "CKV_GCP_1",
+      "notes": "Ensure Stackdriver Logging is set to Enabled on Kubernetes Engine Clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-244",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "gke-control-plane-is-not-public",
+      "cwe_or_rule": "CKV_GCP_18",
+      "notes": "Ensure GKE Control Plane is not public; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-245",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "clusters-are-created-with-private-nodes",
+      "cwe_or_rule": "CKV_GCP_64",
+      "notes": "Ensure clusters are created with Private Nodes; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-246",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "client-certificate-authentication-to-kubernetes",
+      "cwe_or_rule": "CKV_GCP_13",
+      "notes": "Ensure client certificate authentication to Kubernetes Engine Clusters is disabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-247",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "network-policy-is-enabled-on-kubernetes-engine",
+      "cwe_or_rule": "CKV_GCP_12",
+      "notes": "Ensure Network Policy is enabled on Kubernetes Engine Clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-248",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "manage-kubernetes-rbac-users-with-google-groups",
+      "cwe_or_rule": "CKV_GCP_65",
+      "notes": "Manage Kubernetes RBAC users with Google Groups for GKE; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-249",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "podsecuritypolicy-controller-is-enabled-on-the",
+      "cwe_or_rule": "CKV_GCP_24",
+      "notes": "Ensure PodSecurityPolicy controller is enabled on the Kubernetes Engine Clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-250",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "legacy-authorization-is-set-to-disabled-on",
+      "cwe_or_rule": "CKV_GCP_7",
+      "notes": "Ensure Legacy Authorization is set to Disabled on Kubernetes Engine Clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-251",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "kubernetes-cluster-is-created-with-alias-ip",
+      "cwe_or_rule": "CKV_GCP_23",
+      "notes": "Ensure Kubernetes Cluster is created with Alias IP ranges enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-252",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_cluster.workload_cluster",
+      "expected_label": "real_finding",
+      "expected_category": "stackdriver-monitoring-is-set-to-enabled-on",
+      "cwe_or_rule": "CKV_GCP_8",
+      "notes": "Ensure Stackdriver Monitoring is set to Enabled on Kubernetes Engine Clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-253",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_node_pool.custom_node_pool",
+      "expected_label": "real_finding",
+      "expected_category": "secure-boot-for-shielded-gke-nodes-is-enabled",
+      "cwe_or_rule": "CKV_GCP_68",
+      "notes": "Ensure Secure Boot for Shielded GKE Nodes is Enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-254",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_node_pool.custom_node_pool",
+      "expected_label": "real_finding",
+      "expected_category": "container-optimized-os-cos-is-used-for",
+      "cwe_or_rule": "CKV_GCP_22",
+      "notes": "Ensure Container-Optimized OS (cos) is used for Kubernetes Engine Clusters Node image; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-255",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_node_pool.custom_node_pool",
+      "expected_label": "real_finding",
+      "expected_category": "gke-metadata-server-is-enabled",
+      "cwe_or_rule": "CKV_GCP_69",
+      "notes": "Ensure the GKE Metadata Server is Enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-256",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_node_pool.custom_node_pool",
+      "expected_label": "real_finding",
+      "expected_category": "automatic-node-repair-is-enabled-for-kubernetes",
+      "cwe_or_rule": "CKV_GCP_9",
+      "notes": "Ensure 'Automatic node repair' is enabled for Kubernetes Clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-257",
+      "layer": "infra",
+      "file": "terraform/gcp/gke.tf",
+      "resource_or_line": "google_container_node_pool.custom_node_pool",
+      "expected_label": "real_finding",
+      "expected_category": "automatic-node-upgrade-is-enabled-for",
+      "cwe_or_rule": "CKV_GCP_10",
+      "notes": "Ensure 'Automatic node upgrade' is enabled for Kubernetes Clusters; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-258",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_instance.server",
+      "expected_label": "real_finding",
+      "expected_category": "vm-disks-for-critical-vms-are-encrypted-with",
+      "cwe_or_rule": "CKV_GCP_38",
+      "notes": "Ensure VM disks for critical VMs are encrypted with Customer Supplied Encryption Keys (CSEK); intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-259",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_instance.server",
+      "expected_label": "real_finding",
+      "expected_category": "enable-connecting-to-serial-ports-is-not",
+      "cwe_or_rule": "CKV_GCP_35",
+      "notes": "Ensure 'Enable connecting to serial ports' is not enabled for VM Instance; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-260",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_instance.server",
+      "expected_label": "real_finding",
+      "expected_category": "compute-instances-do-not-have-public-ip",
+      "cwe_or_rule": "CKV_GCP_40",
+      "notes": "Ensure that Compute instances do not have public IP addresses; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-261",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_instance.server",
+      "expected_label": "real_finding",
+      "expected_category": "no-instance-in-the-project-overrides-the",
+      "cwe_or_rule": "CKV_GCP_34",
+      "notes": "Ensure that no instance in the project overrides the project setting for enabling OSLogin(OSLogin needs to be enabled in project metadata for all instances); intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-262",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_instance.server",
+      "expected_label": "real_finding",
+      "expected_category": "instances-are-not-configured-to-use-the-default",
+      "cwe_or_rule": "CKV_GCP_30",
+      "notes": "Ensure that instances are not configured to use the default service account; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-263",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_instance.server",
+      "expected_label": "real_finding",
+      "expected_category": "ip-forwarding-is-not-enabled-on-instances",
+      "cwe_or_rule": "CKV_GCP_36",
+      "notes": "Ensure that IP forwarding is not enabled on Instances; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-264",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_instance.server",
+      "expected_label": "real_finding",
+      "expected_category": "block-project-wide-ssh-keys-is-enabled-for-vm",
+      "cwe_or_rule": "CKV_GCP_32",
+      "notes": "Ensure 'Block Project-wide SSH keys' is enabled for VM instances; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-265",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_instance.server",
+      "expected_label": "real_finding",
+      "expected_category": "compute-instances-are-launched-with-shielded-vm",
+      "cwe_or_rule": "CKV_GCP_39",
+      "notes": "Ensure Compute instances are launched with Shielded VM enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-266",
+      "layer": "infra",
+      "file": "terraform/gcp/instances.tf",
+      "resource_or_line": "google_compute_disk.unencrypted_disk",
+      "expected_label": "real_finding",
+      "expected_category": "vm-disks-for-critical-vms-are-encrypted-with",
+      "cwe_or_rule": "CKV_GCP_37",
+      "notes": "Ensure VM disks for critical VMs are encrypted with Customer Supplied Encryption Keys (CSEK); intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-267",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_subnetwork.public-subnetwork",
+      "expected_label": "real_finding",
+      "expected_category": "private-ip-google-access-is-enabled-for-subnet",
+      "cwe_or_rule": "CKV_GCP_74",
+      "notes": "Ensure that private_ip_google_access is enabled for Subnet; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-268",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_subnetwork.public-subnetwork",
+      "expected_label": "real_finding",
+      "expected_category": "vpc-flow-logs-is-enabled-for-every-subnet-in-a",
+      "cwe_or_rule": "CKV_GCP_26",
+      "notes": "Ensure that VPC Flow Logs is enabled for every subnet in a VPC Network; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-269",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_subnetwork.public-subnetwork",
+      "expected_label": "real_finding",
+      "expected_category": "private-google-access-is-enabled-for-ipv6",
+      "cwe_or_rule": "CKV_GCP_76",
+      "notes": "Ensure that Private google access is enabled for IPV6; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-270",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_firewall.allow_all",
+      "expected_label": "real_finding",
+      "expected_category": "google-compute-firewall-ingress-does-not-allow",
+      "cwe_or_rule": "CKV_GCP_88",
+      "notes": "Ensure Google compute firewall ingress does not allow unrestricted mysql access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-271",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_firewall.allow_all",
+      "expected_label": "real_finding",
+      "expected_category": "google-compute-firewall-ingress-does-not-allow",
+      "cwe_or_rule": "CKV_GCP_106",
+      "notes": "Ensure Google compute firewall ingress does not allow unrestricted http port 80 access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-272",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_firewall.allow_all",
+      "expected_label": "real_finding",
+      "expected_category": "google-compute-firewall-ingress-does-not-allow",
+      "cwe_or_rule": "CKV_GCP_77",
+      "notes": "Ensure Google compute firewall ingress does not allow on ftp port; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-273",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_firewall.allow_all",
+      "expected_label": "real_finding",
+      "expected_category": "google-compute-firewall-ingress-does-not-allow",
+      "cwe_or_rule": "CKV_GCP_3",
+      "notes": "Ensure Google compute firewall ingress does not allow unrestricted rdp access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-274",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_firewall.allow_all",
+      "expected_label": "real_finding",
+      "expected_category": "google-compute-firewall-ingress-does-not-allow",
+      "cwe_or_rule": "CKV_GCP_75",
+      "notes": "Ensure Google compute firewall ingress does not allow unrestricted FTP access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-275",
+      "layer": "infra",
+      "file": "terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_firewall.allow_all",
+      "expected_label": "real_finding",
+      "expected_category": "google-compute-firewall-ingress-does-not-allow",
+      "cwe_or_rule": "CKV_GCP_2",
+      "notes": "Ensure Google compute firewall ingress does not allow unrestricted ssh access; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-276",
+      "layer": "infra",
+      "file": "terraform/oracle/bucket.tf",
+      "resource_or_line": "oci_objectstorage_bucket.secretsquirrel",
+      "expected_label": "real_finding",
+      "expected_category": "oci-object-storage-is-encrypted-with-customer",
+      "cwe_or_rule": "CKV_OCI_9",
+      "notes": "Ensure OCI Object Storage is encrypted with Customer Managed Key; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-277",
+      "layer": "infra",
+      "file": "terraform/oracle/bucket.tf",
+      "resource_or_line": "oci_objectstorage_bucket.secretsquirrel",
+      "expected_label": "real_finding",
+      "expected_category": "oci-object-storage-has-versioning-enabled",
+      "cwe_or_rule": "CKV_OCI_8",
+      "notes": "Ensure OCI Object Storage has versioning enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-278",
+      "layer": "infra",
+      "file": "terraform/oracle/bucket.tf",
+      "resource_or_line": "oci_objectstorage_bucket.secretsquirrel",
+      "expected_label": "real_finding",
+      "expected_category": "oci-object-storage-bucket-can-emit-object-events",
+      "cwe_or_rule": "CKV_OCI_7",
+      "notes": "Ensure OCI Object Storage bucket can emit object events; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-279",
+      "layer": "infra",
+      "file": "terraform/oracle/bucket.tf",
+      "resource_or_line": "oci_objectstorage_bucket.secretsquirrel",
+      "expected_label": "real_finding",
+      "expected_category": "oci-object-storage-is-not-public",
+      "cwe_or_rule": "CKV_OCI_10",
+      "notes": "Ensure OCI Object Storage is not Public; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-280",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.financials",
+      "expected_label": "real_finding",
+      "expected_category": "s3-buckets-are-encrypted-with-kms-by-default",
+      "cwe_or_rule": "CKV_AWS_145",
+      "notes": "Ensure that S3 buckets are encrypted with KMS by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-281",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.data_science",
+      "expected_label": "real_finding",
+      "expected_category": "s3-buckets-are-encrypted-with-kms-by-default",
+      "cwe_or_rule": "CKV_AWS_145",
+      "notes": "Ensure that S3 buckets are encrypted with KMS by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-282",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.data",
+      "expected_label": "real_finding",
+      "expected_category": "s3-buckets-are-encrypted-with-kms-by-default",
+      "cwe_or_rule": "CKV_AWS_145",
+      "notes": "Ensure that S3 buckets are encrypted with KMS by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-283",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_s3_bucket.flowbucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-buckets-are-encrypted-with-kms-by-default",
+      "cwe_or_rule": "CKV_AWS_145",
+      "notes": "Ensure that S3 buckets are encrypted with KMS by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-284",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.operations",
+      "expected_label": "real_finding",
+      "expected_category": "s3-buckets-are-encrypted-with-kms-by-default",
+      "cwe_or_rule": "CKV_AWS_145",
+      "notes": "Ensure that S3 buckets are encrypted with KMS by default; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-285",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.financials",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-access-logging-enabled",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "Ensure the S3 bucket has access logging enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-286",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.data",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-access-logging-enabled",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "Ensure the S3 bucket has access logging enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-287",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_s3_bucket.flowbucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-access-logging-enabled",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "Ensure the S3 bucket has access logging enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-288",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.operations",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-access-logging-enabled",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "Ensure the S3 bucket has access logging enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-289",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.logs",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-access-logging-enabled",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "Ensure the S3 bucket has access logging enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-290",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.financials",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-s3-bucket-have",
+      "cwe_or_rule": "CKV_AWS_21",
+      "notes": "Ensure all data stored in the S3 bucket have versioning enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-291",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.data",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-s3-bucket-have",
+      "cwe_or_rule": "CKV_AWS_21",
+      "notes": "Ensure all data stored in the S3 bucket have versioning enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-292",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_s3_bucket.flowbucket",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-s3-bucket-have",
+      "cwe_or_rule": "CKV_AWS_21",
+      "notes": "Ensure all data stored in the S3 bucket have versioning enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-293",
+      "layer": "infra",
+      "file": "terraform/azure/application_gateway.tf",
+      "resource_or_line": "azurerm_application_gateway.network",
+      "expected_label": "real_finding",
+      "expected_category": "application-gateway-enables-waf",
+      "cwe_or_rule": "CKV_AZURE_120",
+      "notes": "Ensure that Application Gateway enables WAF; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-294",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.financials",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-cross-region-replication-enabled",
+      "cwe_or_rule": "CKV_AWS_144",
+      "notes": "Ensure that S3 bucket has cross-region replication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-295",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.data_science",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-cross-region-replication-enabled",
+      "cwe_or_rule": "CKV_AWS_144",
+      "notes": "Ensure that S3 bucket has cross-region replication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-296",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.data",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-cross-region-replication-enabled",
+      "cwe_or_rule": "CKV_AWS_144",
+      "notes": "Ensure that S3 bucket has cross-region replication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-297",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_s3_bucket.flowbucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-cross-region-replication-enabled",
+      "cwe_or_rule": "CKV_AWS_144",
+      "notes": "Ensure that S3 bucket has cross-region replication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-298",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.operations",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-cross-region-replication-enabled",
+      "cwe_or_rule": "CKV_AWS_144",
+      "notes": "Ensure that S3 bucket has cross-region replication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-299",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.logs",
+      "expected_label": "real_finding",
+      "expected_category": "s3-bucket-has-cross-region-replication-enabled",
+      "cwe_or_rule": "CKV_AWS_144",
+      "notes": "Ensure that S3 bucket has cross-region replication enabled; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-300",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.financials",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-s3-bucket-is-securely",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "Ensure all data stored in the S3 bucket is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-301",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.data_science",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-s3-bucket-is-securely",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "Ensure all data stored in the S3 bucket is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-302",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.data",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-s3-bucket-is-securely",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "Ensure all data stored in the S3 bucket is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-303",
+      "layer": "infra",
+      "file": "terraform/aws/ec2.tf",
+      "resource_or_line": "aws_s3_bucket.flowbucket",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-s3-bucket-is-securely",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "Ensure all data stored in the S3 bucket is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-304",
+      "layer": "infra",
+      "file": "terraform/aws/s3.tf",
+      "resource_or_line": "aws_s3_bucket.operations",
+      "expected_label": "real_finding",
+      "expected_category": "all-data-stored-in-the-s3-bucket-is-securely",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "Ensure all data stored in the S3 bucket is securely encrypted at rest; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-305",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_sql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-retention-is-greater-than-90-days-for",
+      "cwe_or_rule": "CKV_AZURE_24",
+      "notes": "Ensure that 'Auditing' Retention is 'greater than 90 days' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-306",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql5",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-retention-is-greater-than-90-days-for",
+      "cwe_or_rule": "CKV_AZURE_24",
+      "notes": "Ensure that 'Auditing' Retention is 'greater than 90 days' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-307",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql1",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-retention-is-greater-than-90-days-for",
+      "cwe_or_rule": "CKV_AZURE_24",
+      "notes": "Ensure that 'Auditing' Retention is 'greater than 90 days' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-308",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql6",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-retention-is-greater-than-90-days-for",
+      "cwe_or_rule": "CKV_AZURE_24",
+      "notes": "Ensure that 'Auditing' Retention is 'greater than 90 days' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-309",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql2",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-retention-is-greater-than-90-days-for",
+      "cwe_or_rule": "CKV_AZURE_24",
+      "notes": "Ensure that 'Auditing' Retention is 'greater than 90 days' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-310",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql4",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-retention-is-greater-than-90-days-for",
+      "cwe_or_rule": "CKV_AZURE_24",
+      "notes": "Ensure that 'Auditing' Retention is 'greater than 90 days' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-311",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql7",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-retention-is-greater-than-90-days-for",
+      "cwe_or_rule": "CKV_AZURE_24",
+      "notes": "Ensure that 'Auditing' Retention is 'greater than 90 days' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-312",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql3",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-retention-is-greater-than-90-days-for",
+      "cwe_or_rule": "CKV_AZURE_24",
+      "notes": "Ensure that 'Auditing' Retention is 'greater than 90 days' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-313",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_sql_server.example",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-is-set-to-on-for-sql-servers",
+      "cwe_or_rule": "CKV_AZURE_23",
+      "notes": "Ensure that 'Auditing' is set to 'On' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-314",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql5",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-is-set-to-on-for-sql-servers",
+      "cwe_or_rule": "CKV_AZURE_23",
+      "notes": "Ensure that 'Auditing' is set to 'On' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-315",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql1",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-is-set-to-on-for-sql-servers",
+      "cwe_or_rule": "CKV_AZURE_23",
+      "notes": "Ensure that 'Auditing' is set to 'On' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-316",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql6",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-is-set-to-on-for-sql-servers",
+      "cwe_or_rule": "CKV_AZURE_23",
+      "notes": "Ensure that 'Auditing' is set to 'On' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-317",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql2",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-is-set-to-on-for-sql-servers",
+      "cwe_or_rule": "CKV_AZURE_23",
+      "notes": "Ensure that 'Auditing' is set to 'On' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-318",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql4",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-is-set-to-on-for-sql-servers",
+      "cwe_or_rule": "CKV_AZURE_23",
+      "notes": "Ensure that 'Auditing' is set to 'On' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-319",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql7",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-is-set-to-on-for-sql-servers",
+      "cwe_or_rule": "CKV_AZURE_23",
+      "notes": "Ensure that 'Auditing' is set to 'On' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-320",
+      "layer": "infra",
+      "file": "terraform/azure/mssql.tf",
+      "resource_or_line": "azurerm_mssql_server.mssql3",
+      "expected_label": "real_finding",
+      "expected_category": "auditing-is-set-to-on-for-sql-servers",
+      "cwe_or_rule": "CKV_AZURE_23",
+      "notes": "Ensure that 'Auditing' is set to 'On' for SQL servers; intentional, documented in TerraGoat's auto-generated Checkov terraform findings."
+    },
+    {
+      "id": "GT-321",
+      "layer": "infra",
+      "file": "terraform/aws/resources/Dockerfile",
+      "resource_or_line": "aws/resources/Dockerfile",
+      "expected_label": "real_finding",
+      "expected_category": "a-user-for-the-container-has-been-created",
+      "cwe_or_rule": "CKV_DOCKER_3",
+      "notes": "Dockerfile: Ensure that a user for the container has been created; intentional, documented in TerraGoat's auto-generated Checkov dockerfile findings."
+    },
+    {
+      "id": "GT-322",
+      "layer": "infra",
+      "file": "terraform/aws/resources/Dockerfile",
+      "resource_or_line": "aws/resources/Dockerfile",
+      "expected_label": "real_finding",
+      "expected_category": "healthcheck-instructions-have-been-added-to",
+      "cwe_or_rule": "CKV_DOCKER_2",
+      "notes": "Dockerfile: Ensure that HEALTHCHECK instructions have been added to container images; intentional, documented in TerraGoat's auto-generated Checkov dockerfile findings."
+    },
+    {
+      "id": "GT-323",
+      "layer": "infra",
+      "file": "terraform/aws/lambda.tf",
+      "resource_or_line": "25910f981e85ca04baf359199dd0bd4a3ae738b6",
+      "expected_label": "real_finding",
+      "expected_category": "aws-access-key",
+      "cwe_or_rule": "CKV_SECRET_2",
+      "notes": "Hard-coded secret (AWS Access Key) in terraform/aws/lambda.tf; intentional, documented in TerraGoat's secrets scan (fingerprint as resource id)."
+    },
+    {
+      "id": "GT-324",
+      "layer": "infra",
+      "file": "terraform/aws/lambda.tf",
+      "resource_or_line": "d70eab08607a4d05faa2d0d6647206599e9abc65",
+      "expected_label": "real_finding",
+      "expected_category": "base64-high-entropy-string",
+      "cwe_or_rule": "CKV_SECRET_6",
+      "notes": "Hard-coded secret (Base64 High Entropy String) in terraform/aws/lambda.tf; intentional, documented in TerraGoat's secrets scan (fingerprint as resource id)."
+    },
+    {
+      "id": "GT-325",
+      "layer": "infra",
+      "file": "terraform/aws/providers.tf",
+      "resource_or_line": "25910f981e85ca04baf359199dd0bd4a3ae738b6",
+      "expected_label": "real_finding",
+      "expected_category": "aws-access-key",
+      "cwe_or_rule": "CKV_SECRET_2",
+      "notes": "Hard-coded secret (AWS Access Key) in terraform/aws/providers.tf; intentional, documented in TerraGoat's secrets scan (fingerprint as resource id)."
+    },
+    {
+      "id": "GT-326",
+      "layer": "infra",
+      "file": "terraform/aws/providers.tf",
+      "resource_or_line": "d70eab08607a4d05faa2d0d6647206599e9abc65",
+      "expected_label": "real_finding",
+      "expected_category": "base64-high-entropy-string",
+      "cwe_or_rule": "CKV_SECRET_6",
+      "notes": "Hard-coded secret (Base64 High Entropy String) in terraform/aws/providers.tf; intentional, documented in TerraGoat's secrets scan (fingerprint as resource id)."
+    },
+    {
+      "id": "GT-327",
+      "layer": "infra",
+      "file": "terraform/azure/sql.tf",
+      "resource_or_line": "a57ae0fe47084bc8a05f69f3f8083896f8b437b0",
+      "expected_label": "real_finding",
+      "expected_category": "base64-high-entropy-string",
+      "cwe_or_rule": "CKV_SECRET_6",
+      "notes": "Hard-coded secret (Base64 High Entropy String) in terraform/azure/sql.tf; intentional, documented in TerraGoat's secrets scan (fingerprint as resource id)."
+    }
+  ]
+}

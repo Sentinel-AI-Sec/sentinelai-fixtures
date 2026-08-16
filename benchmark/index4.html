@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>استراتيجية التقييم وإبطال النقد — Checkov &amp; C# Solutions · SentinelAI Sprint 5</title>
+  <meta name="description" content="الدليل الأكاديمي والعملي الكامل للتعامل مع نقاط الضعف المنهجية في SEC-38 و SEC-39: تحيز Checkov ومحدودية C#" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0b10;
+      --surface:  #12131c;
+      --surface2: #191b28;
+      --surface3: #222538;
+      --border:   #2e324a;
+      --border2:  #3f4466;
+
+      --cyan:     #06b6d4;
+      --teal:     #14b8a6;
+      --indigo:   #6366f1;
+      --accent:   #a78bfa;
+      --green:    #10b981;
+      --amber:    #f59e0b;
+      --red:      #ef4444;
+      --rose:     #f43f5e;
+      --blue:     #3b82f6;
+
+      --text:   #e2e8f0;
+      --muted:  #94a3b8;
+      --subtle: #475569;
+
+      --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+      --shadow: 0 4px 32px rgba(0,0,0,.65);
+      --glow-cyan: 0 0 40px rgba(6,182,212,.18);
+      --glow-indigo: 0 0 40px rgba(99,102,241,.18);
+      --glow-green: 0 0 40px rgba(16,185,129,.15);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; overflow-x: hidden; }
+
+    /* Animated Grid Background */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background-image:
+        linear-gradient(rgba(6,182,212,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6,182,212,.035) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridDrift 30s linear infinite;
+    }
+    @keyframes gridDrift { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
+
+    /* Orbs Background */
+    .orb { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: -1; }
+    .orb-1 { width: 560px; height: 560px; top: -140px; right: -110px; background: radial-gradient(circle, #06b6d4, transparent); opacity: .22; }
+    .orb-2 { width: 480px; height: 480px; bottom: -100px; left: -90px; background: radial-gradient(circle, #6366f1, transparent); opacity: .22; }
+    .orb-3 { width: 340px; height: 340px; top: 45%; left: 40%; background: radial-gradient(circle, #10b981, transparent); opacity: .12; }
+
+    .container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero Section */
+    .hero { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; padding: 80px 0 60px; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(6,182,212,.12); border: 1px solid rgba(6,182,212,.35);
+      color: var(--cyan); padding: 6px 18px; border-radius: 40px;
+      font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: 28px; animation: fadeDown .6s ease both;
+    }
+    .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.65)} }
+
+    .hero h1 { font-size: clamp(2.1rem, 4.8vw, 3.5rem); font-weight: 900; line-height: 1.2; margin-bottom: 20px; animation: fadeUp .7s .1s ease both; }
+    .grad-cyan { background: linear-gradient(135deg, var(--cyan), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .grad-indigo { background: linear-gradient(135deg, var(--indigo), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .hero-sub { font-size: 1.1rem; color: var(--muted); max-width: 760px; margin-bottom: 36px; animation: fadeUp .7s .2s ease both; }
+
+    /* Quote Box */
+    .quote-box {
+      background: rgba(99,102,241,.06); border-right: 4px solid var(--indigo);
+      border-radius: var(--r-md); padding: 20px 24px; margin-bottom: 36px;
+      font-size: .92rem; color: var(--text); line-height: 1.7; animation: fadeUp .7s .3s ease both;
+    }
+    .quote-box strong { color: var(--cyan); }
+
+    /* Layout Sections */
+    section { padding: 75px 0; }
+    .section-label { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 900; margin-bottom: 18px; }
+    h2 .hl-cyan { color: var(--cyan); }
+    h2 .hl-indigo { color: var(--indigo); }
+    h2 .hl-green { color: var(--green); }
+    .lead { color: var(--muted); font-size: 1.05rem; margin-bottom: 36px; max-width: 760px; }
+
+    hr.divider { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 0; }
+
+    /* Cards Grid */
+    .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media(max-width: 680px){ .cards-2, .cards-3 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 26px;
+      position: relative; overflow: hidden; transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: var(--border2); box-shadow: 0 8px 40px rgba(0,0,0,.45); }
+    .card .c-icon { font-size: 2rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 8px; }
+    .card p { font-size: .86rem; color: var(--muted); line-height: 1.6; }
+
+    .card .top-bar { position: absolute; top: 0; right: 0; width: 100%; height: 3px; }
+    .bar-cyan   { background: linear-gradient(90deg, var(--cyan), var(--teal)); }
+    .bar-indigo { background: linear-gradient(90deg, var(--indigo), var(--accent)); }
+    .bar-green  { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+    .bar-amber  { background: linear-gradient(90deg, var(--amber), var(--rose)); }
+
+    /* Solution Box Structure */
+    .sol-container { display: flex; flex-direction: column; gap: 24px; margin: 32px 0; }
+
+    .sol-card {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r-lg);
+      padding: 28px 32px; position: relative; overflow: hidden;
+    }
+    .sol-card::before { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; }
+    .sol-card.cyan-card::before   { background: var(--cyan); }
+    .sol-card.indigo-card::before { background: var(--indigo); }
+    .sol-card.green-card::before  { background: var(--green); }
+
+    .sol-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+    .sol-card-title { font-size: 1.15rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    .cyan-card .sol-card-title   { color: var(--cyan); }
+    .indigo-card .sol-card-title { color: var(--indigo); }
+    .green-card .sol-card-title  { color: var(--green); }
+
+    .sol-pill {
+      font-family: 'JetBrains Mono', monospace; font-size: .72rem; font-weight: 700;
+      padding: 3px 12px; border-radius: 20px; text-transform: uppercase;
+    }
+    .pill-must { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid rgba(239,68,68,.3); }
+    .pill-should { background: rgba(245,158,11,.15); color: var(--amber); border: 1px solid rgba(245,158,11,.3); }
+    .pill-nice { background: rgba(16,185,129,.15); color: var(--green); border: 1px solid rgba(16,185,129,.3); }
+
+    .sol-card-body { font-size: .88rem; color: var(--muted); line-height: 1.68; }
+    .sol-card-body strong { color: var(--text); }
+
+    /* Implementation Roadmap / Priority Matrix */
+    .roadmap-table-wrap {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 32px 0;
+    }
+    .roadmap-table-head {
+      background: var(--surface2); border-bottom: 1px solid var(--border); padding: 14px 24px;
+      font-size: .78rem; font-family: 'JetBrains Mono', monospace; color: var(--muted);
+    }
+    .roadmap-table-head span { color: var(--cyan); }
+    .rt { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    .rt thead tr { background: var(--surface3); }
+    .rt thead th { padding: 12px 20px; text-align: right; font-size: .75rem; font-weight: 700; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .rt tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    .rt tbody tr:hover { background: rgba(255,255,255,.02); }
+    .rt tbody tr:last-child { border-bottom: none; }
+    .rt td { padding: 14px 20px; vertical-align: top; }
+    .rt td:first-child { font-family: 'JetBrains Mono', monospace; font-size: .8rem; color: var(--text); font-weight: 700; }
+
+    /* Code View Box */
+    .code-box {
+      background: #08090e; border: 1px solid var(--border); border-radius: var(--r-md);
+      overflow: hidden; font-family: 'JetBrains Mono', monospace; margin: 24px 0;
+    }
+    .code-head {
+      background: var(--surface3); border-bottom: 1px solid var(--border);
+      padding: 10px 18px; font-size: .75rem; color: var(--muted); display: flex; justify-content: space-between; align-items: center;
+    }
+    .code-body { padding: 18px; font-size: .8rem; color: var(--text); overflow-x: auto; line-height: 1.65; }
+    .code-body .kwd { color: var(--indigo); font-weight: 600; }
+    .code-body .str { color: var(--teal); }
+    .code-body .cmnt { color: var(--subtle); font-style: italic; }
+    .code-body .attr { color: var(--amber); }
+
+    /* Disclosure Copy Box */
+    .disclosure-box {
+      background: rgba(6,182,212,.05); border: 1px solid rgba(6,182,212,.25);
+      border-radius: var(--r-md); padding: 22px 26px; margin: 24px 0; font-size: .87rem; color: var(--text); line-height: 1.7;
+    }
+    .disclosure-box h4 { color: var(--cyan); font-size: .95rem; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+
+    /* POV Box */
+    .pov-box {
+      background: linear-gradient(135deg, rgba(99,102,241,.08), rgba(6,182,212,.05));
+      border: 1px solid rgba(99,102,241,.3); border-radius: var(--r-lg);
+      padding: 32px; margin: 40px 0; position: relative; overflow: hidden;
+    }
+    .pov-box::before {
+      content: ''; position: absolute; top: -50px; left: -50px; width: 220px; height: 220px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(99,102,241,.15), transparent);
+    }
+    .pov-title {
+      font-size: 1.3rem; font-weight: 900; color: var(--accent); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .pov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
+    @media(max-width: 680px){ .pov-grid { grid-template-columns: 1fr; } }
+
+    .pov-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 20px;
+    }
+    .pov-item h4 { font-size: .95rem; font-weight: 800; color: var(--cyan); margin-bottom: 8px; }
+    .pov-item p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    /* Animations */
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
+    .reveal { opacity:0; transform:translateY(26px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity:1; transform:none; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--subtle); font-size: .82rem; }
+    footer strong { color: var(--muted); }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius:3px; }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ═══════════════════════ HERO ═══════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="badge"><span class="dot"></span> Sprint 5 · SEC-38 &amp; SEC-39 Strategy Guide · index4.html</div>
+
+    <h1>
+      الدليل الأكاديمي الشامل لتعزيز المنهجية<br />
+      <span class="grad-cyan">معالجة تحيز Checkov</span> &amp; <span class="grad-indigo">محدودية C# Benchmark</span>
+    </h1>
+
+    <p class="hero-sub">
+      كيف تحول نقاط الضعف المنهجية إلى أدلة على نضج التفكير العلمي وحصانة العرض أمام المناقشين (Examiner-Proof Methodology).
+    </p>
+
+    <div class="quote-box">
+      💬 <strong>مبدأ مناقشة مشاريع التخرج:</strong> "في مشاريع التخرج، النقطة السلبية الموثقة والمصرح بها صراحةً (Disclosed Limitation) لا تُخصم عليها درجات — بل تُحسب كدليل على النضج العلمي. بينما النقطة الخفية التي يكتشفها المناقش بنفسه هي التي تدمر المصداقية."
+    </div>
+
+    <div class="cards-2">
+      <div class="card">
+        <div class="top-bar bar-cyan"></div>
+        <div class="c-icon">⚖️</div>
+        <h3>المشكلة الأولى: تحيز Checkov (Checkov Bias)</h3>
+        <p>393 عينة من أصل 430 في cfngoat و terragoat مصدرها أداة Checkov نفسها. ولأن SentinelAI يستخدم Checkov، فالمقارنة المباشرة تكون كمَن يحل امتحاناً يملك إجابته النموذجية.</p>
+      </div>
+      <div class="card">
+        <div class="top-bar bar-indigo"></div>
+        <div class="c-icon">🔷</div>
+        <h3>المشكلة الثانية: عدم وجود Benchmark لـ C#</h3>
+        <p>بخلاف لغة Java (التي تمتلك OWASP Benchmark بـ 2000+ نموذج)، لا يوجد benchmark قياسي لـ C#. بيانات C# محصورة في 21 عينة يدويًا من الـ flagship fixture الخاص بالمشروع.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ PROBLEM 1: CHECKOV BIAS SOLUTIONS ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🎯 المشكلة الأولى والتفصيلية</span>
+      <h2>1️⃣ تحيز <span class="hl-cyan">Checkov Bias</span> — الحلول والاستراتيجيات</h2>
+      <p class="lead">
+        الحقيقة العلمية: لا يمكن إعادة كتابة وتوثيق 393 عينة يدوياً في الوقت المتبقي. والهدف هو <strong>تحييد الأثر على الادعاء الرئيسي (Headline Claim)</strong> وليس إلغاء البيانات من المشروع.
+      </p>
+    </div>
+
+    <div class="sol-container reveal">
+
+      <!-- Solution 1a -->
+      <div class="sol-card cyan-card">
+        <div class="sol-card-header">
+          <div class="sol-card-title">
+            <span> الحل 1a: عدم دمج الأرقام مطلقاً والتقرير حسب فئة المصدر (Provenance Segregation)</span>
+          </div>
+          <span class="sol-pill pill-must">Must Do (إجباري)</span>
+        </div>
+        <div class="sol-card-body">
+          <p>أهم خطوة على الإطلاق ولن تكلفك أي كود — مجرد انضباط في طريقة التقرير في SEC-39:</p>
+          <ul style="margin-right:20px; margin-top:8px;">
+            <li><strong>الادعاء الرئيسي (Headline Metrics):</strong> يُحسب فقط من المجموعات المحايدة <code>scanner-neutral</code> + <code>hand-labeled</code> (مثل <code>kubernetes-goat</code>, <code>csharp</code>, <code>clean-samples</code>, و <code>neutral-iac</code>).</li>
+            <li><strong>مجموعات Checkov:</strong> تُوضع في جدول منفصل تماماً مرمز بوضوح: <em>"Checkov-anchored — validates SentinelAI's detection consistency, not a fair cross-tool comparison."</em></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Solution 1b -->
+      <div class="sol-card cyan-card">
+        <div class="sol-card-header">
+          <div class="sol-card-title">
+            <span> الحل 1b: إعادة صياغة هدف عينات Checkov (Coverage &amp; Scale Validation)</span>
+          </div>
+          <span class="sol-pill pill-should">Should Do (موصى به)</span>
+        </div>
+        <div class="sol-card-body">
+          <p>لا تقدم cfngoat/terragoat على أنها "SentinelAI يغلب SonarQube"، بل قدمها كـ <strong>اختبار قدرة وسعة (Scale &amp; Coverage Validation):</strong></p>
+          <p style="margin-top:6px; color:var(--cyan); font-weight:700;">
+            "عبر 393 إعداداً خاطئاً في الـ Infrastructure تغطي 5 مقدمي خدمات سحابية، أثبت خط أنبوب SentinelAI قدرته على توحيد وتجميع المشاكل وبناء السلاسل دون فقدان أي بيانات."
+          </p>
+        </div>
+      </div>
+
+      <!-- Solution 1c -->
+      <div class="sol-card cyan-card">
+        <div class="sol-card-header">
+          <div class="sol-card-title">
+            <span> الحل 1c: إنشاء مجموعة IaC محايدة تماماً (neutral-iac.json)</span>
+          </div>
+          <span class="sol-pill pill-nice">Nice to Have / Actionable</span>
+        </div>
+        <div class="sol-card-body">
+          <p>إنشاء ملف جديد <code>benchmark/ground_truth/neutral-iac.json</code> يتكون من 12–15 ثغرة محايدة ومستقلة عن أي أداة، ومكتوبة على مستوى Vulnerability Class وليس Scanner Rule.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ PROBLEM 2: C# GAP SOLUTIONS ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🔷 المشكلة الثانية والتفصيلية</span>
+      <h2>2️⃣ محدودية عينات <span class="hl-indigo">C# Benchmark</span> — الحلول والاستراتيجيات</h2>
+      <p class="lead">
+        الحقيقة العلمية: لا يوجد OWASP Benchmark لـ C# عالمياً، ولا يُتوقع منك بناء واحد في مشروع تخرج. المعيار هو كيف تتعامل مع هذه المحدودية كعالم ومطوّر محترف.
+      </p>
+    </div>
+
+    <div class="sol-container reveal">
+
+      <!-- Solution 2a -->
+      <div class="sol-card indigo-card">
+        <div class="sol-card-header">
+          <div class="sol-card-title">
+            <span> الحل 2a: التصريح بالمحدودية في مقدمة التقرير (Headline Caveat)</span>
+          </div>
+          <span class="sol-pill pill-must">Must Do (إجباري)</span>
+        </div>
+        <div class="sol-card-body">
+          <p>اجعل تنويه المحدودية عنواناً رئيسياً وليس هامشاً سفلياً. إعلان المحدودية قبل أن يكتشفها المناقش يحول نقطة الضعف إلى دليل على النضج العلمي.</p>
+        </div>
+      </div>
+
+      <!-- Solution 2b -->
+      <div class="sol-card indigo-card">
+        <div class="sol-card-header">
+          <div class="sol-card-title">
+            <span> الحل 2b: ربط حزم C# بـ CVEs حقيقية من مكتبة OSV</span>
+          </div>
+          <span class="sol-pill pill-should">Should Do (موصى به)</span>
+        </div>
+        <div class="sol-card-body">
+          <p>بدلاً من أن تكون التسميات ذاتية فقط ("Mohamed says so")، ربط الـ 7 مكتبات في NuGet بأرقام CVE رسمية عبر تشغيل OSV-Scanner على مشروع C# بـ SentinelAI.</p>
+        </div>
+      </div>
+
+      <!-- Solution 2c & 2d -->
+      <div class="sol-card indigo-card">
+        <div class="sol-card-header">
+          <div class="sol-card-title">
+            <span> الحل 2d: إعادة تأطير ادعاء C# كـ Capability Demonstration</span>
+          </div>
+          <span class="sol-pill pill-should">Should Do (موصى به)</span>
+        </div>
+        <div class="sol-card-body">
+          <p>لا تدعي "SentinelAI لديه دقة X% في C#"؛ بل ادعي: <strong>"على عينة C#، يثبت SentinelAI القدرة الفريدة على بناء السلسلة بين الطبقات (CWE-502 ← Wildcard IAM ← S3) والتي تعجز أي أداة أحادية الطبقة عن اكتشافها."</strong></p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Disclosure Text Snippet -->
+    <div class="disclosure-box reveal">
+      <h4>📌 النص الموصى به للتصريح (للإضافة في benchmark/README.md والتقرير):</h4>
+      <p>
+        <em>"C# ground-truth scope and limitation: Unlike Java, which has the OWASP Benchmark (thousands of labeled cases), no standard C#/.NET security benchmark exists. The C# ground truth here is therefore limited to 21 hand-labeled findings from a single, self-authored flagship fixture. These results are indicative, not statistically rigorous. Accordingly, the C# set is used to demonstrate SentinelAI's cross-layer chaining capability (CWE-502 → wildcard-IAM → S3), not to make statistical precision/recall claims. Cross-tool statistical comparison relies on the scanner-neutral sets."</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ PRIORITIZED ROADMAP MATRIX ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🗺️ خطة العمل حسب الأولوية</span>
+      <h2>جدول الأولويات وتنفيذ الحلول <span class="hl-green">(Order of Operations)</span></h2>
+      <p class="lead">توزيع خطوات التنفيذ بناءً على العائد مقابل المجهود المبذول (Value-per-Effort).</p>
+    </div>
+
+    <div class="roadmap-table-wrap reveal">
+      <div class="roadmap-table-head">
+        مصفوفة التنفيذ — <span>SEC-38 / SEC-39 Action Items</span>
+      </div>
+      <table class="rt">
+        <thead>
+          <tr>
+            <th>المهمة / الحل</th>
+            <th>الأولوية</th>
+            <th>نوع المجهود</th>
+            <th>الأثر على مصداقية المشروع</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1a — تقرير منفصل لكل Provenance Class</td>
+            <td><span class="sol-pill pill-must">Must Do</span></td>
+            <td>تنظيم تقرير (Zero Code)</td>
+            <td>يمنع تهمة "تزوير النتايج بحساب المتوسطات" (80% من المصداقية)</td>
+          </tr>
+          <tr>
+            <td>2a — إبراز تحذير C# المحدود في العنوان</td>
+            <td><span class="sol-pill pill-must">Must Do</span></td>
+            <td>توثيق ونص صريح</td>
+            <td>يحول نقطة ضعف إلى دليل نضج علمي أمام مناقش التخرج</td>
+          </tr>
+          <tr>
+            <td>1b — إعادة صياغة Checkov كـ Scale Validation</td>
+            <td><span class="sol-pill pill-should">Should Do</span></td>
+            <td>صياغة تقرير</td>
+            <td>يستفيد من الـ 393 عينة الضخمة كدليل سعة وشمولية للنظام</td>
+          </tr>
+          <tr>
+            <td>2b — ربط dependencies بـ OSV CVEs</td>
+            <td><span class="sol-pill pill-should">Should Do</span></td>
+            <td>تشغيل OSV-Scanner</td>
+            <td>يعطي إثباتاً خارجياً مستقلاً لـ 7 عناصر في C#</td>
+          </tr>
+          <tr>
+            <td>2d — صياغة C# كـ Capability Demo</td>
+            <td><span class="sol-pill pill-should">Should Do</span></td>
+            <td>تأطير الادعاءات</td>
+            <td>يبرر صغر الحجم (n=21) لأنه يثبت فكرة الـ 3-layer attack chain</td>
+          </tr>
+          <tr>
+            <td>1c — إنشاء neutral-iac.json</td>
+            <td><span class="sol-pill pill-nice">Nice to Have</span></td>
+            <td>ملف ground_truth جديد</td>
+            <td>يوفر مجموعة infra محايدة تماماً ومبسطة على مستوى الـ CWE</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ PROMPT SPECIFICATION FOR NEUTRAL-IAC ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">📜 الـ Prompt المصمم لإنشاء neutral-iac.json</span>
+      <h2>البرومبت المكتوب لتوليد <span class="hl-cyan">neutral-iac.json</span></h2>
+      <p class="lead">يمكن استخدام هذا البرومبت لتوليد الملف المحايد الخاص بالـ Infrastructure عبر AI أو Claude Code:</p>
+    </div>
+
+    <div class="code-box reveal">
+      <div class="code-head">
+        <span>Prompt for creating benchmark/ground_truth/neutral-iac.json</span>
+        <span>SEC-38 Specification</span>
+      </div>
+      <div class="code-body">
+Still sentinelai-fixtures, SEC-38 — create a NEW ground-truth set: benchmark/ground_truth/neutral-iac.json.<br />
+Touch no existing ground-truth file. This set must be tool-neutral — its whole purpose is a fair cross-tool comparison,<br />
+so labels must NOT be tied to any one scanner's rules.<br /><br />
+
+<span class="cmnt">Goal: ~12–15 IaC misconfigurations, labeled at the vulnerability level (not the scanner-rule level),</span><br />
+<span class="cmnt">each drawn from resources already in the vendored terragoat/cfngoat trees but described independently of Checkov.</span><br /><br />
+
+<span class="kwd">Selection rules (strict):</span><br />
+1. Choose only high-consensus misconfigurations (public storage, unencrypted sensitive storage, open 0.0.0.0/0 on sensitive ports, wildcard IAM, hardcoded secret).<br />
+2. One item per real vulnerability, not per rule (collapse S3 7-rows into 1-2 distinct vulnerabilities).<br />
+3. Spread across providers (aws / azure / gcp).<br />
+4. Use CWE IDs only (e.g. CWE-284) — NO CKV or scanner rule IDs.<br /><br />
+
+<span class="attr">Schema:</span><br />
+{<br />
+&nbsp;&nbsp;<span class="str">"id"</span>: <span class="str">"GT-001"</span>,<br />
+&nbsp;&nbsp;<span class="str">"layer"</span>: <span class="str">"infra"</span>,<br />
+&nbsp;&nbsp;<span class="str">"file"</span>: <span class="str">"path in vendored tree"</span>,<br />
+&nbsp;&nbsp;<span class="str">"resource_or_line"</span>: <span class="str">"resource address"</span>,<br />
+&nbsp;&nbsp;<span class="str">"expected_label"</span>: <span class="str">"real_finding"</span>,<br />
+&nbsp;&nbsp;<span class="str">"expected_category"</span>: <span class="str">"public-storage | open-ingress | wildcard-iam | unencrypted-storage"</span>,<br />
+&nbsp;&nbsp;<span class="str">"cwe_or_rule"</span>: <span class="str">"CWE-284"</span>,<br />
+&nbsp;&nbsp;<span class="str">"notes"</span>: <span class="str">"Vulnerability description in tool-neutral language"</span>,<br />
+&nbsp;&nbsp;<span class="str">"source_class"</span>: <span class="str">"neutral-handlabeled"</span><br />
+}
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ EXPERT POINT OF VIEW ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🧠 التقييم الهندي الفني</span>
+      <h2>رأي الخبير وتقييم الـ Prompt <span class="hl-cyan">(Expert Point of View)</span></h2>
+      <p class="lead">تحليل نقدي لمعمارية ورؤية هذا الـ البرومبت ولماذا يعتبر الحل الأمثل لمشروع تخرج بمستوى إنتاجي:</p>
+    </div>
+
+    <div class="pov-box reveal">
+      <div class="pov-title">
+        <span>💡 النظرة الفنية والتحليلية للـ Prompt:</span>
+      </div>
+
+      <div class="pov-grid">
+        <div class="pov-item">
+          <h4>1. معالجة الجذر بدلاً من العَرَض (Root-Cause Fix)</h4>
+          <p>البرومبت لا يحاول "تجميل" أسماء قواعد Checkov، بل يقوم بإنشاء شريحة ذهبية محايدة (Gold Standard Dataset) من 12-15 عنصراً تُبنى مباشرة على مفاهيم الـ Vulnerability Class والـ CWE (مثل CWE-284)، مما يجعل الادعاء مستحيلاً أن يُطعن فيه من قِبل أي مناقش.</p>
+        </div>
+        <div class="pov-item">
+          <h4>2. تجميع القواعد المتعاددة (Rule Collapsing)</h4>
+          <p>أهم عبقرية في البرومبت هي تجميع القواعد (Collapsing). الـ Scanners التلقائية تخرج 7 تحذيرات مختلفة لـ S3 Bucket واحد bad. البرومبت يدمجها في ثغرة حقيقية واحدة يراها الإنسان، وهو ما يطابق طريقة التقييم البشري الحقيقي.</p>
+        </div>
+        <div class="pov-item">
+          <h4>3. التوزيع على الـ Cloud Providers</h4>
+          <p>اشتراط توزيع الثغرات بين AWS و Azure و GCP يضمن عدم تحيز الاختبار لمزود سحابي معين، مما يعطي انطباعاً بقوة التغطية والشمولية للنظام أثناء العرض النهائي.</p>
+        </div>
+        <div class="pov-item">
+          <h4>4. الانضباط في مراجعة الكود (Reviewer Protocol)</h4>
+          <p>طلب عدم تنفيذ <code>git commit</code> فوراً والاطلاع على <code>git diff --stat</code> يعكس احترافية عالية تمنع دخول أي بيانات غير مفحوصة أو تحمل بالخطأ معرفات Checkov كودية إلى الـ Benchmark الرسمي.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<footer>
+  <div class="container">
+    <p><strong>SentinelAI · Sprint 5</strong> — Methodological Solutions &amp; Expert POV (index4.html) · sentinelai-fixture</p>
+    <p style="margin-top: 8px">دليل الحلول والأمان المنهجي ورأي الخبير أمام لجنة المناقشة لـ SEC-38 و SEC-39</p>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      const kids = e.target.querySelectorAll('.card, .sol-card, .disclosure-box, .pov-item');
+      kids.forEach((k, i) => { k.style.transitionDelay = `${i * 0.07}s`; });
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
