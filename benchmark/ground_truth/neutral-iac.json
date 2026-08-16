@@ -1,0 +1,140 @@
+{
+  "project": "neutral-iac",
+  "source_commit": "",
+  "ground_truth_bias": "scanner-neutral",
+  "provenance": "Hand-labeled at the vulnerability level from resources in the vendored terragoat/cfngoat trees, described in tool-neutral language and deliberately independent of any scanner's rule grain (no Checkov/tool rule IDs). High-consensus IaC misconfigurations only, spread across AWS/Azure/GCP. Intended as the fair cross-tool comparison set for SEC-39.",
+  "items": [
+    {
+      "id": "GT-001",
+      "layer": "infra",
+      "file": "benchmark/cfngoat/cfngoat.yaml",
+      "resource_or_line": "DataBucket (AWS::S3::Bucket, ~L917)",
+      "expected_label": "real_finding",
+      "expected_category": "public-storage",
+      "cwe_or_rule": "CWE-284",
+      "notes": "S3 bucket is publicly readable (public-read ACL, no public-access protections). The scanner emits several rows for this bucket; collapsed to the 2 genuine human-level vulns - this item is the public exposure (see GT-002 for the encryption vuln).",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-002",
+      "layer": "infra",
+      "file": "benchmark/cfngoat/cfngoat.yaml",
+      "resource_or_line": "DataBucket (AWS::S3::Bucket, ~L917)",
+      "expected_label": "real_finding",
+      "expected_category": "unencrypted-storage",
+      "cwe_or_rule": "CWE-311",
+      "notes": "Same bucket as GT-001, second distinct vulnerability: no server-side encryption at rest for a data bucket. Deliberately separated from the public-access vuln - a human names these as two different problems.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-003",
+      "layer": "infra",
+      "file": "benchmark/cfngoat/cfngoat.yaml",
+      "resource_or_line": "WebNodeSG (AWS::EC2::SecurityGroup, ~L112)",
+      "expected_label": "real_finding",
+      "expected_category": "open-ingress",
+      "cwe_or_rule": "CWE-284",
+      "notes": "Security group allows inbound SSH (port 22) from 0.0.0.0/0. Collapsed away a separate rule-description hygiene row that is not a real security vuln; the genuine issue is management-port exposure to the internet.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-004",
+      "layer": "infra",
+      "file": "benchmark/cfngoat/cfngoat.yaml",
+      "resource_or_line": "UserPolicy (AWS::IAM::Policy, ~L406)",
+      "expected_label": "real_finding",
+      "expected_category": "wildcard-iam",
+      "cwe_or_rule": "CWE-284",
+      "notes": "IAM policy grants wildcard actions/resources (over-permissive). The scanner emits ~6 rows (credentials exposure, unconstrained write, data exfiltration, privilege escalation, etc.); collapsed to the single underlying vulnerability - a policy using '*' rather than least privilege.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-005",
+      "layer": "infra",
+      "file": "benchmark/cfngoat/cfngoat.yaml",
+      "resource_or_line": "EC2Instance user data - hardcoded AWS_ACCESS_KEY_ID (~L69)",
+      "expected_label": "real_finding",
+      "expected_category": "hardcoded-secret",
+      "cwe_or_rule": "CWE-798",
+      "notes": "A long-lived AWS access key is hard-coded into the EC2 user-data script. The scanner reports this as both a generic secret and a user-data-secret row; collapsed to one hard-coded-credential vulnerability.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-006",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/azure/networking.tf",
+      "resource_or_line": "azurerm_network_security_group.bad_sg (~L69)",
+      "expected_label": "real_finding",
+      "expected_category": "open-ingress",
+      "cwe_or_rule": "CWE-284",
+      "notes": "NSG inbound rules allow SSH (22) and RDP (3389) from any source ('*'). Collapsed the two rules into one 'management ports open to the internet' vulnerability.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-007",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/azure/storage.tf",
+      "resource_or_line": "azurerm_managed_disk.example (~L1)",
+      "expected_label": "real_finding",
+      "expected_category": "unencrypted-storage",
+      "cwe_or_rule": "CWE-311",
+      "notes": "Managed disk has encryption explicitly disabled (encryption_settings.enabled = false) - unencrypted storage of data at rest. Single distinct vulnerability.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-008",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_sql_server.example (~L9)",
+      "expected_label": "real_finding",
+      "expected_category": "hardcoded-secret",
+      "cwe_or_rule": "CWE-798",
+      "notes": "Database administrator password is hard-coded as a string literal in the Terraform. Single distinct vulnerability (hard-coded credential in IaC).",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-009",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/azure/sql.tf",
+      "resource_or_line": "azurerm_mysql_server.example (~L44)",
+      "expected_label": "real_finding",
+      "expected_category": "public-database",
+      "cwe_or_rule": "CWE-284",
+      "notes": "Managed MySQL server has public network access enabled - the database is reachable from the public internet. High-consensus public-exposure of a data store (sibling of public-storage); collapsed any related rows to this one exposure vuln.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-010",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/gcp/gcs.tf",
+      "resource_or_line": "google_storage_bucket_iam_binding.allow_public_read (~L17)",
+      "expected_label": "real_finding",
+      "expected_category": "public-storage",
+      "cwe_or_rule": "CWE-284",
+      "notes": "GCS bucket grants objectViewer to 'allUsers' - the bucket contents are world-readable. Single distinct public-exposure vulnerability.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-011",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/gcp/networks.tf",
+      "resource_or_line": "google_compute_firewall.allow_all (~L19)",
+      "expected_label": "real_finding",
+      "expected_category": "open-ingress",
+      "cwe_or_rule": "CWE-284",
+      "notes": "Firewall allows ingress from 0.0.0.0/0 to all TCP ports (0-65535). Collapsed the scanner's multiple rows to one 'network open to the internet' vulnerability.",
+      "source_class": "neutral-handlabeled"
+    },
+    {
+      "id": "GT-012",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/gcp/big_data.tf",
+      "resource_or_line": "google_sql_database_instance.master_instance (~L1)",
+      "expected_label": "real_finding",
+      "expected_category": "public-database",
+      "cwe_or_rule": "CWE-284",
+      "notes": "Cloud SQL instance has a public IPv4 and an authorized network of 0.0.0.0/0 - the database is exposed to the entire internet. High-consensus public-exposure; collapsed related rows to this one vuln.",
+      "source_class": "neutral-handlabeled"
+    }
+  ]
+}

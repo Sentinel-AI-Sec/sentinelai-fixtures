@@ -1,0 +1,668 @@
+{
+  "project": "cfngoat",
+  "source_commit": "0c09b69cfc3dbc6cb3ef01883415c35c588ced48",
+  "provenance": "Ground truth derived from CfnGoat's auto-generated Checkov output (README 'Existing vulnerabilities' tables). Findings are Checkov-rule-grained. Cross-tool recall on this set is biased toward Checkov-based scanners (including SentinelAI); use for within-SentinelAI validation, not as the headline cross-tool fairness claim.",
+  "ground_truth_bias": "tool-derived:checkov",
+  "items": [
+    {
+      "id": "GT-001",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "EC2Instance",
+      "expected_label": "real_finding",
+      "expected_category": "hardcoded-secret-ec2-userdata",
+      "cwe_or_rule": "CKV_AWS_46",
+      "notes": "EC2 user data contains hard-coded AWS credentials; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-002",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "WebHostStorage",
+      "expected_label": "real_finding",
+      "expected_category": "unencrypted-ebs-volume",
+      "cwe_or_rule": "CKV_AWS_3",
+      "notes": "EBS volume is not encrypted at rest; intentional (inline comment 'Unencrypted Volume')."
+    },
+    {
+      "id": "GT-003",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "WebNodeSG",
+      "expected_label": "real_finding",
+      "expected_category": "open-security-group-ssh",
+      "cwe_or_rule": "CKV_AWS_24",
+      "notes": "Security group allows ingress from 0.0.0.0/0 to port 22; intentional (inline comment 'SSH port open to the world')."
+    },
+    {
+      "id": "GT-004",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "WebNodeSG",
+      "expected_label": "real_finding",
+      "expected_category": "missing-sg-rule-description",
+      "cwe_or_rule": "CKV_AWS_23",
+      "notes": "Security group rule has no description; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-005",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FlowBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-access-logging",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "S3 bucket has no access logging; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-006",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FlowBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-versioning",
+      "cwe_or_rule": "CKV_AWS_21",
+      "notes": "S3 bucket has no versioning; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-007",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FlowBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-acls",
+      "cwe_or_rule": "CKV_AWS_53",
+      "notes": "S3 bucket does not block public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-008",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FlowBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-ignore-public-acls",
+      "cwe_or_rule": "CKV_AWS_55",
+      "notes": "S3 bucket does not ignore public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-009",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FlowBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-unencrypted",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "S3 bucket has no server-side encryption; intentional (inline comment 'Public, not encrypted, no access logs, no versioning')."
+    },
+    {
+      "id": "GT-010",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FlowBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-restrict-public-bucket",
+      "cwe_or_rule": "CKV_AWS_56",
+      "notes": "S3 bucket does not restrict public bucket access; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-011",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FlowBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-policy",
+      "cwe_or_rule": "CKV_AWS_54",
+      "notes": "S3 bucket does not block public policy; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-012",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "UserPolicy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-credentials-exposure",
+      "cwe_or_rule": "CKV_AWS_107",
+      "notes": "IAM policy allows credentials exposure; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-013",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "UserPolicy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-write-without-constraints",
+      "cwe_or_rule": "CKV_AWS_111",
+      "notes": "IAM policy allows write access without constraints; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-014",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "UserPolicy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-data-exfiltration",
+      "cwe_or_rule": "CKV_AWS_108",
+      "notes": "IAM policy allows data exfiltration; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-015",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "UserPolicy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-permissions-management-without-constraints",
+      "cwe_or_rule": "CKV_AWS_109",
+      "notes": "IAM policy allows permissions management without constraints; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-016",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "UserPolicy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-policy-attached-to-user",
+      "cwe_or_rule": "CKV_AWS_40",
+      "notes": "IAM policy is attached directly to a user rather than a group or role; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-017",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "UserPolicy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-privilege-escalation",
+      "cwe_or_rule": "CKV_AWS_110",
+      "notes": "IAM policy allows privilege escalation; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-018",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "LogsKey",
+      "expected_label": "real_finding",
+      "expected_category": "kms-no-key-rotation",
+      "cwe_or_rule": "CKV_AWS_7",
+      "notes": "KMS customer-managed key does not have rotation enabled; intentional (inline comment 'Key does not have rotation enabled')."
+    },
+    {
+      "id": "GT-019",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DefaultDB",
+      "expected_label": "real_finding",
+      "expected_category": "rds-unencrypted",
+      "cwe_or_rule": "CKV_AWS_16",
+      "notes": "RDS instance is not encrypted at rest; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-020",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DefaultDB",
+      "expected_label": "real_finding",
+      "expected_category": "rds-no-multi-az",
+      "cwe_or_rule": "CKV_AWS_157",
+      "notes": "RDS instance does not have Multi-AZ enabled; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-021",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DefaultDB",
+      "expected_label": "real_finding",
+      "expected_category": "rds-publicly-accessible",
+      "cwe_or_rule": "CKV_AWS_17",
+      "notes": "RDS instance is publicly accessible; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-022",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DefaultSG",
+      "expected_label": "real_finding",
+      "expected_category": "missing-sg-rule-description",
+      "cwe_or_rule": "CKV_AWS_23",
+      "notes": "Security group rule has no description; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-023",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "EC2Policy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-credentials-exposure",
+      "cwe_or_rule": "CKV_AWS_107",
+      "notes": "IAM policy allows credentials exposure; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-024",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "EC2Policy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-write-without-constraints",
+      "cwe_or_rule": "CKV_AWS_111",
+      "notes": "IAM policy allows write access without constraints; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-025",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "EC2Policy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-data-exfiltration",
+      "cwe_or_rule": "CKV_AWS_108",
+      "notes": "IAM policy allows data exfiltration; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-026",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "EC2Policy",
+      "expected_label": "real_finding",
+      "expected_category": "iam-permissions-management-without-constraints",
+      "cwe_or_rule": "CKV_AWS_109",
+      "notes": "IAM policy allows permissions management without constraints; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-027",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "AnalysisLambda",
+      "expected_label": "real_finding",
+      "expected_category": "lambda-no-dlq",
+      "cwe_or_rule": "CKV_AWS_116",
+      "notes": "Lambda function has no Dead Letter Queue configured; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-028",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "AnalysisLambda",
+      "expected_label": "real_finding",
+      "expected_category": "lambda-env-unencrypted",
+      "cwe_or_rule": "CKV_AWS_173",
+      "notes": "Lambda environment variables are not encrypted with a CMK; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-029",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "AnalysisLambda",
+      "expected_label": "real_finding",
+      "expected_category": "hardcoded-secret-lambda-env",
+      "cwe_or_rule": "CKV_AWS_45",
+      "notes": "Lambda environment contains hard-coded secrets (access_key/secret_key); intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-030",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-access-logging",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "S3 bucket has no access logging; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-031",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataBucket",
+      "expected_label": "real_finding",
+      "expected_category": "public-s3-read-acl",
+      "cwe_or_rule": "CKV_AWS_20",
+      "notes": "S3 bucket ACL grants READ permission to everyone (public read); intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-032",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-versioning",
+      "cwe_or_rule": "CKV_AWS_21",
+      "notes": "S3 bucket has no versioning; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-033",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-acls",
+      "cwe_or_rule": "CKV_AWS_53",
+      "notes": "S3 bucket does not block public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-034",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-ignore-public-acls",
+      "cwe_or_rule": "CKV_AWS_55",
+      "notes": "S3 bucket does not ignore public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-035",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-unencrypted",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "S3 bucket has no server-side encryption; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-036",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-restrict-public-bucket",
+      "cwe_or_rule": "CKV_AWS_56",
+      "notes": "S3 bucket does not restrict public bucket access; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-037",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-policy",
+      "cwe_or_rule": "CKV_AWS_54",
+      "notes": "S3 bucket does not block public policy; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-038",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FinancialsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-access-logging",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "S3 bucket has no access logging; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-039",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FinancialsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-versioning",
+      "cwe_or_rule": "CKV_AWS_21",
+      "notes": "S3 bucket has no versioning; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-040",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FinancialsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-acls",
+      "cwe_or_rule": "CKV_AWS_53",
+      "notes": "S3 bucket does not block public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-041",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FinancialsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-ignore-public-acls",
+      "cwe_or_rule": "CKV_AWS_55",
+      "notes": "S3 bucket does not ignore public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-042",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FinancialsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-unencrypted",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "S3 bucket has no server-side encryption; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-043",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FinancialsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-restrict-public-bucket",
+      "cwe_or_rule": "CKV_AWS_56",
+      "notes": "S3 bucket does not restrict public bucket access; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-044",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "FinancialsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-policy",
+      "cwe_or_rule": "CKV_AWS_54",
+      "notes": "S3 bucket does not block public policy; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-045",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "OperationsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-access-logging",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "S3 bucket has no access logging; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-046",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "OperationsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-acls",
+      "cwe_or_rule": "CKV_AWS_53",
+      "notes": "S3 bucket does not block public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-047",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "OperationsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-ignore-public-acls",
+      "cwe_or_rule": "CKV_AWS_55",
+      "notes": "S3 bucket does not ignore public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-048",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "OperationsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-unencrypted",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "S3 bucket has no server-side encryption; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-049",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "OperationsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-restrict-public-bucket",
+      "cwe_or_rule": "CKV_AWS_56",
+      "notes": "S3 bucket does not restrict public bucket access; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-050",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "OperationsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-policy",
+      "cwe_or_rule": "CKV_AWS_54",
+      "notes": "S3 bucket does not block public policy; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-051",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataScienceBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-acls",
+      "cwe_or_rule": "CKV_AWS_53",
+      "notes": "S3 bucket does not block public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-052",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataScienceBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-ignore-public-acls",
+      "cwe_or_rule": "CKV_AWS_55",
+      "notes": "S3 bucket does not ignore public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-053",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataScienceBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-unencrypted",
+      "cwe_or_rule": "CKV_AWS_19",
+      "notes": "S3 bucket has no server-side encryption; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-054",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataScienceBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-restrict-public-bucket",
+      "cwe_or_rule": "CKV_AWS_56",
+      "notes": "S3 bucket does not restrict public bucket access; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-055",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "DataScienceBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-policy",
+      "cwe_or_rule": "CKV_AWS_54",
+      "notes": "S3 bucket does not block public policy; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-056",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "LogsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-access-logging",
+      "cwe_or_rule": "CKV_AWS_18",
+      "notes": "S3 bucket has no access logging; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-057",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "LogsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-acls",
+      "cwe_or_rule": "CKV_AWS_53",
+      "notes": "S3 bucket does not block public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-058",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "LogsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-ignore-public-acls",
+      "cwe_or_rule": "CKV_AWS_55",
+      "notes": "S3 bucket does not ignore public ACLs; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-059",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "LogsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-restrict-public-bucket",
+      "cwe_or_rule": "CKV_AWS_56",
+      "notes": "S3 bucket does not restrict public bucket access; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-060",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "LogsBucket",
+      "expected_label": "real_finding",
+      "expected_category": "s3-no-block-public-policy",
+      "cwe_or_rule": "CKV_AWS_54",
+      "notes": "S3 bucket does not block public policy; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-061",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "CleanupRole",
+      "expected_label": "real_finding",
+      "expected_category": "iam-write-without-constraints",
+      "cwe_or_rule": "CKV_AWS_111",
+      "notes": "IAM role policy allows write access without constraints; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-062",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "CleanupRole",
+      "expected_label": "real_finding",
+      "expected_category": "iam-data-exfiltration",
+      "cwe_or_rule": "CKV_AWS_108",
+      "notes": "IAM role policy allows data exfiltration; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-063",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "CleanBucketFunction",
+      "expected_label": "real_finding",
+      "expected_category": "lambda-no-dlq",
+      "cwe_or_rule": "CKV_AWS_116",
+      "notes": "Lambda function has no Dead Letter Queue configured; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-064",
+      "layer": "infra",
+      "file": "eks.yaml",
+      "resource_or_line": "EKSCluster",
+      "expected_label": "real_finding",
+      "expected_category": "eks-no-secrets-encryption",
+      "cwe_or_rule": "CKV_AWS_58",
+      "notes": "EKS cluster does not have Kubernetes Secrets encryption enabled; intentional per CfnGoat's documented findings."
+    },
+    {
+      "id": "GT-065",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "25910f981e85ca04baf359199dd0bd4a3ae738b6",
+      "expected_label": "real_finding",
+      "expected_category": "hardcoded-aws-access-key",
+      "cwe_or_rule": "CKV_SECRET_2",
+      "notes": "Hard-coded AWS access key in the template (e.g. AWS_ACCESS_KEY_ID in EC2 user data ~L69); intentional, documented in CfnGoat's secrets table (fingerprint as resource id)."
+    },
+    {
+      "id": "GT-066",
+      "layer": "infra",
+      "file": "cfngoat.yaml",
+      "resource_or_line": "d70eab08607a4d05faa2d0d6647206599e9abc65",
+      "expected_label": "real_finding",
+      "expected_category": "hardcoded-high-entropy-string",
+      "cwe_or_rule": "CKV_SECRET_6",
+      "notes": "Hard-coded base64 high-entropy secret in the template (e.g. AWS_SECRET_ACCESS_KEY ~L70); intentional, documented in CfnGoat's secrets table (fingerprint as resource id)."
+    }
+  ]
+}
