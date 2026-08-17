@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>التنفيذ العملي لـ neutral-iac.json · SentinelAI Sprint 5 (index5.html)</title>
+  <meta name="description" content="التوثيق والتفاصيل الكاملة لعملية بناء وتشغيل ملف neutral-iac.json المستقل والمحايد لمهمة SEC-38 و SEC-39" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #060d0b;
+      --surface:  #0d1714;
+      --surface2: #14241f;
+      --surface3: #1d332c;
+      --border:   #28473e;
+      --border2:  #386356;
+
+      --emerald:  #10b981;
+      --teal:     #14b8a6;
+      --mint:     #34d399;
+      --cyan:     #06b6d4;
+      --indigo:   #6366f1;
+      --accent:   #a78bfa;
+      --amber:    #f59e0b;
+      --red:      #ef4444;
+
+      --text:   #e6f4f1;
+      --muted:  #8faea6;
+      --subtle: #4b6e64;
+
+      --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+      --shadow: 0 4px 32px rgba(0,0,0,.65);
+      --glow-emerald: 0 0 40px rgba(16,185,129,.2);
+      --glow-teal: 0 0 40px rgba(20,184,166,.18);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; overflow-x: hidden; }
+
+    /* Animated Grid Background */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background-image:
+        linear-gradient(rgba(16,185,129,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16,185,129,.035) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridDrift 30s linear infinite;
+    }
+    @keyframes gridDrift { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
+
+    /* Orbs Background */
+    .orb { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: -1; }
+    .orb-1 { width: 560px; height: 560px; top: -140px; right: -110px; background: radial-gradient(circle, #10b981, transparent); opacity: .22; }
+    .orb-2 { width: 480px; height: 480px; bottom: -100px; left: -90px; background: radial-gradient(circle, #14b8a6, transparent); opacity: .22; }
+    .orb-3 { width: 340px; height: 340px; top: 45%; left: 40%; background: radial-gradient(circle, #06b6d4, transparent); opacity: .12; }
+
+    .container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero Section */
+    .hero { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; padding: 80px 0 60px; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.35);
+      color: var(--mint); padding: 6px 18px; border-radius: 40px;
+      font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: 28px; animation: fadeDown .6s ease both;
+    }
+    .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.65)} }
+
+    .hero h1 { font-size: clamp(2.1rem, 4.8vw, 3.5rem); font-weight: 900; line-height: 1.2; margin-bottom: 20px; animation: fadeUp .7s .1s ease both; }
+    .grad-emerald { background: linear-gradient(135deg, var(--mint), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .grad-cyan { background: linear-gradient(135deg, var(--cyan), var(--indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .hero-sub { font-size: 1.1rem; color: var(--muted); max-width: 760px; margin-bottom: 36px; animation: fadeUp .7s .2s ease both; }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; animation: fadeUp .7s .35s ease both; }
+    @media(max-width: 680px){ .kpi-row { grid-template-columns: 1fr 1fr; } }
+
+    .kpi {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
+      padding: 20px 16px; text-align: center; transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .kpi:hover { transform: translateY(-4px); border-color: var(--emerald); box-shadow: var(--glow-emerald); }
+    .kpi .kpi-num { font-size: 2rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; line-height: 1; margin-bottom: 6px; }
+    .kpi .kpi-label { font-size: .75rem; color: var(--muted); }
+
+    /* Layout Sections */
+    section { padding: 75px 0; }
+    .section-label { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mint); margin-bottom: 12px; }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 900; margin-bottom: 18px; }
+    h2 .hl-emerald { color: var(--emerald); }
+    h2 .hl-teal { color: var(--teal); }
+    .lead { color: var(--muted); font-size: 1.05rem; margin-bottom: 36px; max-width: 760px; }
+
+    hr.divider { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 0; }
+
+    /* Cards Grid */
+    .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media(max-width: 680px){ .cards-2, .cards-3 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 26px;
+      position: relative; overflow: hidden; transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: var(--border2); box-shadow: 0 8px 40px rgba(0,0,0,.45); }
+    .card .c-icon { font-size: 2rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 8px; }
+    .card p { font-size: .86rem; color: var(--muted); line-height: 1.6; }
+
+    .card .top-bar { position: absolute; top: 0; right: 0; width: 100%; height: 3px; }
+    .bar-emerald { background: linear-gradient(90deg, var(--emerald), var(--mint)); }
+    .bar-teal    { background: linear-gradient(90deg, var(--teal), var(--cyan)); }
+    .bar-cyan    { background: linear-gradient(90deg, var(--cyan), var(--indigo)); }
+
+    /* Main Table Format */
+    .table-wrap {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 32px 0;
+    }
+    .table-head {
+      background: var(--surface2); border-bottom: 1px solid var(--border); padding: 14px 24px;
+      font-size: .78rem; font-family: 'JetBrains Mono', monospace; color: var(--muted); display: flex; justify-content: space-between;
+    }
+    .table-head span { color: var(--mint); }
+    .main-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+    .main-table thead tr { background: var(--surface3); }
+    .main-table thead th { padding: 12px 18px; text-align: right; font-size: .74rem; font-weight: 700; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .main-table tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    .main-table tbody tr:hover { background: rgba(255,255,255,.02); }
+    .main-table tbody tr:last-child { border-bottom: none; }
+    .main-table td { padding: 14px 18px; vertical-align: top; }
+    .main-table td.gt-id { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--mint); }
+
+    .prov-badge {
+      display: inline-block; font-size: .68rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; font-family: 'JetBrains Mono', monospace;
+    }
+    .pb-aws   { background: rgba(245,158,11,.15); color: var(--amber); border: 1px solid rgba(245,158,11,.3); }
+    .pb-azure { background: rgba(6,182,212,.15);  color: var(--cyan);  border: 1px solid rgba(6,182,212,.3); }
+    .pb-gcp   { background: rgba(99,102,241,.15); color: var(--indigo); border: 1px solid rgba(99,102,241,.3); }
+
+    /* Code View Box */
+    .code-box {
+      background: #050807; border: 1px solid var(--border); border-radius: var(--r-md);
+      overflow: hidden; font-family: 'JetBrains Mono', monospace; margin: 24px 0;
+    }
+    .code-head {
+      background: var(--surface3); border-bottom: 1px solid var(--border);
+      padding: 10px 18px; font-size: .75rem; color: var(--muted); display: flex; justify-content: space-between; align-items: center;
+    }
+    .code-body { padding: 18px; font-size: .8rem; color: var(--text); overflow-x: auto; line-height: 1.65; }
+    .code-body .kwd { color: var(--teal); font-weight: 600; }
+    .code-body .str { color: var(--mint); }
+    .code-body .cmnt { color: var(--subtle); font-style: italic; }
+    .code-body .attr { color: var(--amber); }
+
+    /* Verification Box */
+    .verif-box {
+      background: rgba(16,185,129,.05); border: 1px solid rgba(16,185,129,.25);
+      border-radius: var(--r-lg); padding: 28px; margin: 32px 0;
+    }
+    .verif-title { font-size: 1.1rem; font-weight: 800; color: var(--mint); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .verif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width: 560px){ .verif-grid { grid-template-columns: 1fr; } }
+    .verif-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 14px 18px;
+      font-size: .84rem; color: var(--muted); display: flex; align-items: center; justify-content: space-between;
+    }
+    .verif-item strong { color: var(--text); }
+    .verif-pass { color: var(--mint); font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+
+    /* Animations */
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
+    .reveal { opacity:0; transform:translateY(26px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity:1; transform:none; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--subtle); font-size: .82rem; }
+    footer strong { color: var(--muted); }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius:3px; }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ═══════════════════════ HERO ═══════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="badge"><span class="dot"></span> Sprint 5 · Execution Log · neutral-iac.json (index5.html)</div>
+
+    <h1>
+      التنفيذ العملي المكتمل لإنشاء<br />
+      <span class="grad-emerald">neutral-iac.json</span> &amp; <span class="grad-cyan">دمج القواعد (Rule Collapsing)</span>
+    </h1>
+
+    <p class="hero-sub">
+      سجل التنفيذ الفعلي لإنشاء مجموعة الـ Infrastructure المحايدة المستقلة عن Checkov — المكونة من 12 ثغرة تم التحقق منها مباشرة من الـ Terraform و CloudFormation Manifests عبر مزودي السحابة الثلاثة (AWS / Azure / GCP).
+    </p>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-num" style="color:var(--mint)">12</div>
+        <div class="kpi-label">عناصر محايدة (GT-001 → GT-012)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num" style="color:var(--amber)">5 / 4 / 3</div>
+        <div class="kpi-label">AWS / Azure / GCP</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num" style="color:var(--emerald)">0</div>
+        <div class="kpi-label">معرفات CKV/Tool IDs</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num" style="color:var(--cyan)">100%</div>
+        <div class="kpi-label">مطابقة ومؤكدة بالملفات</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ FULL 12 ITEMS TABLE ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">📋 الـ 12 ثغرة المعتمدة</span>
+      <h2>الجدول الكامل لعناصر <span class="hl-emerald">neutral-iac.json</span></h2>
+      <p class="lead">كل عنصر تم استخراجه وتأكيده مباشرة من ملفات terragoat و cfngoat وترميزه بـ CWE محايد فقط.</p>
+    </div>
+
+    <div class="table-wrap reveal">
+      <div class="table-head">
+        <span>benchmark / ground_truth / neutral-iac.json</span>
+        <span>12 Items Approved</span>
+      </div>
+      <table class="main-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>المزود</th>
+            <th>الملف المصدر</th>
+            <th>المورد المضروب (Resource)</th>
+            <th>الفئة (Category)</th>
+            <th>CWE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="gt-id">GT-001</td>
+            <td><span class="prov-badge pb-aws">AWS</span></td>
+            <td>cfngoat/cfngoat.yaml</td>
+            <td>DataBucket (S3 Bucket ~L917)</td>
+            <td>public-storage</td>
+            <td>CWE-284</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-002</td>
+            <td><span class="prov-badge pb-aws">AWS</span></td>
+            <td>cfngoat/cfngoat.yaml</td>
+            <td>DataBucket (S3 Bucket ~L917)</td>
+            <td>unencrypted-storage</td>
+            <td>CWE-311</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-003</td>
+            <td><span class="prov-badge pb-aws">AWS</span></td>
+            <td>cfngoat/cfngoat.yaml</td>
+            <td>WebNodeSG (SecurityGroup ~L112)</td>
+            <td>open-ingress</td>
+            <td>CWE-284</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-004</td>
+            <td><span class="prov-badge pb-aws">AWS</span></td>
+            <td>cfngoat/cfngoat.yaml</td>
+            <td>UserPolicy (IAM Policy ~L406)</td>
+            <td>wildcard-iam</td>
+            <td>CWE-284</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-005</td>
+            <td><span class="prov-badge pb-aws">AWS</span></td>
+            <td>cfngoat/cfngoat.yaml</td>
+            <td>EC2Instance UserData AWS Key (~L69)</td>
+            <td>hardcoded-secret</td>
+            <td>CWE-798</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-006</td>
+            <td><span class="prov-badge pb-azure">Azure</span></td>
+            <td>terragoat/.../azure/networking.tf</td>
+            <td>azurerm_network_security_group.bad_sg</td>
+            <td>open-ingress</td>
+            <td>CWE-284</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-007</td>
+            <td><span class="prov-badge pb-azure">Azure</span></td>
+            <td>terragoat/.../azure/storage.tf</td>
+            <td>azurerm_managed_disk.example</td>
+            <td>unencrypted-storage</td>
+            <td>CWE-311</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-008</td>
+            <td><span class="prov-badge pb-azure">Azure</span></td>
+            <td>terragoat/.../azure/sql.tf</td>
+            <td>azurerm_sql_server.example</td>
+            <td>hardcoded-secret</td>
+            <td>CWE-798</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-009</td>
+            <td><span class="prov-badge pb-azure">Azure</span></td>
+            <td>terragoat/.../azure/sql.tf</td>
+            <td>azurerm_mysql_server.example</td>
+            <td>public-database</td>
+            <td>CWE-284</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-010</td>
+            <td><span class="prov-badge pb-gcp">GCP</span></td>
+            <td>terragoat/.../gcp/gcs.tf</td>
+            <td>google_storage_bucket_iam_binding</td>
+            <td>public-storage</td>
+            <td>CWE-284</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-011</td>
+            <td><span class="prov-badge pb-gcp">GCP</span></td>
+            <td>terragoat/.../gcp/networks.tf</td>
+            <td>google_compute_firewall.allow_all</td>
+            <td>open-ingress</td>
+            <td>CWE-284</td>
+          </tr>
+          <tr>
+            <td class="gt-id">GT-012</td>
+            <td><span class="prov-badge pb-gcp">GCP</span></td>
+            <td>terragoat/.../gcp/big_data.tf</td>
+            <td>google_sql_database_instance.master</td>
+            <td>public-database</td>
+            <td>CWE-284</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ RULE COLLAPSING METHODOLOGY ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🧩 تقنية دمج القواعد (Rule Collapsing)</span>
+      <h2>كيف تحول <span class="hl-teal">التحذيرات التلقائية إلى ثغرات بشرية؟</span></h2>
+      <p class="lead">الـ Scanners التلقائية تخرج عشرات الصفوف لنفس المورد. تقنية Rule Collapsing تدمجها في الثغرات الحقيقية التي يراها الإنسان.</p>
+    </div>
+
+    <div class="cards-2 reveal">
+      <div class="card">
+        <div class="top-bar bar-emerald"></div>
+        <div class="c-icon">📦</div>
+        <h3>1. DataBucket (8 صفوف ← ثغرتان)</h3>
+        <p>
+          الـ Scanner بيطلع 8 تحذيرات لـ S3 bucket واحد (logging, encryption, public access block, versioning...).
+          دمجناهم في ثغرتين مستعدتين يفهمهم الإنسان: <strong>GT-001</strong> (القراءة العامة) و <strong>GT-002</strong> (غياب التشفير).
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="top-bar bar-teal"></div>
+        <div class="c-icon">🔑</div>
+        <h3>2. UserPolicy (6 صفوف ← ثغرة واحدة)</h3>
+        <p>
+          الـ Scanner بيطلع 6 تحذيرات (Unconstrained write, Data exfiltration, Privilege escalation, Credentials...).
+          كلهم ناتجين عن سبب جذر واحد: استخدام <code>"Resource": "*"</code> و <code>"Action": "*"</code>. تم دمجهم في <strong>GT-004 (wildcard-iam)</strong>.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="top-bar bar-cyan"></div>
+        <div class="c-icon">🌐</div>
+        <h3>3. WebNodeSG &amp; Azure NSG (دمج المنافذ)</h3>
+        <p>
+          تجاهل صفوف النظافة (مثل غياب وصف القاعدة) ودمج قواعد فتح منافذ الإدارة SSH (22) و RDP (3389) أمام العالم (0.0.0.0/0) في ثغرة واحدة: <strong>open-ingress</strong>.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="top-bar bar-emerald"></div>
+        <div class="c-icon">🗄️</div>
+        <h3>4. Public Database Exposure</h3>
+        <p>
+          إضافة فئة <strong>public-database</strong> لـ Azure MySQL و GCP Cloud SQL (التي تفتح الاتصال لـ 0.0.0.0/0) لأنها الأخ الشقيق لـ public-storage بالنسبة لخوادم البيانات.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ STRICT NEUTRALITY VERIFICATION ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">⚡ الفحص الصارم للحيادية</span>
+      <h2>نتائج سكريبت <span class="hl-emerald">التحقق الآلي للحيادية</span></h2>
+      <p class="lead">تم تشغيل سكريبت فحص تلقائي على ملف <code>neutral-iac.json</code> للتأكد من استيفاء شروط الحيادية الصارمة 100%.</p>
+    </div>
+
+    <div class="verif-box reveal">
+      <div class="verif-title">
+        <span>🛡️ نتائج فحص القيود والتأكيد (Automated Invariant Checks):</span>
+      </div>
+      <div class="verif-grid">
+        <div class="verif-item">
+          <span>صحة الـ JSON وعدد العناصر (12 Items)</span>
+          <span class="verif-pass">PASSED (12/12)</span>
+        </div>
+        <div class="verif-item">
+          <span>خلو الملف من أي CKV أو Tool Rule IDs</span>
+          <span class="verif-pass">PASSED (0 Found)</span>
+        </div>
+        <div class="verif-item">
+          <span>اعتماد CWE IDs قياسية فقط (CWE-284/311/798)</span>
+          <span class="verif-pass">PASSED (100% CWE)</span>
+        </div>
+        <div class="verif-item">
+          <span>وسم Bias بـ scanner-neutral</span>
+          <span class="verif-pass">PASSED</span>
+        </div>
+        <div class="verif-item">
+          <span>وسم source_class بـ neutral-handlabeled</span>
+          <span class="verif-pass">PASSED</span>
+        </div>
+        <div class="verif-item">
+          <span>توزع المزودين السحابيين (AWS 5 / Azure 4 / GCP 3)</span>
+          <span class="verif-pass">PASSED (Balanced)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code View Sample -->
+    <div class="code-box reveal">
+      <div class="code-head">
+        <span>benchmark/ground_truth/neutral-iac.json — GT-001 &amp; GT-004 Sample</span>
+        <span>Tool-Neutral Clean Schema</span>
+      </div>
+      <div class="code-body">
+{<br />
+&nbsp;&nbsp;<span class="attr">"id"</span>: <span class="str">"GT-001"</span>,<br />
+&nbsp;&nbsp;<span class="attr">"layer"</span>: <span class="str">"infra"</span>,<br />
+&nbsp;&nbsp;<span class="attr">"file"</span>: <span class="str">"benchmark/cfngoat/cfngoat.yaml"</span>,<br />
+&nbsp;&nbsp;<span class="attr">"resource_or_line"</span>: <span class="str">"DataBucket (AWS::S3::Bucket, ~L917)"</span>,<br />
+&nbsp;&nbsp;<span class="attr">"expected_label"</span>: <span class="str">"real_finding"</span>,<br />
+&nbsp;&nbsp;<span class="attr">"expected_category"</span>: <span class="str">"public-storage"</span>,<br />
+&nbsp;&nbsp;<span class="attr">"cwe_or_rule"</span>: <span class="str">"CWE-284"</span>,<br />
+&nbsp;&nbsp;<span class="attr">"notes"</span>: <span class="str">"S3 bucket is publicly readable (public-read ACL). Scanner emitted several rows; collapsed to 2 human-level vulns."</span>,<br />
+&nbsp;&nbsp;<span class="attr">"source_class"</span>: <span class="str">"neutral-handlabeled"</span><br />
+}
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<footer>
+  <div class="container">
+    <p><strong>SentinelAI · Sprint 5</strong> — Execution &amp; Collapsing Log (index5.html) · sentinelai-fixture</p>
+    <p style="margin-top: 8px">سجل التنفيذ الفعلي لملف neutral-iac.json ومطابقة الثغرات المحايدة لـ SEC-38 و SEC-39</p>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      const kids = e.target.querySelectorAll('.card, .kpi, .verif-item');
+      kids.forEach((k, i) => { k.style.transitionDelay = `${i * 0.07}s`; });
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

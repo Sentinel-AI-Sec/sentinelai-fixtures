@@ -1,0 +1,107 @@
+{
+  "project": "clean-samples",
+  "source_commit": "",
+  "ground_truth_bias": "scanner-neutral",
+  "provenance": "False-positive corpus: a mix of clean controls harvested from the vendored goats (each verified to have zero real_finding entries in that project's own ground truth) plus hand-authored near-miss clean samples (correct code/config that resembles a known vuln). Used to measure precision (false positives) in SEC-39. Per-item source_class distinguishes harvested-clean from authored-clean.",
+  "items": [
+    {
+      "id": "GT-001",
+      "layer": "infra",
+      "file": "benchmark/cfngoat/cfngoat.yaml",
+      "resource_or_line": "VpcFlowLogs (AWS::EC2::FlowLog)",
+      "expected_label": "not_a_finding",
+      "expected_category": "clean-control",
+      "cwe_or_rule": "",
+      "notes": "VPC flow logging of ALL traffic to S3 - a correctly-configured security control. Zero findings in cfngoat.json (verified against the project's own ground truth).",
+      "source_class": "harvested-clean"
+    },
+    {
+      "id": "GT-002",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/aws/ec2.tf",
+      "resource_or_line": "aws_flow_log.vpcflowlogs",
+      "expected_label": "not_a_finding",
+      "expected_category": "clean-control",
+      "cwe_or_rule": "",
+      "notes": "VPC flow log capturing ALL traffic to S3 - a correctly-configured logging control. Zero findings in terragoat.json (verified against the project's own ground truth).",
+      "source_class": "harvested-clean"
+    },
+    {
+      "id": "GT-003",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/azure/resource_group.tf",
+      "resource_or_line": "azurerm_resource_group.example",
+      "expected_label": "not_a_finding",
+      "expected_category": "clean-control",
+      "cwe_or_rule": "",
+      "notes": "A plain Azure resource group with no security-relevant surface to misconfigure. Zero findings in terragoat.json (verified against the project's own ground truth).",
+      "source_class": "harvested-clean"
+    },
+    {
+      "id": "GT-004",
+      "layer": "infra",
+      "file": "benchmark/terragoat/terraform/aws/db-app.tf",
+      "resource_or_line": "aws_db_subnet_group.default",
+      "expected_label": "not_a_finding",
+      "expected_category": "clean-control",
+      "cwe_or_rule": "",
+      "notes": "A DB subnet group (neutral network plumbing) with no misconfiguration. Zero findings in terragoat.json (verified against the project's own ground truth).",
+      "source_class": "harvested-clean"
+    },
+    {
+      "id": "GT-005",
+      "layer": "code",
+      "file": "benchmark/clean-samples/authored/SafeDeserialization.cs",
+      "resource_or_line": "SafeDeserialization.Parse",
+      "expected_label": "not_a_finding",
+      "expected_category": "near-miss-clean",
+      "cwe_or_rule": "",
+      "notes": "Resembles the flagship CWE-502 unsafe deserialization but is safe: System.Text.Json into a fixed DTO, no polymorphic type handling / no $type honoring.",
+      "source_class": "authored-clean"
+    },
+    {
+      "id": "GT-006",
+      "layer": "code",
+      "file": "benchmark/clean-samples/authored/ParameterizedQuery.cs",
+      "resource_or_line": "ParameterizedQuery.ByUsername",
+      "expected_label": "not_a_finding",
+      "expected_category": "near-miss-clean",
+      "cwe_or_rule": "",
+      "notes": "Resembles the flagship CWE-89 SQL injection but is safe: user input bound as a typed SqlParameter, never concatenated into the query text.",
+      "source_class": "authored-clean"
+    },
+    {
+      "id": "GT-007",
+      "layer": "code",
+      "file": "benchmark/clean-samples/authored/SafeXmlParsing.cs",
+      "resource_or_line": "SafeXmlParsing.Create",
+      "expected_label": "not_a_finding",
+      "expected_category": "near-miss-clean",
+      "cwe_or_rule": "",
+      "notes": "Resembles the flagship CWE-611 XXE but is safe: DtdProcessing.Prohibit and XmlResolver=null, so external entities cannot be loaded.",
+      "source_class": "authored-clean"
+    },
+    {
+      "id": "GT-008",
+      "layer": "infra",
+      "file": "benchmark/clean-samples/authored/scoped_iam_policy.tf",
+      "resource_or_line": "aws_iam_policy.scoped_order_reader",
+      "expected_label": "not_a_finding",
+      "expected_category": "near-miss-clean",
+      "cwe_or_rule": "",
+      "notes": "Resembles the flagship INFRA-01 wildcard IAM (CWE-284) but is safe: read-only actions scoped to one named bucket ARN - no wildcard action or resource.",
+      "source_class": "authored-clean"
+    },
+    {
+      "id": "GT-009",
+      "layer": "infra",
+      "file": "benchmark/clean-samples/authored/secure_s3_bucket.tf",
+      "resource_or_line": "aws_s3_bucket.secure_data",
+      "expected_label": "not_a_finding",
+      "expected_category": "near-miss-clean",
+      "cwe_or_rule": "",
+      "notes": "Resembles the flagship crown-jewel bucket (INFRA-02/03/04) but is safe: private with full public-access block, KMS encryption, versioning, and access logging.",
+      "source_class": "authored-clean"
+    }
+  ]
+}

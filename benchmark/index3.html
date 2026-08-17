@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حلول التحديات — Checkov Bias &amp; C# Gap · SentinelAI Sprint 5</title>
+  <meta name="description" content="شرح مفصل ومبتكر لحلول مشكلة تحيز Checkov ومحدودية كود C# في مجلد benchmark لقسم SEC-38 و SEC-39" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #09090e;
+      --surface:  #11121a;
+      --surface2: #181926;
+      --surface3: #212336;
+      --border:   #2d3047;
+      --border2:  #3d4161;
+
+      --amber:    #fbbf24;
+      --orange:   #f97316;
+      --gold:     #f59e0b;
+      --accent:   #7c6af5;
+      --accent2:  #a78bfa;
+      --green:    #34d399;
+      --red:      #f87171;
+      --blue:     #60a5fa;
+      --cyan:     #22d3ee;
+
+      --text:   #e5e7f5;
+      --muted:  #8286a8;
+      --subtle: #505478;
+
+      --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+      --shadow: 0 4px 32px rgba(0,0,0,.6);
+      --glow-amber: 0 0 40px rgba(251,191,36,.18);
+      --glow-orange: 0 0 40px rgba(249,115,22,.15);
+      --glow-green: 0 0 40px rgba(52,211,153,.15);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; overflow-x: hidden; }
+
+    /* Animated Grid Background */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background-image:
+        linear-gradient(rgba(245,158,11,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,158,11,.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      animation: gridDrift 30s linear infinite;
+    }
+    @keyframes gridDrift { 0% { background-position: 0 0; } 100% { background-position: 42px 42px; } }
+
+    /* Orbs Background */
+    .orb { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: -1; }
+    .orb-1 { width: 550px; height: 550px; top: -130px; right: -100px; background: radial-gradient(circle, #f59e0b, transparent); opacity: .22; }
+    .orb-2 { width: 450px; height: 450px; bottom: -100px; left: -80px; background: radial-gradient(circle, #f97316, transparent); opacity: .18; }
+    .orb-3 { width: 320px; height: 320px; top: 40%; left: 45%; background: radial-gradient(circle, #7c6af5, transparent); opacity: .12; }
+
+    .container { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero Section */
+    .hero { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; padding: 80px 0 60px; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.35);
+      color: var(--amber); padding: 6px 18px; border-radius: 40px;
+      font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: 28px; animation: fadeDown .6s ease both;
+    }
+    .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 8px var(--amber); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.65)} }
+
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; line-height: 1.18; margin-bottom: 20px; animation: fadeUp .7s .1s ease both; }
+    .grad-gold { background: linear-gradient(135deg, var(--amber), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .grad-green { background: linear-gradient(135deg, var(--green), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .hero-sub { font-size: 1.12rem; color: var(--muted); max-width: 720px; margin-bottom: 40px; animation: fadeUp .7s .2s ease both; }
+
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; animation: fadeUp .7s .35s ease both; }
+    @media(max-width: 680px){ .hero-grid { grid-template-columns: 1fr; } }
+
+    .hero-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 24px;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .hero-card:hover { transform: translateY(-4px); border-color: var(--amber); box-shadow: var(--glow-amber); }
+    .hero-card .hc-icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .hero-card h3 { font-size: 1.05rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .hero-card p { font-size: .86rem; color: var(--muted); line-height: 1.6; }
+
+    /* Layout Sections */
+    section { padding: 80px 0; }
+    .section-label { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 900; margin-bottom: 18px; }
+    h2 .hl-amber { color: var(--amber); }
+    h2 .hl-green { color: var(--green); }
+    .lead { color: var(--muted); font-size: 1.05rem; margin-bottom: 40px; max-width: 740px; }
+
+    hr.divider { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 0; }
+
+    /* Cards Grid */
+    .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media(max-width: 680px){ .cards-2, .cards-3 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 26px;
+      position: relative; overflow: hidden; transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: var(--border2); box-shadow: 0 8px 40px rgba(0,0,0,.45); }
+    .card .c-icon { font-size: 2rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 8px; }
+    .card p { font-size: .86rem; color: var(--muted); line-height: 1.6; }
+
+    .card .top-bar { position: absolute; top: 0; right: 0; width: 100%; height: 3px; }
+    .bar-gold  { background: linear-gradient(90deg, var(--amber), var(--orange)); }
+    .bar-green { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+    .bar-blue  { background: linear-gradient(90deg, var(--blue), var(--accent2)); }
+    .bar-red   { background: linear-gradient(90deg, var(--red), var(--orange)); }
+
+    /* Solution Strategy Box */
+    .sol-box {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r-lg);
+      padding: 32px; margin: 32px 0; position: relative; overflow: hidden;
+    }
+    .sol-box::before {
+      content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%;
+    }
+    .sol-box.amber-box::before { background: var(--amber); }
+    .sol-box.green-box::before { background: var(--green); }
+
+    .sol-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .sol-header .sol-icon { font-size: 2.2rem; }
+    .sol-header h3 { font-size: 1.25rem; font-weight: 900; }
+    .amber-box .sol-header h3 { color: var(--amber); }
+    .green-box .sol-header h3 { color: var(--green); }
+
+    .sol-desc { font-size: .92rem; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+
+    /* Strategy Steps / Pipeline */
+    .strat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
+    
+    .strat-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 20px;
+      transition: transform .2s, border-color .2s;
+    }
+    .strat-item:hover { transform: translateY(-3px); border-color: var(--border2); }
+    .strat-num { font-family: 'JetBrains Mono', monospace; font-size: .75rem; font-weight: 700; color: var(--amber); margin-bottom: 6px; }
+    .green-box .strat-num { color: var(--green); }
+    .strat-title { font-size: .95rem; font-weight: 800; margin-bottom: 6px; }
+    .strat-text { font-size: .83rem; color: var(--muted); line-height: 1.55; }
+
+    /* Code View Box */
+    .code-box {
+      background: #0b0c12; border: 1px solid var(--border); border-radius: var(--r-md);
+      overflow: hidden; font-family: 'JetBrains Mono', monospace; margin: 20px 0;
+    }
+    .code-head {
+      background: var(--surface3); border-bottom: 1px solid var(--border);
+      padding: 10px 18px; font-size: .75rem; color: var(--muted); display: flex; justify-content: space-between;
+    }
+    .code-body { padding: 18px; font-size: .8rem; color: var(--text); overflow-x: auto; line-height: 1.6; }
+    .code-body .kwd { color: var(--accent2); }
+    .code-body .str { color: var(--green); }
+    .code-body .cmnt { color: var(--subtle); font-style: italic; }
+    .code-body .tag-attr { color: var(--amber); }
+
+    /* Comparison / Tier Table */
+    .tier-table-wrap {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin: 32px 0;
+    }
+    .tier-table-head {
+      background: var(--surface2); border-bottom: 1px solid var(--border); padding: 14px 24px;
+      font-size: .78rem; font-family: 'JetBrains Mono', monospace; color: var(--muted);
+    }
+    .tier-table-head span { color: var(--amber); }
+    .tt { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    .tt thead tr { background: var(--surface3); }
+    .tt thead th { padding: 12px 20px; text-align: right; font-size: .75rem; font-weight: 700; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .tt tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    .tt tbody tr:hover { background: rgba(255,255,255,.02); }
+    .tt tbody tr:last-child { border-bottom: none; }
+    .tt td { padding: 14px 20px; vertical-align: top; }
+    .tt td:first-child { font-family: 'JetBrains Mono', monospace; font-size: .8rem; color: var(--text); font-weight: 700; }
+
+    .status-badge {
+      display: inline-block; font-size: .68rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; font-family: 'JetBrains Mono', monospace;
+    }
+    .sb-headline { background: rgba(52,211,153,.15); color: var(--green); border: 1px solid rgba(52,211,153,.35); }
+    .sb-internal { background: rgba(251,191,36,.15); color: var(--amber); border: 1px solid rgba(251,191,36,.35); }
+    .sb-qualitative { background: rgba(96,165,250,.15); color: var(--blue); border: 1px solid rgba(96,165,250,.35); }
+
+    /* Checklist & Highlights */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+    .checklist li {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: rgba(245,158,11,.04); border: 1px solid rgba(245,158,11,.15);
+      border-radius: var(--r-md); padding: 14px 18px; font-size: .88rem; color: var(--muted);
+    }
+    .checklist li .ck { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+    .checklist li strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+    /* Animations */
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
+    .reveal { opacity:0; transform:translateY(26px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity:1; transform:none; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--subtle); font-size: .82rem; }
+    footer strong { color: var(--muted); }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius:3px; }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ═══════════════════════ HERO ═══════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="badge"><span class="dot"></span> Sprint 5 · SEC-38 &amp; SEC-39 Benchmark Solutions · index3.html</div>
+
+    <h1>
+      حل المشاكل والتحيزات في الـ Benchmark<br />
+      <span class="grad-gold">تحيز Checkov</span> &amp; <span class="grad-green">محدودية عينات C#</span>
+    </h1>
+
+    <p class="hero-sub">
+      دليل شامل يوضح بالظبط إزاي حلّينا المشكلتين الكبار في مجلد الـ benchmark بكل شفافية ومنهجية علمية دقيقة — بدون تخبيّة أي نقاط ضعف وبدون أرقام مضللة.
+    </p>
+
+    <div class="hero-grid">
+      <div class="hero-card">
+        <div class="hc-icon">⚡</div>
+        <h3>المشكلة الأولى: تحيز Checkov</h3>
+        <p>مشاريع TerraGoat و CfnGoat الإجابات فيها جاية من Checkov، وعلشان SentinelAI بيستخدم Checkov فالمقارنة بتبقى مش عادلة للمنافسين.</p>
+      </div>
+      <div class="hero-card">
+        <div class="hc-icon">🔷</div>
+        <h3>المشكلة الثانية: كود C# القليل</h3>
+        <p>عدم وجود standard benchmark لـ C# زي Java OWASP خلى عينات الـ C# محصورة في الـ flagship fixture وشوية near-misses يدوية.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ PROBLEM 1: CHECKOV BIAS ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">⚖️ التحدي الأول والتفصيلي</span>
+      <h2>1️⃣ مشكلة تحيز <span class="hl-amber">Checkov</span> في مشاريع الـ Infra</h2>
+      <p class="lead">
+        في مشاريع TerraGoat و CfnGoat، الـ ground truth اتكتبت بناءً على نتائج أداة <strong>Checkov</strong> نفسها.
+        ولأن SentinelAI جوا مكوناته الداخلية بيشغل Checkov في الـ infra layer، ده بيدينا ميزة غير عادلة لو قارنّا نفسنا بـ SonarQube أو Snyk على المشاريع دي.
+      </p>
+    </div>
+
+    <!-- Solution Box 1 -->
+    <div class="sol-box amber-box reveal">
+      <div class="sol-header">
+        <div class="sol-icon">💡</div>
+        <div>
+          <h3>الحل الهندسي: الفصل الصارم والتدرج (Corpus Tiering)</h3>
+        </div>
+      </div>
+      <div class="sol-desc">
+        قسمنا الـ Benchmark Corpus لمستويين منفصلين تماماً في الكود والتقارير:
+        مستوى <strong>Headline Scanner-Neutral</strong> للمقارنة العادلة مع المنافسين،
+        ومستوى <strong>Internal Tool-Validation</strong> للاختبار الداخلي.
+      </div>
+
+      <div class="strat-grid">
+        <div class="strat-item">
+          <div class="strat-num">الخطوة 01</div>
+          <div class="strat-title">عزل الـ Headline Set</div>
+          <div class="strat-text">مقارنة الـ Precision/Recall الرسمية مع SonarQube و Snyk بتعتمد <strong>فقط</strong> على Kubernetes-Goat و Clean-Samples لأنهم Scanner-Neutral.</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-num">الخطوة 02</div>
+          <div class="strat-title">حصر Checkov للـ Validation</div>
+          <div class="strat-text">مشاريع TerraGoat و CfnGoat بتتسمى "Internal Validation Sets" — بتستخدم لتأكيد شغل SentinelAI الداخلي فقط ومش كادعاء رسمي ضدهم.</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-num">الخطوة 03</div>
+          <div class="strat-title">وسم البيانات بـ Provenance</div>
+          <div class="strat-text">كل ملف JSON في الـ ground truth وكل item معلّم بـ field صريح يوضح هل هو <code>scanner-neutral</code> أو <code>tool-derived:checkov</code>.</div>
+        </div>
+      </div>
+
+      <!-- Code view example -->
+      <div class="code-box">
+        <div class="code-head">
+          <span>benchmark/ground_truth/terragoat.json — التوسيم الصريح للتحيز</span>
+          <span>JSON Header</span>
+        </div>
+        <div class="code-body">
+{<br />
+&nbsp;&nbsp;<span class="tag-attr">"project"</span>: <span class="str">"terragoat"</span>,<br />
+&nbsp;&nbsp;<span class="tag-attr">"provenance"</span>: <span class="str">"Ground truth derived from TerraGoat's Checkov output... Cross-tool recall is biased toward Checkov; use for within-SentinelAI validation, NOT as headline cross-tool fairness claim."</span>,<br />
+&nbsp;&nbsp;<span class="tag-attr">"ground_truth_bias"</span>: <span class="str">"tool-derived:checkov"</span>,<br />
+&nbsp;&nbsp;<span class="tag-attr">"items"</span>: [...]<br />
+}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ PROBLEM 2: C# GAP ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🔷 التحدي الثاني والتفصيلي</span>
+      <h2>2️⃣ مشكلة محدودية عينات <span class="hl-green">C# Ground Truth</span></h2>
+      <p class="lead">
+        على عكس لغة Java اللي فيها OWASP Benchmark جاهز وفيه أكتر من 2000+ عينة اختبار، <strong>مفيش standard security benchmark عالمي لـ C#</strong>.
+        لذلك عينات C# في المشروع صغيرة ومحصورة في الـ flagship fixture وشوية near-misses يدوية.
+      </p>
+    </div>
+
+    <!-- Solution Box 2 -->
+    <div class="sol-box green-box reveal">
+      <div class="sol-header">
+        <div class="sol-icon">🛡️</div>
+        <div>
+          <h3>الحل الهندسي: منهجية الألياف المزدوجة والتأطير الصادق</h3>
+        </div>
+      </div>
+      <div class="sol-desc">
+        عالجنا قلة الكود باستراتيجية مزدوجة: <strong>تأطير النتايج بصدق علمي</strong> كـ "Indicative" وعدم ادعاء دقة إحصائية ضخمة، مع <strong>إنشاء عينات Near-Miss مقترنة</strong> لقياس الـ False Positives بدقة.
+      </div>
+
+      <div class="strat-grid">
+        <div class="strat-item">
+          <div class="strat-num">الاستراتيجية 01</div>
+          <div class="strat-title">التأطير الصريح (Honest Framing)</div>
+          <div class="strat-text">التصريح في كل التقارير والـ README بإن نتائج C# هي "Qualitative Indicative Proof" بتثبت إن السلسلة شغال، وليست "Statistical Benchmark".</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-num">الاستراتيجية 02</div>
+          <div class="strat-title">مزدوجات Near-Miss الأقواس</div>
+          <div class="strat-text">لكل ثغرة في C# (زي CWE-89 SQLi أو CWE-502 Unsafe Deserialization)، عملنا كود مقابل سليم تماماً في <code>clean-samples</code> لاختبار الـ False Positives.</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-num">الاستراتيجية 03</div>
+          <div class="strat-title">التركيز على Attack-Chain Hop</div>
+          <div class="strat-text">استخدام عينات C# في إثبات خطوة الربط بين الطبقات (Dep → Code → Infra)، حيث الجودة وإعادة بناء السلسلة أهم من العدد الإحصائي.</div>
+        </div>
+      </div>
+
+      <!-- Code view example for C# near miss -->
+      <div class="code-box">
+        <div class="code-head">
+          <span>benchmark/clean-samples/authored/SafeDeserialization.cs — العينة المقترنة النظيفة</span>
+          <span>C# Near-Miss Control</span>
+        </div>
+        <div class="code-body">
+<span class="cmnt">// SafeDeserialization.cs — Near-miss clean sample for CWE-502</span><br />
+<span class="kwd">public class</span> SafeDeserializer {<br />
+&nbsp;&nbsp;<span class="kwd">public static</span> OrderDto Parse(<span class="kwd">string</span> jsonInput) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmnt">// Safe: System.Text.Json into fixed DTO type (No TypeNameHandling.All / no polymorphic types)</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">return</span> JsonSerializer.Deserialize&lt;OrderDto&gt;(jsonInput);<br />
+&nbsp;&nbsp;}<br />
+}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ TIERS & USE CASES TABLE ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">📊 مصفوفة تصنيف المجموعات</span>
+      <h2>جدول توزيع الـ Benchmark <span class="hl-amber">وحالته النهائية</span></h2>
+      <p class="lead">
+        توضيح شامل لكيفية التعامل مع كل مجموعة داخل مجلد <code>benchmark/</code> في التقييم النهائي.
+      </p>
+    </div>
+
+    <div class="tier-table-wrap reveal">
+      <div class="tier-table-head">
+        مجموعات البيانات — <span>ربط المشكلة بالحل وحالة الاستخدام في SEC-39</span>
+      </div>
+      <table class="tt">
+        <thead>
+          <tr>
+            <th>المجموعة (Project)</th>
+            <th>نوع التحدي / Bias</th>
+            <th>حل المشكلة المطبق</th>
+            <th>الحالة في تقرير المقارنة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Kubernetes-Goat</td>
+            <td>Scanner-Neutral</td>
+            <td>استخدام مباشر كـ Headline Corpus بدون تعديل</td>
+            <td><span class="status-badge sb-headline">✅ Headline Baseline</span></td>
+          </tr>
+          <tr>
+            <td>Clean-Samples (HARVESTED &amp; AUTHORED)</td>
+            <td>Scanner-Neutral</td>
+            <td>إضافة عينات Near-Miss مقترنة لـ C# و Infra</td>
+            <td><span class="status-badge sb-headline">✅ False Positive Metric</span></td>
+          </tr>
+          <tr>
+            <td>C# Hand-Labeled</td>
+            <td>Small Sample Size (No C# Standard)</td>
+            <td>التأطير كـ Qualitative Chain Proof + Near-Miss Pairing</td>
+            <td><span class="status-badge sb-qualitative">ℹ️ Indicative Demonstration</span></td>
+          </tr>
+          <tr>
+            <td>CfnGoat</td>
+            <td>Checkov Rule Biased</td>
+            <td>الفصل في مستوى Internal Validation فقط مع وسم Provenance</td>
+            <td><span class="status-badge sb-internal">⚠️ Internal Only</span></td>
+          </tr>
+          <tr>
+            <td>TerraGoat</td>
+            <td>Checkov Rule Biased</td>
+            <td>الفصل في مستوى Internal Validation فقط مع وسم Provenance</td>
+            <td><span class="status-badge sb-internal">⚠️ Internal Only</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ SUMMARY CHECKLIST ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🎯 الخلاصة التنفيذية</span>
+      <h2>كيف نضمن <span class="hl-green">الشفافية الكاملة</span> في الدفعة الأخيرة؟</h2>
+    </div>
+
+    <ul class="checklist reveal">
+      <li>
+        <span class="ck">✨</span>
+        <div>
+          <strong>الشفافية في العرض (Honest Disclosure):</strong>
+          أي شريحة أو تقرير بيطلع من SEC-39 بيذكر بوضوح: "TerraGoat/CfnGoat are Checkov-derived; headline numbers reflect Kubernetes-Goat and Clean-Samples."
+        </div>
+      </li>
+      <li>
+        <span class="ck">✨</span>
+        <div>
+          <strong>قاعدة الحماية الذهبية (.no-ingest):</strong>
+          المجلد بالكامل محمي بملف <code>.no-ingest</code> بيمنع تسريب بيانات الاختبار لـ Qdrant لمنع "حفظ الامتحان".
+        </div>
+      </li>
+      <li>
+        <span class="ck">✨</span>
+        <div>
+          <strong>إثبات القيمة في C#:</strong>
+          بالرغم من صغر حجم عينات C#، إلا أنها كافية جداً لإثبات النجاح في الـ Acceptance Demo (SEC-44) عبر بناء السلسلة الكاملة من الـ Code للـ Infra.
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<footer>
+  <div class="container">
+    <p><strong>SentinelAI · Sprint 5</strong> — Benchmark Solutions (index3.html) · sentinelai-fixture</p>
+    <p style="margin-top: 8px">شرح حلول تحيز Checkov ومحدودية C# لقسم SEC-38 و SEC-39</p>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      const kids = e.target.querySelectorAll('.card, .hero-card, .strat-item, .checklist li');
+      kids.forEach((k, i) => { k.style.transitionDelay = `${i * 0.07}s`; });
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

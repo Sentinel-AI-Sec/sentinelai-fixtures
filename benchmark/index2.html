@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEC-39 — Precision/Recall vs SonarQube &amp; Snyk · SentinelAI Sprint 5</title>
+  <meta name="description" content="شرح مفصل لمهمة SEC-39 — مقارنة دقة SentinelAI مع SonarQube و Snyk على نفس الـ benchmark بالأرقام الحقيقية" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #08090d;
+      --surface:  #0f1117;
+      --surface2: #161820;
+      --surface3: #1e2030;
+      --border:   #2a2d3e;
+      --border2:  #373a50;
+
+      --accent:   #7c6af5;
+      --accent2:  #a78bfa;
+      --green:    #34d399;
+      --red:      #f87171;
+      --amber:    #fbbf24;
+      --blue:     #60a5fa;
+      --pink:     #f472b6;
+      --cyan:     #22d3ee;
+      --orange:   #fb923c;
+
+      --text:  #e2e4f0;
+      --muted: #7c7f9a;
+      --subtle:#4a4d65;
+
+      --r-sm:2px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+      --shadow: 0 4px 32px rgba(0,0,0,.55);
+      --glow-a: 0 0 40px rgba(124,106,245,.2);
+      --glow-g: 0 0 40px rgba(52,211,153,.15);
+      --glow-b: 0 0 40px rgba(96,165,250,.15);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family:'Cairo',sans-serif; background:var(--bg); color:var(--text); line-height:1.75; overflow-x:hidden; }
+
+    /* ── grid bg ── */
+    body::before {
+      content:''; position:fixed; inset:0; z-index:-1;
+      background-image:
+        linear-gradient(rgba(96,165,250,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96,165,250,.035) 1px, transparent 1px);
+      background-size:44px 44px;
+      animation:gridDrift 35s linear infinite;
+    }
+    @keyframes gridDrift { 0%{background-position:0 0} 100%{background-position:44px 44px} }
+
+    /* ── orbs ── */
+    .orb { position:fixed; border-radius:50%; filter:blur(90px); pointer-events:none; z-index:-1; }
+    .orb-1 { width:560px; height:560px; top:-140px; right:-120px; background:radial-gradient(circle,#60a5fa,transparent); opacity:.28; }
+    .orb-2 { width:420px; height:420px; bottom:-100px; left:-80px;  background:radial-gradient(circle,#7c6af5,transparent); opacity:.3; }
+    .orb-3 { width:300px; height:300px; top:45%;  left:45%;        background:radial-gradient(circle,#34d399,transparent); opacity:.13; }
+
+    .container { max-width:1020px; margin:0 auto; padding:0 24px; }
+
+    /* ── hero ── */
+    .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:80px 0 60px; }
+
+    .badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(96,165,250,.12); border:1px solid rgba(96,165,250,.4);
+      color:var(--blue); padding:6px 18px; border-radius:40px;
+      font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      margin-bottom:28px; animation:fadeDown .6s ease both;
+    }
+    .badge .dot { width:7px; height:7px; border-radius:50%; background:var(--blue); box-shadow:0 0 8px var(--blue); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.65)} }
+
+    .hero h1 { font-size:clamp(2.2rem,5vw,3.7rem); font-weight:900; line-height:1.15; margin-bottom:20px; animation:fadeUp .7s .1s ease both; }
+    .grad-blue { background:linear-gradient(135deg,var(--blue),var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .grad-green { background:linear-gradient(135deg,var(--green),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+    .hero-sub { font-size:1.12rem; color:var(--muted); max-width:700px; margin-bottom:44px; animation:fadeUp .7s .2s ease both; }
+
+    .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; animation:fadeUp .7s .35s ease both; }
+    @media(max-width:680px){ .kpi-row{grid-template-columns:1fr 1fr} }
+    @media(max-width:400px){ .kpi-row{grid-template-columns:1fr} }
+
+    .kpi {
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md);
+      padding:20px 16px; text-align:center;
+      transition:transform .25s,border-color .25s,box-shadow .25s;
+    }
+    .kpi:hover { transform:translateY(-4px); border-color:var(--accent); box-shadow:var(--glow-a); }
+    .kpi .kpi-num { font-size:1.9rem; font-weight:900; font-family:'JetBrains Mono',monospace; line-height:1; margin-bottom:6px; }
+    .kpi .kpi-label { font-size:.75rem; color:var(--muted); }
+
+    /* ── sections ── */
+    section { padding:80px 0; }
+    .section-label { display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+    h2 { font-size:clamp(1.6rem,3vw,2.3rem); font-weight:900; margin-bottom:18px; }
+    h2 .hl { color:var(--accent2); }
+    h2 .hl-b { color:var(--blue); }
+    .lead { color:var(--muted); font-size:1.05rem; margin-bottom:40px; max-width:730px; }
+
+    hr.divider { border:none; height:1px; background:linear-gradient(90deg,transparent,var(--border2),transparent); margin:0; }
+
+    /* ── cards grid ── */
+    .cards-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .cards-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    @media(max-width:680px){ .cards-2,.cards-3{grid-template-columns:1fr} }
+
+    .card {
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:26px;
+      position:relative; overflow:hidden;
+      transition:transform .25s,border-color .25s,box-shadow .25s;
+    }
+    .card:hover { transform:translateY(-4px); border-color:var(--border2); box-shadow:0 8px 40px rgba(0,0,0,.4); }
+    .card .c-icon { font-size:2rem; margin-bottom:12px; }
+    .card h3 { font-size:1rem; font-weight:800; margin-bottom:8px; }
+    .card p { font-size:.86rem; color:var(--muted); line-height:1.6; }
+    .card .accent-bar { position:absolute; top:0; right:0; width:100%; height:3px; }
+    .bar-blue  { background:linear-gradient(90deg,var(--blue),var(--cyan)); }
+    .bar-green { background:linear-gradient(90deg,var(--green),var(--accent2)); }
+    .bar-red   { background:linear-gradient(90deg,var(--red),var(--orange)); }
+    .bar-amber { background:linear-gradient(90deg,var(--amber),var(--orange)); }
+    .bar-purple{ background:linear-gradient(90deg,var(--accent),var(--pink)); }
+
+    /* ── Tools comparison ── */
+    .tool-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:36px; }
+    @media(max-width:680px){ .tool-cards{grid-template-columns:1fr} }
+
+    .tool-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:28px;
+      text-align:center; transition:transform .25s,border-color .25s,box-shadow .25s;
+    }
+    .tool-card.sentinel { border-color:rgba(167,139,250,.35); }
+    .tool-card.sentinel:hover { box-shadow:var(--glow-a); border-color:var(--accent2); }
+    .tool-card.sonar { border-color:rgba(96,165,250,.3); }
+    .tool-card.sonar:hover { box-shadow:var(--glow-b); border-color:var(--blue); }
+    .tool-card.snyk { border-color:rgba(52,211,153,.3); }
+    .tool-card.snyk:hover { box-shadow:var(--glow-g); border-color:var(--green); }
+
+    .tool-logo { font-size:2.8rem; margin-bottom:14px; }
+    .tool-name { font-size:1.1rem; font-weight:900; margin-bottom:6px; }
+    .sentinel .tool-name { color:var(--accent2); }
+    .sonar    .tool-name { color:var(--blue); }
+    .snyk     .tool-name { color:var(--green); }
+    .tool-desc { font-size:.82rem; color:var(--muted); line-height:1.55; margin-bottom:14px; }
+    .tool-tag {
+      display:inline-block; font-size:.68rem; font-weight:700; padding:3px 10px;
+      border-radius:20px; font-family:'JetBrains Mono',monospace;
+    }
+    .sentinel .tool-tag { background:rgba(167,139,250,.15); color:var(--accent2); border:1px solid rgba(167,139,250,.35); }
+    .sonar    .tool-tag { background:rgba(96,165,250,.15);  color:var(--blue);    border:1px solid rgba(96,165,250,.35); }
+    .snyk     .tool-tag { background:rgba(52,211,153,.15);  color:var(--green);   border:1px solid rgba(52,211,153,.35); }
+
+    /* ── TP/FP/FN matrix ── */
+    .matrix-wrap {
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; margin:36px 0;
+    }
+    .matrix-head {
+      background:var(--surface2); border-bottom:1px solid var(--border); padding:14px 24px;
+      font-size:.78rem; font-family:'JetBrains Mono',monospace; color:var(--muted);
+    }
+    .matrix-head span { color:var(--accent2); }
+    .matrix-body { padding:28px; }
+    .matrix-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    @media(max-width:560px){ .matrix-grid{grid-template-columns:1fr} }
+
+    .matrix-cell {
+      border:1px solid var(--border); border-radius:var(--r-md); padding:22px 18px; text-align:center;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .matrix-cell:hover { transform:scale(1.03); }
+    .mc-tp { border-color:rgba(52,211,153,.4); background:rgba(52,211,153,.06); }
+    .mc-fp { border-color:rgba(248,113,113,.4); background:rgba(248,113,113,.06); }
+    .mc-fn { border-color:rgba(251,191,36,.4);  background:rgba(251,191,36,.06); }
+    .mc-tn { border-color:rgba(96,165,250,.4);  background:rgba(96,165,250,.06); }
+
+    .mc-abbr { font-size:1.4rem; font-weight:900; font-family:'JetBrains Mono',monospace; margin-bottom:6px; }
+    .mc-tp .mc-abbr { color:var(--green); }
+    .mc-fp .mc-abbr { color:var(--red); }
+    .mc-fn .mc-abbr { color:var(--amber); }
+    .mc-tn .mc-abbr { color:var(--blue); }
+
+    .mc-name { font-size:.88rem; font-weight:700; margin-bottom:6px; }
+    .mc-desc { font-size:.78rem; color:var(--muted); line-height:1.5; }
+    .mc-formula { font-size:.72rem; font-family:'JetBrains Mono',monospace; color:var(--subtle); margin-top:8px; }
+
+    /* ── Precision/Recall big cards ── */
+    .pr-big { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:36px 0; }
+    @media(max-width:560px){ .pr-big{grid-template-columns:1fr} }
+
+    .pr-big-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:32px;
+      position:relative; overflow:hidden;
+    }
+    .pr-big-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
+    .pr-big-card.pc::before { background:linear-gradient(90deg,var(--green),var(--cyan)); }
+    .pr-big-card.rc::before { background:linear-gradient(90deg,var(--blue),var(--pink)); }
+
+    .pr-big-card .pr-tag {
+      font-size:.68rem; font-weight:700; font-family:'JetBrains Mono',monospace;
+      padding:3px 10px; border-radius:20px; margin-bottom:16px; display:inline-block;
+    }
+    .pc .pr-tag { background:rgba(52,211,153,.15); color:var(--green); border:1px solid rgba(52,211,153,.3); }
+    .rc .pr-tag { background:rgba(96,165,250,.15);  color:var(--blue);  border:1px solid rgba(96,165,250,.3); }
+
+    .pr-big-card h3 { font-size:1.3rem; font-weight:900; margin-bottom:10px; }
+    .pc h3 { color:var(--green); }
+    .rc h3 { color:var(--blue); }
+
+    .pr-big-card p { font-size:.87rem; color:var(--muted); line-height:1.65; margin-bottom:16px; }
+
+    .formula-box {
+      background:var(--surface3); border:1px solid var(--border); border-radius:var(--r-md);
+      padding:16px 20px; font-family:'JetBrains Mono',monospace; font-size:.85rem;
+      color:var(--text); margin-bottom:14px;
+    }
+    .f-num-g { color:var(--green); }
+    .f-num-b { color:var(--blue); }
+    .f-den   { color:var(--muted); }
+    .f-eq    { color:var(--subtle); }
+
+    .insight {
+      background:rgba(167,139,250,.06); border:1px solid rgba(167,139,250,.2);
+      border-radius:var(--r-sm); padding:12px 16px;
+      font-size:.8rem; color:var(--muted); line-height:1.55;
+    }
+    .insight strong { color:var(--text); }
+
+    /* ── Corpus table ── */
+    .corpus-table-wrap {
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; margin:36px 0;
+    }
+    .corpus-table-head { background:var(--surface2); border-bottom:1px solid var(--border); padding:14px 24px; font-size:.78rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+    .corpus-table-head span { color:var(--green); }
+    .ct { width:100%; border-collapse:collapse; font-size:.84rem; }
+    .ct thead tr { background:var(--surface3); }
+    .ct thead th { padding:12px 20px; text-align:right; font-size:.75rem; font-weight:700; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; border-bottom:1px solid var(--border); white-space:nowrap; }
+    .ct tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
+    .ct tbody tr:hover { background:rgba(255,255,255,.025); }
+    .ct tbody tr:last-child { border-bottom:none; }
+    .ct td { padding:14px 20px; vertical-align:top; }
+    .ct td:first-child { font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--accent2); }
+    .ct td.use-yes { }
+    .ct .bias-tag {
+      display:inline-block; font-size:.65rem; font-weight:700; padding:2px 8px;
+      border-radius:20px; white-space:nowrap;
+    }
+    .bt-neutral { background:rgba(52,211,153,.15); color:var(--green); border:1px solid rgba(52,211,153,.35); }
+    .bt-checkov { background:rgba(251,191,36,.15);  color:var(--amber); border:1px solid rgba(251,191,36,.35); }
+    .bt-hand    { background:rgba(96,165,250,.15);  color:var(--blue);  border:1px solid rgba(96,165,250,.35); }
+
+    .usage-dot {
+      display:inline-flex; align-items:center; gap:5px;
+      font-size:.75rem; font-weight:700;
+    }
+    .usage-dot.yes { color:var(--green); }
+    .usage-dot.no  { color:var(--subtle); }
+    .usage-dot.limited { color:var(--amber); }
+
+    /* ── Steps ── */
+    .steps { display:flex; flex-direction:column; gap:0; }
+    .step-item {
+      display:flex; gap:20px; align-items:flex-start;
+      padding:24px 0; border-bottom:1px solid var(--border);
+    }
+    .step-item:last-child { border-bottom:none; }
+    .step-num {
+      flex-shrink:0; width:40px; height:40px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'JetBrains Mono',monospace; font-size:.85rem; font-weight:700;
+      background:rgba(96,165,250,.15); color:var(--blue); border:1px solid rgba(96,165,250,.3);
+    }
+    .step-body h4 { font-size:1rem; font-weight:700; margin-bottom:6px; }
+    .step-body p  { font-size:.87rem; color:var(--muted); line-height:1.6; }
+    .step-body code {
+      font-family:'JetBrains Mono',monospace; font-size:.78rem;
+      background:var(--surface3); color:var(--green); padding:1px 6px; border-radius:3px;
+    }
+
+    /* ── Mistakes ── */
+    .mistake-list { display:flex; flex-direction:column; gap:16px; margin-top:32px; }
+    .mistake-item {
+      display:flex; gap:16px; align-items:flex-start;
+      background:rgba(248,113,113,.05); border:1px solid rgba(248,113,113,.2);
+      border-radius:var(--r-md); padding:20px;
+    }
+    .mistake-icon { font-size:1.4rem; flex-shrink:0; }
+    .mistake-body h4 { font-size:.95rem; font-weight:700; color:var(--red); margin-bottom:6px; }
+    .mistake-body p  { font-size:.85rem; color:var(--muted); line-height:1.6; }
+    .mistake-body strong { color:var(--text); }
+
+    /* ── checklist ── */
+    .checklist { list-style:none; display:flex; flex-direction:column; gap:12px; margin-top:28px; }
+    .checklist li {
+      display:flex; gap:12px; align-items:flex-start;
+      background:rgba(52,211,153,.04); border:1px solid rgba(52,211,153,.15);
+      border-radius:var(--r-md); padding:14px 18px;
+      font-size:.88rem; color:var(--muted);
+    }
+    .checklist li .ck { font-size:1rem; flex-shrink:0; margin-top:2px; }
+    .checklist li strong { color:var(--text); display:block; margin-bottom:2px; }
+
+    /* ── flow ── */
+    .flow { display:flex; align-items:center; gap:0; flex-wrap:wrap; justify-content:center; margin:40px 0; }
+    .flow-step {
+      display:flex; flex-direction:column; align-items:center; gap:8px; padding:18px 20px;
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md);
+      min-width:130px; text-align:center; transition:transform .25s,border-color .25s,box-shadow .25s;
+    }
+    .flow-step:hover { transform:translateY(-4px); border-color:var(--accent); box-shadow:var(--glow-a); }
+    .flow-step.active { border-color:rgba(96,165,250,.5); box-shadow:var(--glow-b); }
+    .fs-icon { font-size:1.5rem; }
+    .fs-label { font-size:.78rem; font-weight:700; color:var(--text); }
+    .fs-task { font-size:.65rem; color:var(--blue); font-family:'JetBrains Mono',monospace; }
+    .flow-arrow { font-size:1.3rem; color:var(--subtle); padding:0 4px; flex-shrink:0; }
+    @media(max-width:700px){ .flow{flex-direction:column} .flow-arrow{transform:rotate(90deg)} }
+
+    /* ── dependency banner ── */
+    .dep-banner {
+      background:linear-gradient(135deg,rgba(251,191,36,.07),rgba(248,113,113,.05));
+      border:1px solid rgba(251,191,36,.3); border-radius:var(--r-lg);
+      padding:28px 32px; margin:36px 0;
+    }
+    .dep-banner h3 { font-size:1rem; font-weight:800; color:var(--amber); margin-bottom:10px; }
+    .dep-banner p { font-size:.87rem; color:var(--muted); line-height:1.65; }
+    .dep-banner strong { color:var(--text); }
+    .dep-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+    .dep-chip {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(251,191,36,.1); border:1px solid rgba(251,191,36,.3);
+      color:var(--amber); padding:6px 14px; border-radius:40px;
+      font-size:.78rem; font-weight:700; font-family:'JetBrains Mono',monospace;
+    }
+
+    /* ── anims ── */
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
+    .reveal { opacity:0; transform:translateY(26px); transition:opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity:1; transform:none; }
+
+    /* ── footer ── */
+    footer { border-top:1px solid var(--border); padding:32px 0; text-align:center; color:var(--subtle); font-size:.82rem; }
+    footer strong { color:var(--muted); }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ═══════════════════════ HERO ═══════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="badge"><span class="dot"></span> Sprint 5 · SEC-39 · sentinelai-backend · Member E · 5pts</div>
+
+    <h1>
+      <span class="grad-blue">Precision &amp; Recall</span><br />
+      مقارنة SentinelAI<br />
+      <span class="grad-green">مع SonarQube و Snyk</span>
+    </h1>
+
+    <p class="hero-sub">
+      ده الدليل الفعلي على أن SentinelAI بيدي نتايج أدق — مش مجرد كلام.
+      SEC-39 بتشغّل الـ 3 أدوات على نفس البيانات وتقارن الأرقام بالأرقام.
+    </p>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-num" style="color:var(--blue)">3</div>
+        <div class="kpi-label">أدوات بتتقارن</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num" style="color:var(--green)">2</div>
+        <div class="kpi-label">مقاييس لازم تتحسب</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num" style="color:var(--amber)">5</div>
+        <div class="kpi-label">corpus sets</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num" style="color:var(--red)">1</div>
+        <div class="kpi-label">benchmark مشترك للكل</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ WHAT & WHY ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🎯 ايه المهمة وليه مهمة؟</span>
+      <h2>SEC-39 هي <span class="hl">الإثبات</span> — مش مجرد اختبار</h2>
+      <p class="lead">
+        SentinelAI بيقول إنه بيدي false positives أقل من المنافسين.
+        ده claim — وكل claim محتاج دليل بالأرقام. SEC-39 هي المهمة اللي بتحوّل الكلام ده لأرقام حقيقية.
+      </p>
+    </div>
+
+    <div class="cards-2 reveal">
+      <div class="card">
+        <div class="accent-bar bar-blue"></div>
+        <div class="c-icon">🔬</div>
+        <h3>المنهجية العلمية</h3>
+        <p>
+          الـ 3 أدوات بتشتغل على نفس الـ benchmark (SEC-38) — نفس الملفات، نفس الإجابات الصح.
+          النتيجة مقارنة عادلة: مفيش حد اتعامل معاه أحسن من التاني.
+        </p>
+      </div>
+      <div class="card">
+        <div class="accent-bar bar-green"></div>
+        <div class="c-icon">📊</div>
+        <h3>رقمين لازم يطلعوا مع بعض</h3>
+        <p>
+          Precision (قد ايه اللي اتعلّم عليه صح) و Recall (قد ايه اللي اتكشف).
+          لازم الاتنين يتحسبوا — الرقم الحلو لوحده مش كافي، ممكن يكون بيغطي فشل تاني.
+        </p>
+      </div>
+      <div class="card">
+        <div class="accent-bar bar-amber"></div>
+        <div class="c-icon">⚖️</div>
+        <h3>العدالة في الاختبار</h3>
+        <p>
+          مش كل الـ benchmark sets مناسبة للمقارنة — الـ Checkov-biased sets فيها ميزة لـ SentinelAI.
+          الـ headline claim بيعتمد بس على الـ scanner-neutral sets.
+        </p>
+      </div>
+      <div class="card">
+        <div class="accent-bar bar-red"></div>
+        <div class="c-icon">📣</div>
+        <h3>الـ Claim اللي بنثبته</h3>
+        <p>
+          "SentinelAI بيدي fewer false positives من SonarQube و Snyk على نفس الـ infra findings."
+          ده اللي هيتثبت بالأرقام في النهاية.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ THREE TOOLS ═══════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🛠️ الأدوات الـ 3</span>
+      <h2>مين <span class="hl-b">بيتقارن</span> بمين؟</h2>
+      <p class="lead">الـ 3 أدوات بتشتغل على نفس الـ benchmark — نفس الملفات، نفس الـ ground truth، نفس الوقت.</p>
+    </div>
+    <div class="tool-cards reveal">
+      <div class="tool-card sentinel">
+        <div class="tool-logo">🛡️</div>
+        <div class="tool-name">SentinelAI</div>
+        <div class="tool-desc">النظام اللي بنبنيه — بيستخدم AI agents، debate loop، وراعي المعرفة عشان يفرّق بين الثغرات الحقيقية والـ false positives.</div>
+        <div class="tool-tag">our product</div>
+      </div>
+      <div class="tool-card sonar">
+        <div class="tool-logo">🔍</div>
+        <div class="tool-name">SonarQube</div>
+        <div class="tool-desc">أداة تحليل كود static موسعة الانتشار — بتفحص الكود بقواعد ثابتة بدون AI context. من الـ industry standards.</div>
+        <div class="tool-tag">competitor A</div>
+      </div>
+      <div class="tool-card snyk">
+        <div class="tool-logo">🐍</div>
+        <div class="tool-name">Snyk</div>
+        <div class="tool-desc">أداة security متخصصة في dependencies وinfrastructure — بتشوف CVEs وmisconfigurations. قوية في الـ IaC layer.</div>
+        <div class="tool-tag">competitor B</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ TP FP FN ══════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🧮 تصنيف النتايج</span>
+      <h2>TP / FP / FN — <span class="hl">إيه معنى كل واحدة؟</span></h2>
+      <p class="lead">
+        لما أي أداة بتشتغل على الـ benchmark، كل finding بتحطه في واحدة من الخانات دي
+        بالمقارنة مع الـ ground truth.
+      </p>
+    </div>
+    <div class="matrix-wrap reveal">
+      <div class="matrix-head">تصنيف كل finding مقارنةً بـ <span>ground_truth.expected_label</span></div>
+      <div class="matrix-body">
+        <div class="matrix-grid">
+          <div class="matrix-cell mc-tp">
+            <div class="mc-abbr">TP ✅</div>
+            <div class="mc-name">True Positive</div>
+            <div class="mc-desc">الأداة علّمت على مشكلة <strong>والمشكلة حقيقية فعلًا</strong>. ده الحالة المثالية.</div>
+            <div class="mc-formula">expected = real_finding<br />tool = flagged</div>
+          </div>
+          <div class="matrix-cell mc-fp">
+            <div class="mc-abbr">FP ❌</div>
+            <div class="mc-name">False Positive</div>
+            <div class="mc-desc">الأداة علّمت على حاجة <strong>بس هي مش مشكلة</strong>. ده اللي المطورين بيزهقوا منه.</div>
+            <div class="mc-formula">expected = not_a_finding<br />tool = flagged</div>
+          </div>
+          <div class="matrix-cell mc-fn">
+            <div class="mc-abbr">FN ⚠️</div>
+            <div class="mc-name">False Negative</div>
+            <div class="mc-desc">الأداة <strong>فاتتها مشكلة حقيقية</strong>. خطر لأن الثغرة اتفضل موجودة.</div>
+            <div class="mc-formula">expected = real_finding<br />tool = not flagged</div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px; padding:16px; background:var(--surface3); border-radius:var(--r-md); border:1px solid var(--border); font-size:.82rem; color:var(--muted); line-height:1.65;">
+          <strong style="color:var(--text);">True Negative (TN)</strong> — الأداة ما علّمتش وفعلًا مفيش مشكلة.
+          بيتحسب ضمنيًا من الـ clean-samples لكن مش الـ headline metric هنا. المهم هو الـ FP لأنه اللي بيضر تجربة المطوّر.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ PRECISION / RECALL ════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">📐 الحسابات</span>
+      <h2>إزاي بنحسب <span class="hl">Precision و Recall</span>؟</h2>
+      <p class="lead">لكل أداة من الـ 3، بنحسب الرقمين دول لكل category. الاتنين لازم يطلعوا في التقرير النهائي.</p>
+    </div>
+    <div class="pr-big reveal">
+      <div class="pr-big-card pc">
+        <div class="pr-tag">PRECISION — دقة الإنذار</div>
+        <h3>🎯 Precision</h3>
+        <p>
+          من <em>كل اللي الأداة علّمت عليه</em> كمشكلة — قد ايه كان فيه مشاكل حقيقية فعلًا؟
+          Precision عالية = false positives قليلة = المطور يثق في التحذيرات وما يتجاهلهاش.
+        </p>
+        <div class="formula-box">
+          Precision = <span class="f-num-g">TP</span> <span class="f-eq">÷</span> (<span class="f-den">TP + FP</span>)
+        </div>
+        <div class="insight">
+          <strong>مثال:</strong> الأداة علّمت على 100 حاجة — 80 كانوا مشاكل حقيقية و20 كانوا FPs.<br />
+          Precision = 80 ÷ (80+20) = <strong style="color:var(--green)">80%</strong>
+        </div>
+      </div>
+      <div class="pr-big-card rc">
+        <div class="pr-tag">RECALL — شمولية الاكتشاف</div>
+        <h3>📡 Recall</h3>
+        <p>
+          من <em>كل المشاكل الحقيقية الموجودة في الـ benchmark</em> — الأداة اكتشفت كام منها؟
+          Recall منخفض = ثغرات بتعدي من غير ما تتكشف — خطر حتى لو Precision عالية.
+        </p>
+        <div class="formula-box">
+          Recall = <span class="f-num-b">TP</span> <span class="f-eq">÷</span> (<span class="f-den">TP + FN</span>)
+        </div>
+        <div class="insight">
+          <strong>مثال:</strong> في الـ benchmark 50 مشكلة حقيقية — الأداة اكتشفت 40 منهم وفاتها 10.<br />
+          Recall = 40 ÷ (40+10) = <strong style="color:var(--blue)">80%</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.25);border-radius:var(--r-md);padding:22px 26px;margin-top:8px;">
+      <p style="font-weight:800;color:var(--red);margin-bottom:8px;">⚠️ الفخ: Precision عالية مع Recall منخفض</p>
+      <p style="font-size:.87rem;color:var(--muted);line-height:1.65;">
+        لو أداة ما علّمتش على أي حاجة خالص — Precision هتبقى <strong style="color:var(--text)">100%</strong> (مفيش FPs!)
+        وRecall هتبقى <strong style="color:var(--text)">0%</strong> (مشكشفتش حاجة).
+        الرقمين مع بعض هم اللي بيكشفوا الحقيقة — مش واحد منهم لوحده.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ CORPUS BREAKDOWN ══════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">📋 الـ Corpus Sets</span>
+      <h2>أنهي <span class="hl">corpus</span> بيتستخدم عشان إيه؟</h2>
+      <p class="lead">
+        مش كل الـ benchmark sets مناسبة للمقارنة مع المنافسين. بعضها فيه تحيز لـ SentinelAI
+        بسبب إن الـ ground truth اتعمل من Checkov. ده متوثق بوضوح.
+      </p>
+    </div>
+    <div class="corpus-table-wrap reveal">
+      <div class="corpus-table-head">benchmark / ground_truth / — <span>استخدام كل corpus في SEC-39</span></div>
+      <table class="ct">
+        <thead>
+          <tr>
+            <th>الـ Corpus</th>
+            <th>نوع التحيز</th>
+            <th>يتستخدم للمقارنة مع المنافسين؟</th>
+            <th>يتستخدم لـ Validation داخلي؟</th>
+            <th>ملاحظة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>kubernetes-goat.json</td>
+            <td><span class="bias-tag bt-neutral">Scanner-Neutral</span></td>
+            <td><span class="usage-dot yes">✅ نعم — الـ headline</span></td>
+            <td><span class="usage-dot yes">✅ نعم</span></td>
+            <td style="color:var(--muted);font-size:.8rem;">مش مبني على أي scanner محدد — أعدل corpus</td>
+          </tr>
+          <tr>
+            <td>clean-samples.json</td>
+            <td><span class="bias-tag bt-neutral">Scanner-Neutral</span></td>
+            <td><span class="usage-dot yes">✅ نعم — FP measure</span></td>
+            <td><span class="usage-dot yes">✅ نعم</span></td>
+            <td style="color:var(--muted);font-size:.8rem;">أهم corpus لقياس False Positives تحديدًا</td>
+          </tr>
+          <tr>
+            <td>csharp.json</td>
+            <td><span class="bias-tag bt-hand">Hand-Labeled</span></td>
+            <td><span class="usage-dot limited">⚠️ محدود جدًا</span></td>
+            <td><span class="usage-dot yes">✅ نعم</span></td>
+            <td style="color:var(--muted);font-size:.8rem;">عينة صغيرة — نتايجه استرشادية مش إحصائية</td>
+          </tr>
+          <tr>
+            <td>cfngoat.json</td>
+            <td><span class="bias-tag bt-checkov">Checkov-biased</span></td>
+            <td><span class="usage-dot no">❌ لا — مش عادل</span></td>
+            <td><span class="usage-dot yes">✅ نعم فقط</span></td>
+            <td style="color:var(--muted);font-size:.8rem;">SentinelAI عنده ميزة لأنه بيستخدم Checkov</td>
+          </tr>
+          <tr>
+            <td>terragoat.json</td>
+            <td><span class="bias-tag bt-checkov">Checkov-biased</span></td>
+            <td><span class="usage-dot no">❌ لا — مش عادل</span></td>
+            <td><span class="usage-dot yes">✅ نعم فقط</span></td>
+            <td style="color:var(--muted);font-size:.8rem;">SentinelAI عنده ميزة لأنه بيستخدم Checkov</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="reveal" style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.25);border-radius:var(--r-md);padding:22px 26px;">
+      <p style="font-weight:800;color:var(--amber);margin-bottom:8px;">🔑 القاعدة الأساسية</p>
+      <p style="font-size:.87rem;color:var(--muted);line-height:1.65;">
+        الـ <strong style="color:var(--text)">headline claim</strong> (إن SentinelAI أدق من المنافسين) لازم يتدعم
+        بس بالـ <strong style="color:var(--green)">scanner-neutral sets</strong>.
+        الـ Checkov sets بتتستخدم بس <strong style="color:var(--text)">للتحقق الداخلي من SentinelAI نفسه</strong> — مش للمقارنة.
+        الـ bias ده متوثق في كل ground truth file في field اسمه <code style="font-family:'JetBrains Mono';background:rgba(251,191,36,.1);color:var(--amber);padding:1px 6px;border-radius:3px">provenance</code>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ STEPS ══════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">📋 خطوات التنفيذ</span>
+      <h2>إزاي بتتنفذ <span class="hl-b">SEC-39</span> خطوة بخطوة؟</h2>
+      <p class="lead">ده اللي Member E هيعمله تحديدًا.</p>
+    </div>
+
+    <div class="dep-banner reveal">
+      <h3>⚠️ قبل ما تبدأ — التبعيات</h3>
+      <p>SEC-39 مش ممكن تشتغل غير لما الاتنين دول يخلصوا:</p>
+      <div class="dep-row">
+        <div class="dep-chip">SEC-38 ✅ benchmark corpus</div>
+        <div class="dep-chip">SEC-28 ✅ draft audit output</div>
+      </div>
+    </div>
+
+    <div class="steps reveal">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h4>تشغيل الـ 3 أدوات على نفس الـ benchmark</h4>
+          <p>SentinelAI و SonarQube و Snyk — كلهم على نفس ملفات الـ benchmark بالظبط. مفيش أداة تاخد input مختلف. الـ benchmark corpus من SEC-38 هو المدخل الوحيد.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h4>تصنيف كل finding كـ TP أو FP أو FN</h4>
+          <p>لكل finding من كل أداة، بتقارنه بـ <code>expected_label</code> في الـ ground truth:
+          <code>real_finding</code> يعني TP لو الأداة اكتشفته، أو FN لو فاتها.
+          <code>not_a_finding</code> يعني FP لو الأداة علّمت عليه.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h4>حساب Precision و Recall لكل أداة لكل category</h4>
+          <p>مش رقم واحد للكل — بنحسب per category (code / infra / dep).
+          ده بيدي صورة أوضح عن إيه بيكون كل أداة قوية فيه وإيه بتضعف فيه.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <h4>تقرير بالرقمين مع بعض — مش رقم واحد بس</h4>
+          <p>الـ headline: <strong>Precision</strong> (قياس الـ false positives — ده الـ claim الأساسي).
+          الـ guardrail: <strong>Recall</strong> (عشان نثبت إننا مش بس بنخبي المشاكل).
+          كلاهما في نفس التقرير، موضح لكل أداة على كل corpus-set.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <h4>الإفصاح عن الـ bias لكل project</h4>
+          <p>في التقرير، كل نتيجة لازم توضح <strong>أنهي corpus</strong> هي مبنية عليه
+          وإيه تحيزه. الـ Checkov bias لـ cfngoat وterragoat لازم يتذكر صراحةً.
+          الـ C# results بتتوصف كـ "indicative" مش "statistically rigorous".</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ CHECKLIST ═════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">✅ كيف تعرف إنك خلصت؟</span>
+      <h2>معايير <span class="hl">الإنجاز</span> — "How to check you're done"</h2>
+      <p class="lead">ده الـ checklist اللي لازم كل بند فيه يكون اتعمل قبل ما تقفل SEC-39.</p>
+    </div>
+    <ul class="checklist reveal">
+      <li>
+        <span class="ck">☑️</span>
+        <div>
+          <strong>الـ 3 أدوات اشتغلوا على نفس الـ corpus بالظبط</strong>
+          نفس الملفات، نفس الـ commit، نفس الـ input — مفيش تفاوت في الـ input.
+        </div>
+      </li>
+      <li>
+        <span class="ck">☑️</span>
+        <div>
+          <strong>Precision و Recall متحسبين per category لكل أداة</strong>
+          مش average واحد فقط — code / infra / dep منفصلين عشان نشوف فين كل أداة قوية.
+        </div>
+      </li>
+      <li>
+        <span class="ck">☑️</span>
+        <div>
+          <strong>الرقمين مع بعض في نفس التقرير — مش واحد بس</strong>
+          Precision الـ headline + Recall الـ guardrail. مفيش واحد منهم يتخبى.
+        </div>
+      </li>
+      <li>
+        <span class="ck">☑️</span>
+        <div>
+          <strong>الـ Checkov bias وحدود C# متوثقين صراحةً</strong>
+          كل نتيجة محتاجة تعرف مصدر الـ ground truth الخاص بيها وتحيزه.
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ MISTAKES ══════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🚫 الأخطاء الشائعة</span>
+      <h2>Common Mistakes — <span class="hl">ما تعملهاش</span></h2>
+    </div>
+    <div class="mistake-list reveal">
+      <div class="mistake-item">
+        <div class="mistake-icon">📊</div>
+        <div class="mistake-body">
+          <h4>رقم Precision بس من غير Recall</h4>
+          <p>
+            Precision عالية لوحدها تبدو حلوة — بس ممكن تكون الأداة بتعلّم على حاجة واحدة بس وبيجي عليها صح.
+            <strong>Recall منخفض معناه إنك بتخبي المشاكل.</strong>
+            لازم الاتنين دايمًا مع بعض في أي تقرير.
+          </p>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-icon">⚖️</div>
+        <div class="mistake-body">
+          <h4>استخدام الـ Checkov-biased sets كـ headline</h4>
+          <p>
+            لو قارنت SentinelAI مع SonarQube على cfngoat أو terragoat — SentinelAI هيكسب مش لأنه أحسن، بس لأن الـ ground truth اتعمل من Checkov وهو بيستخدمه.
+            <strong>ده مش دليل — ده تحيز.</strong>
+            الـ headline لازم يكون على الـ scanner-neutral sets.
+          </p>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-icon">🔷</div>
+        <div class="mistake-body">
+          <h4>الادعاء إن C# results إحصائية</h4>
+          <p>
+            مفيش benchmark C# معياري — الـ C# corpus صغير ومعمول يدوي.
+            <strong>النتايج "استرشادية" — مش proof.</strong>
+            لازم يتقال صراحةً في التقرير إن C# results مش statistically rigorous.
+          </p>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-icon">🔄</div>
+        <div class="mistake-body">
+          <h4>تشغيل الأدوات على inputs مختلفة</h4>
+          <p>
+            لو SentinelAI اشتغل على نسخة من الـ benchmark وSonarQube على نسخة تانية — المقارنة فاسدة.
+            <strong>نفس الملفات، نفس الـ commit،</strong> للـ 3 أدوات بالظبط.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ═══════════════════════ SPRINT FLOW ═══════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">🔗 الصورة الكاملة</span>
+      <h2>SEC-39 في <span class="hl-b">سياق Sprint 5</span></h2>
+      <p class="lead">إيه اللي بيجي قبلها وبعدها في الـ sprint؟</p>
+    </div>
+    <div class="flow reveal">
+      <div class="flow-step">
+        <div class="fs-icon">📦</div>
+        <div class="fs-label">Benchmark</div>
+        <div class="fs-task">SEC-38</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="fs-icon">🤖</div>
+        <div class="fs-label">Draft Audit</div>
+        <div class="fs-task">SEC-28</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step active">
+        <div class="fs-icon">📊</div>
+        <div class="fs-label">Precision/Recall</div>
+        <div class="fs-task">SEC-39 ← هنا</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="fs-icon">🧪</div>
+        <div class="fs-label">Regression Test</div>
+        <div class="fs-task">SEC-49</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="fs-icon">🎤</div>
+        <div class="fs-label">Demo Day</div>
+        <div class="fs-task">SEC-44</div>
+      </div>
+    </div>
+
+    <div class="cards-3 reveal" style="margin-top:32px;">
+      <div class="card">
+        <div class="accent-bar bar-amber"></div>
+        <div class="c-icon">📦</div>
+        <h3>قبلها: SEC-38</h3>
+        <p>الـ ground truth corpus — بيوفر الـ labeled benchmark اللي SEC-39 هتشتغل عليه. بدونه ما فيش مقارنة.</p>
+      </div>
+      <div class="card">
+        <div class="accent-bar bar-blue" style="background:linear-gradient(90deg,var(--blue),var(--cyan))"></div>
+        <div class="c-icon">📊</div>
+        <h3>هي نفسها: SEC-39</h3>
+        <p>تشغيل الـ 3 أدوات، التصنيف، الحساب، التقرير بالأرقام. ده الإثبات الفعلي للـ claim.</p>
+      </div>
+      <div class="card">
+        <div class="accent-bar bar-purple"></div>
+        <div class="c-icon">🎤</div>
+        <h3>بعدها: SEC-44</h3>
+        <p>الـ acceptance demo — بيستخدم نتايج SEC-39 كـ proof جنب الـ live demo عشان يثبت إن المنتج شغال وأدق من المنافسين.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<footer>
+  <div class="container">
+    <p><strong>SentinelAI · Sprint 5</strong> — SEC-39 Precision/Recall vs SonarQube &amp; Snyk · sentinelai-backend</p>
+    <p style="margin-top:8px">هذا الملف شرح توضيحي لمهمة SEC-39 وعلاقتها بـ SEC-38 والـ acceptance demo</p>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      const kids = e.target.querySelectorAll(
+        '.card,.kpi,.tool-card,.matrix-cell,.step-item,.mistake-item,.checklist li,.flow-step'
+      );
+      kids.forEach((k, i) => { k.style.transitionDelay = `${i * 0.07}s`; });
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
