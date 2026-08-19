@@ -54,6 +54,12 @@ jobs:
           dotnet-project: src/OrderApp/OrderApp.csproj
           infra-dir:      infra
 
+          # benchmark/ holds SEC-38 ground truth - terragoat, kubernetes-goat,
+          # cfngoat - which is not the software under test. Left in, it supplied 68 of
+          # 77 graph inputs, and its npm package-lock.json files reach the backend
+          # NuGet lockfile parser and fail the graph stage outright.
+          exclude-dirs:   benchmark
+
           # Reports are PURGED by default (SEC-35 retention). Without this the
           # pipeline succeeds, report_id comes back null, and the report screen
           # has nothing to render - a demo that looks fine until the payoff.
