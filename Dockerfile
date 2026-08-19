@@ -2,8 +2,16 @@
 # prefix + tag - this MUST match main.tf's flagship ECS task image field
 # ("registry.hub.docker.com/tinyapp/order:1.4.2") for the code->infra
 # join to resolve as "inferred" confidence (SEC-19).
+#
+# A Dockerfile has no field naming the image it builds - that name comes from
+# whatever `docker build -t <name>` invocation builds it, and this fixture has
+# no CI script to read it from. SEC-19's DockerfileImageNameExtractor therefore
+# reads one explicit, self-declared signal, the LABEL below. Without it the
+# code->infra seam has nothing to compare and the golden chain above is not
+# reconstructible, so the label is load-bearing fixture data, not decoration.
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+LABEL org.sentinelai.image="tinyapp/order"
 WORKDIR /app
 EXPOSE 8080
 
