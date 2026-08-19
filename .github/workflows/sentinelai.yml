@@ -1,0 +1,70 @@
+# SentinelAI — the real end-to-end scan (demo path).
+#
+# This is the workflow the acceptance demo runs. It differs from the two
+# neighbouring workflows on purpose:
+#
+#   action-yml-test.yml / local-test.yml  -> dry runs. upload:false, backend-url
+#                                            points at https://unused.invalid.
+#                                            They prove bundle SHAPE and nothing
+#                                            else, and they must keep doing that.
+#   this file                             -> uploads to the live backend and
+#                                            waits for the audit to finish.
+#
+# Requires, on this repository:
+#   variable SENTINELAI_BACKEND_URL   the deployed API base URL
+#   variable SENTINELAI_PROJECT_ID    project id from POST /v1/projects
+#   secret   SENTINELAI_MACHINE_TOKEN JWT carrying the scan:write scope
+#
+# The token expires after 60 minutes (Authentication:Jwt:AccessTokenMinutes).
+# Re-issue it shortly before a demo; a token set yesterday will 401 today.
+
+name: SentinelAI Scan
+
+on:
+  # dev is this repository's default branch, so the demo PR targets it.
+  # main is listed too so a release-style PR gets the same treatment.
+  pull_request:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write        # SEC-41 creates and edits the PR comment
+
+# One scan per PR. A force-push mid-scan should replace the run, not race it.
+concurrency:
+  group: sentinelai-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sentinelai:
+    name: SentinelAI security scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Sentinel-AI-Sec/sentinelai-action@dev
+        with:
+          backend-url:    ${{ vars.SENTINELAI_BACKEND_URL }}
+          machine-token:  ${{ secrets.SENTINELAI_MACHINE_TOKEN }}
+          project-id:     ${{ vars.SENTINELAI_PROJECT_ID }}
+
+          # The three layers the flagship chain crosses:
+          #   dependency -> OSV over packages.lock.json
+          #   code       -> Roslyn / Security Code Scan over this project
+          #   infra      -> Checkov + Trivy over infra/
+          dotnet-project: src/OrderApp/OrderApp.csproj
+          infra-dir:      infra
+
+          # Reports are PURGED by default (SEC-35 retention). Without this the
+          # pipeline succeeds, report_id comes back null, and the report screen
+          # has nothing to render - a demo that looks fine until the payoff.
+          retain-report:  "true"
+
+          # Wait for the audit rather than returning at upload, so the job's
+          # own conclusion reflects the scan's.
+          poll:           "true"
+          poll-timeout:   "900"
+
+          # trigger-stages is deliberately NOT set. It exists for the era before
+          # SEC-46, when nothing drove a queued scan forward. ScanPipelineWorker
+          # now does. Set it to "true" only against an instance running with
+          # Scanning:Worker:Enabled = false.
