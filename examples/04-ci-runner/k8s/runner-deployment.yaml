@@ -1,0 +1,116 @@
+# The build runner's own deployment.
+#
+# This file is where fixture 04 lives. The application code above is ordinary — a CI runner that
+# unpacks archives and runs commands, which is what a CI runner does. Every one of those
+# behaviours is safe inside a boundary and catastrophic outside one, and this manifest removes
+# the boundary four separate times.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: build-runner
+  namespace: ci
+  labels:
+    app: build-runner
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: build-runner
+  template:
+    metadata:
+      labels:
+        app: build-runner
+    spec:
+      # INFRA-02 (flagship, CWE-269): the runner's ServiceAccount is bound to cluster-admin —
+      # see runner-rbac.yaml. Combined with the default token mount below, the token sitting
+      # inside every one of these pods is a cluster takeover.
+      serviceAccountName: build-runner
+
+      # INFRA-03 (CWE-1108): the token is projected into the pod even though the runner only
+      # needs it for one status write. Turning this off would not fix the RBAC grant, but it
+      # would mean a compromised build could not simply read the credential off disk.
+      automountServiceAccountToken: true
+
+      # INFRA-04 (CWE-653): the pod shares the node's network namespace, so it can reach the
+      # kubelet's read-only port and every service bound to the node's loopback — including
+      # ones that assume loopback means trusted.
+      hostNetwork: true
+
+      # INFRA-05 (CWE-653): and the node's PID namespace, so it can see and signal every
+      # process on the node, including other tenants' containers.
+      hostPID: true
+
+      containers:
+        - name: runner
+          # The code->infra join. Must normalize to the same coordinate as the Dockerfile's
+          # LABEL org.sentinelai.image.
+          image: registry.hub.docker.com/ci/build-runner:4.2.0
+
+          ports:
+            - containerPort: 8080
+
+          securityContext:
+            # INFRA-01 (flagship, CWE-250): privileged. All capabilities, no seccomp, no
+            # AppArmor, direct access to the node's devices. This single field is what turns
+            # CODE-01's zip slip from "writes a file in a container" into "writes a file on the
+            # node".
+            privileged: true
+
+            # INFRA-06 (CWE-250): explicitly root, and allowed to gain more privilege.
+            runAsUser: 0
+            allowPrivilegeEscalation: true
+
+            # INFRA-07 (CWE-732): writable root filesystem, so the extracted payload persists
+            # and the container's own binaries can be replaced.
+            readOnlyRootFilesystem: false
+
+            capabilities:
+              # INFRA-08 (CWE-250): SYS_ADMIN on top of privileged — belt and braces for an
+              # escape that already had everything it needed.
+              add: ["SYS_ADMIN", "NET_ADMIN", "SYS_PTRACE"]
+
+          env:
+            # INFRA-09 (CWE-798): the registry push credential as a literal environment
+            # variable rather than a secret reference. Readable by anyone who can describe the
+            # pod, and by anything that escapes into it. Dummy fixture value.
+            - name: REGISTRY_PUSH_TOKEN
+              value: "ghp_fixtureDummyTokenNotReal000111"
+
+            - name: Runner__Workspace
+              value: "/workspace"
+
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+
+            # INFRA-10 (CWE-552): the node's entire root filesystem, mounted read-write. This
+            # is the destination CODE-01's traversal reaches. Writing to
+            # /host/etc/cron.d/ or /host/var/lib/kubelet/ is node compromise, and from a node
+            # every other pod's secrets are readable.
+            - name: host-root
+              mountPath: /host
+
+            # INFRA-11 (CWE-552): the container runtime socket. Anything that can write here
+            # can start a new container with any mount and any privilege, which is a second,
+            # independent escape that does not need the traversal at all.
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+
+          # INFRA-12 (CWE-770): no resource limits, so CODE-03's zip bomb takes the node down
+          # rather than just the pod.
+          resources: {}
+
+      volumes:
+        - name: workspace
+          emptyDir: {}
+
+        - name: host-root
+          hostPath:
+            path: /
+            type: Directory
+
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket

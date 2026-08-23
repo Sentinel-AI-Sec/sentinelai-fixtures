@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- DEP-01 (flagship): SharpZipLib 1.2.0. Known zip-slip advisory - the library does not
+         constrain entry paths, which is exactly the weakness CODE-01 then fails to compensate
+         for. The pairing is the point: the library's advisory and the calling code's missing
+         check are the same vulnerability described from two sides. -->
+    <PackageReference Include="SharpZipLib" Version="1.2.0" />
+
+    <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <!-- DEP-02: old Kubernetes client, pairs with ClusterClient. -->
+    <PackageReference Include="KubernetesClient" Version="6.0.16" />
+
+    <!-- DEP-03: old Newtonsoft.Json. Job payloads are JSON and are deserialized on the request
+         path, so this is genuinely reachable rather than transitive dead weight.
+
+         It replaced an older YamlDotNet pin, which could not coexist with KubernetesClient's
+         own floor of 11.2.1 - NuGet refuses the downgrade. Worth recording because "the old
+         version cannot actually be installed" is a constraint a hand-written fixture will hit
+         repeatedly, and silently pinning the client backwards to preserve it would have made
+         the fixture less realistic, not more. -->
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+
+    <!-- DEP-04: old tar implementation, path-traversal history. Second signal beside DEP-01. -->
+    <PackageReference Include="SharpCompress" Version="0.22.0" />
+
+    <!-- DEP-05 (noise): benchmarking package, build-time only. -->
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

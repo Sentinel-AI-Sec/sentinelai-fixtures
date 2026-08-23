@@ -1,0 +1,57 @@
+# The runner's identity, and the grant that makes the escape total.
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: build-runner
+  namespace: ci
+
+---
+# INFRA-02 (flagship, CWE-269): cluster-admin, cluster-wide.
+#
+# The runner writes build status onto one custom resource in one namespace. It is granted every
+# verb on every resource in every namespace, which means the ServiceAccount token projected into
+# every runner pod is equivalent to the cluster's root credential.
+#
+# This is the single most consequential line in the fixture: without it, escaping to the node is
+# a serious incident confined to that node. With it, escaping to the node is the whole cluster.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: build-runner-admin
+subjects:
+  - kind: ServiceAccount
+    name: build-runner
+    namespace: ci
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# INFRA-13 (CWE-732): a second, narrower-looking role that is not narrow. Wildcards on secrets
+# across all namespaces. Redundant given the binding above, and included because it is the shape
+# a reviewer waves through - it names resources rather than using "*" on everything, so it reads
+# as scoped while granting the same access to the thing that matters.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: build-runner-secrets
+rules:
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: build-runner-secrets
+subjects:
+  - kind: ServiceAccount
+    name: build-runner
+    namespace: ci
+roleRef:
+  kind: ClusterRole
+  name: build-runner-secrets
+  apiGroup: rbac.authorization.k8s.io

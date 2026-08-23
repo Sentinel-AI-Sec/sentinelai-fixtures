@@ -1,0 +1,41 @@
+# How the runner is reached.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: build-runner
+  namespace: ci
+spec:
+  # INFRA-14 (CWE-668): LoadBalancer, so the runner's unauthenticated API (CODE-05) is exposed
+  # to the internet rather than only to the cluster.
+  type: LoadBalancer
+  selector:
+    app: build-runner
+  ports:
+    - port: 80
+      targetPort: 8080
+
+---
+# INFRA-15 (CWE-1188): the namespace has no NetworkPolicy at all, so every pod in the cluster
+# can reach every other pod. Included as an absence rather than a misconfiguration - the finding
+# is that this file does not contain a NetworkPolicy, which is a harder thing to notice than a
+# wrong value.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ci
+  labels:
+    name: ci
+
+---
+# INFRA-16 (CWE-798): the registry credential as a Secret with a hardcoded, base64-only value
+# checked into source control. base64 is not encryption. Dummy fixture value.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-credentials
+  namespace: ci
+type: Opaque
+data:
+  # echo -n 'ghp_fixtureDummyTokenNotReal000111' | base64
+  token: Z2hwX2ZpeHR1cmVEdW1teVRva2VuTm90UmVhbDAwMDExMQ==

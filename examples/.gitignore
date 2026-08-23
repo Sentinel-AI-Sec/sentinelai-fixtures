@@ -1,0 +1,10 @@
+# Build output for the fixtures in this directory.
+#
+# Scoped here rather than added at the repository root on purpose: the flagship fixture at the
+# root commits its own bin/ and obj/, and changing that is a separate decision with its own
+# consequences for whatever reads those bytes. This only governs examples/.
+#
+# packages.lock.json is NOT ignored and must stay committed - OSV-Scanner reads it, and without
+# it the dependency layer of every chain in here goes undetected.
+bin/
+obj/
