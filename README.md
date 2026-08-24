@@ -135,3 +135,31 @@ one tool depends on the others having run except that ordering.
    - *(Semgrep removed from the toolchain — see the code-layer coverage
      note above for what that leaves uncovered.)*
 4. Record the resulting golden chain JSON for the SEC-49 regression harness.
+
+---
+
+## CI workflows
+
+Three workflows run against this fixture, and the difference between them matters.
+
+| Workflow | Backend | What it proves |
+|---|---|---|
+| `action-yml-test.yml` | `https://unused.invalid`, `upload: false` | Bundle **shape** — that the scanners run and the tarball is assembled correctly, with no server involved. Also deliberately breaks one scanner to prove a single failure does not fail the job. |
+| `local-test.yml` | none | The scripts, run directly. |
+| `sentinelai.yml` | the deployed API | The **live** path: uploads the bundle, waits for the audit, posts the PR comment. |
+
+The dry runs stay dry on purpose. Being able to prove bundle shape without a
+running backend is what lets the action be changed safely.
+
+`sentinelai.yml` needs three repository settings:
+
+- variable `SENTINELAI_BACKEND_URL`
+- variable `SENTINELAI_PROJECT_ID`
+- secret `SENTINELAI_MACHINE_TOKEN` — a JWT carrying the `scan:write` scope
+
+The token expires after 60 minutes, so it has to be re-issued before a demo;
+a token set yesterday returns 401 today.
+
+It also sets `retain-report: "true"`. Reports are purged by default under
+SEC-35 retention, so without it the scan succeeds, `report_id` comes back
+`null`, and the report screen has nothing to show.
